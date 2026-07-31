@@ -169,53 +169,32 @@ main{background:#f5f5f5}
 .hero-mobile .imgs-row .oh .inner{transform:translateY(100%)}
 .hero-mobile .imgs-row .oh .inner img{height:15vw;pointer-events:none}
 
-/* ── HERO DESKTOP VIDEO ── */
-.hero-video-desktop{
-  display:none;height:100svh;padding:0 2rem;
-}
-@media(min-width:768px){.hero-video-desktop{display:block}}
-.video-preview{
-  position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
-  border-radius:1.5rem;cursor:default;
-  clip-path:inset(0 0 100% 0);will-change:transform;
-}
-.video-preview .video-inner{
-  position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;border-radius:1.5rem;
-}
-.video-preview .video-inner video{
-  width:100%;height:100%;object-fit:cover;pointer-events:none;
-}
-.video-preview .mute-btn{
-  position:absolute;bottom:2rem;right:2rem;z-index:10;
-  width:clamp(40px,4vw,60px);height:clamp(40px,4vw,60px);
-  border-radius:50%;background:rgba(245,245,245,.5);
-  backdrop-filter:blur(40px);display:flex;align-items:center;justify-content:center;
-  opacity:0;transform:translateY(12px) scale(.8);
-  transition:all .3s cubic-bezier(.16,1,.3,1);cursor:pointer;
-}
-.video-preview:hover .mute-btn{opacity:1;transform:translateY(0) scale(1)}
+/* ═══ HERO DESKTOP — SCROLL-EXPAND SYSTEM ═══ */
+.hero-system{position:relative;height:250vh;display:none}
+@media(min-width:1024px){.hero-system{display:block}}
+.hero-video-container{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;padding-top:8vh;will-change:padding-top}
+.hero-video-wrapper{position:relative;overflow:hidden;border-radius:1.5rem;will-change:width,border-radius;width:85vw;aspect-ratio:16/9}
+.hero-video-wrapper video{width:100%;height:100%;object-fit:cover;will-change:object-position}
+.hero-video-wrapper .mute-btn{position:absolute;bottom:2rem;right:2rem;z-index:10;width:clamp(40px,4vw,60px);height:clamp(40px,4vw,60px);border-radius:50%;background:rgba(245,245,245,.5);backdrop-filter:blur(40px);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(12px) scale(.8);transition:all .3s cubic-bezier(.16,1,.3,1);cursor:pointer}
+.hero-video-wrapper:hover .mute-btn{opacity:1;transform:translateY(0) scale(1)}
 
-/* ── HERO DESKTOP TEXT ── */
-.hero-text-desktop{
-  display:none;text-transform:uppercase;font-weight:600;
-}
-@media(min-width:1024px){.hero-text-desktop{display:block}}
-.hero-text-desktop .asg-line1{overflow:hidden;margin-bottom:.25rem;position:relative;width:100%}
-.hero-text-desktop .asg-line1 .inner{
-  display:flex;justify-content:space-between;width:100%;transform:translateY(100%);
-}
-.hero-text-desktop .asg-line1 .inner p{font-size:clamp(14px,1.2vw,20px)}
-.hero-text-desktop .asg-line1 .inner p.mid{position:absolute;left:50%;transform:translate(-50%,100%)}
-.hero-text-desktop .asg-line2{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
-.hero-text-desktop .asg-line2 .oh-l{overflow:hidden;margin-right:4vw}
-.hero-text-desktop .asg-line2 .oh-l img{height:10vw;width:auto;object-fit:contain;pointer-events:none;transform:translateY(100%)}
-.hero-text-desktop .asg-line2 .oh-r{overflow:hidden}
-.hero-text-desktop .asg-line2 .oh-r img{height:10vw;width:auto;object-fit:contain;pointer-events:none;transform:translateY(100%)}
+/* Text overlay below video */
+.hero-text-area{position:absolute;bottom:15vh;left:2rem;right:2rem;text-transform:uppercase;font-weight:600;pointer-events:none}
+@media(min-width:1024px){.hero-text-area{bottom:20vh}}
+.hero-text-area .asg-row1{overflow:hidden;margin-bottom:.25rem;position:relative;width:100%}
+.hero-text-area .asg-row1 .inner{display:flex;justify-content:space-between;width:100%;transform:translateY(100%)}
+.hero-text-area .asg-row1 .inner p{font-size:clamp(14px,1.2vw,20px)}
+.hero-text-area .asg-row1 .inner p.mid{position:absolute;left:50%;transform:translate(-50%,100%)}
+.hero-text-area .asg-row2{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.hero-text-area .asg-row2 .oh-l{overflow:hidden;margin-right:4vw}
+.hero-text-area .asg-row2 .oh-l img{height:10vw;width:auto;object-fit:contain;pointer-events:none;transform:translateY(100%);max-width:none}
+.hero-text-area .asg-row2 .oh-r{overflow:hidden}
+.hero-text-area .asg-row2 .oh-r img{height:10vw;width:auto;object-fit:contain;pointer-events:none;transform:translateY(100%);max-width:none}
 
-.scroll-prompts{
-  display:none;
-}
-@media(min-width:1024px){.scroll-prompts{display:block}}
+@media(max-width:1023px){.hero-system,.hero-video-container,.hero-text-area{display:none}}
+
+.scroll-prompts{position:absolute;bottom:1.5rem;left:0;right:0;display:none;justify-content:space-between;padding:0 2rem;pointer-events:none}
+@media(min-width:1024px){.scroll-prompts{display:flex}}
 .scroll-left,.scroll-right{overflow:hidden;position:absolute;bottom:1.5rem}
 .scroll-left{left:2rem}.scroll-right{right:2rem}
 .scroll-left .inner,.scroll-right .inner{display:flex;align-items:center;gap:.25rem;transform:translateY(100%)}
@@ -447,30 +426,20 @@ footer{background:#f5f5f5}
     </div>
   </section>
 
-  <!-- ═══ HERO DESKTOP VIDEO ═══ -->
-  <section class="hero-video-desktop">
-    <div class="video-preview" id="videoPreview">
-      <div class="video-inner">
+  <!-- ═══ HERO DESKTOP — SCROLL-EXPAND ═══ -->
+  <div class="hero-system" id="heroSystem">
+    <div class="hero-video-container" id="heroVideoContainer">
+      <div class="hero-video-wrapper" id="heroVideoWrapper">
         <video id="showreelVideo" src="" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Crect fill='%231a1a1a' width='800' height='450'/%3E%3Ctext fill='%23555' font-family='monospace' font-size='14' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EShowreel%3C/text%3E%3C/svg%3E" muted autoplay loop playsinline></video>
+        <button class="mute-btn" id="muteBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg></button>
       </div>
-      <button class="mute-btn" id="muteBtn" aria-label="Toggle sound">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
-      </button>
     </div>
-  </section>
-
-  <!-- ═══ HERO DESKTOP TEXT ═══ -->
-  <section class="hero-text-desktop" style="position:relative;pointer-events:none">
-    <div class="asg-line1" style="position:absolute;bottom:20vh;left:2rem;right:2rem">
-      <div class="inner" id="dAsg"><p>A</p><p class="mid" id="dAsgMid">Seriously</p><p>Good</p></div>
+    <div class="hero-text-area">
+      <div class="asg-row1"><div class="inner" id="dAsg"><p>A</p><p class="mid" id="dAsgMid">Seriously</p><p>Good</p></div></div>
+      <div class="asg-row2"><div class="oh-l"><img id="dImg1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='120'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='100' x='0' y='100'%3EMotion%3C/text%3E%3C/svg%3E" alt="Motion" style="width:100%;height:auto;max-width:none"></div><div class="oh-r"><img id="dImg2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='120'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='100' x='0' y='100'%3EStudio%3C/text%3E%3C/svg%3E" alt="Studio" style="width:100%;height:auto;max-width:none"></div></div>
     </div>
-    <div class="asg-line2" style="position:absolute;bottom:12vh;left:2rem;right:2rem">
-      <div class="oh-l"><img id="dImg1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='120'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='100' x='0' y='100'%3EMotion%3C/text%3E%3C/svg%3E" alt="Motion" style="width:100%;height:auto;max-width:none"></div>
-      <div class="oh-r"><img id="dImg2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='120'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='100' x='0' y='100'%3EStudio%3C/text%3E%3C/svg%3E" alt="Studio" style="width:100%;height:auto;max-width:none"></div>
-    </div>
-    <div class="scroll-left" style="bottom:1.5rem"><div class="inner" id="scrL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg><p>Scroll for</p></div></div>
-    <div class="scroll-right" style="bottom:1.5rem"><div class="inner" id="scrR"><p>cool sh*t</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg></div></div>
-  </section>
+    <div class="scroll-prompts"><div class="scroll-left"><div class="inner" id="scrL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg><p>Scroll for</p></div></div><div class="scroll-right"><div class="inner" id="scrR"><p>cool sh*t</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg></div></div></div>
+  </div>
 
   <!-- ═══ ABOUT ═══ -->
   <section class="about-section" id="about">
@@ -630,8 +599,31 @@ function startAll(){
   tl.to(bn,{opacity:1,y:0,scale:1,duration:.7,ease:'power3.out'},'<+.2');
   if(window.innerWidth>=768)tl.to(bn,{xPercent:-50,y:0,scale:1,duration:.7,ease:'power3.out'},'<');
 
-  // Video preview clip-path reveal
-  tl.to('#videoPreview',{clipPath:'inset(0 0 0% 0)',duration:1.1,ease:'power3.inOut'},'<+.1');
+  // ── SCROLL-DRIVEN VIDEO EXPANSION ──
+  const wrapper=document.getElementById('heroVideoWrapper');
+  const container=document.getElementById('heroVideoContainer');
+  const system=document.getElementById('heroSystem');
+  if(wrapper&&container&&system){
+    gsap.set(wrapper,{width:'85vw',borderRadius:'1.5rem'});
+    gsap.set(container,{paddingTop:'8vh'});
+    gsap.to(wrapper,{width:'100vw',borderRadius:'0rem',scrollTrigger:{trigger:system,start:'top top',end:'bottom bottom',scrub:1}});
+    gsap.to(container,{paddingTop:'0vh',scrollTrigger:{trigger:system,start:'top top',end:'bottom bottom',scrub:1}});
+  }
+
+  // ── MOUSE-REACTIVE VIDEO PAN ──
+  const sv=document.getElementById('showreelVideo');
+  if(sv&&wrapper&&system){
+    let panTarget=50,panCurrent=50,panEnabled=true;
+    wrapper.addEventListener('mousemove',e=>{if(!panEnabled)return;const r=wrapper.getBoundingClientRect();panTarget=((e.clientX-r.left)/r.width)*100;});
+    wrapper.addEventListener('mouseleave',()=>{panTarget=50;});
+    ScrollTrigger.create({trigger:system,start:'top top',end:'bottom bottom',onUpdate:self=>{panEnabled=self.progress<0.8;}});
+    function animPan(){panCurrent+=(panTarget-panCurrent)*0.06;if(sv)sv.style.objectPosition=panCurrent+'% 50%';requestAnimationFrame(animPan);}
+    animPan();
+  }
+
+  // Mute toggle
+  const mb=document.getElementById('muteBtn');
+  if(mb){mb.addEventListener('click',e=>{e.stopPropagation();if(sv)sv.muted=!sv.muted;const s=mb.querySelector('svg');s.innerHTML=sv&&sv.muted?'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/>':'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>';});}
 
   // Mobile hero
   tl.to('#mAsg',{y:'0%',duration:.7,ease:'power3.out'},'<+.2');
@@ -646,33 +638,6 @@ function startAll(){
   // Scroll prompts
   tl.to('#scrL .inner',{y:'0%',duration:.6,ease:'power3.out'},'<+.2');
   tl.to('#scrR .inner',{y:'0%',duration:.6,ease:'power3.out'},'<');
-
-  // Mute toggle
-  const sv=document.getElementById('showreelVideo'),mb=document.getElementById('muteBtn');
-  if(mb){mb.addEventListener('click',e=>{e.stopPropagation();if(sv)sv.muted=!sv.muted;const s=mb.querySelector('svg');s.innerHTML=sv.muted?'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/>':'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>';});}
-
-  // ── MOUSE-REACTIVE SHOWREEL ──
-  // The video pans horizontally based on mouse X position within the video area
-  const vp = document.getElementById('videoPreview');
-  if (sv && vp) {
-    let panTarget = 50, panCurrent = 50; // percentage
-
-    vp.addEventListener('mousemove', e => {
-      const rect = vp.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      panTarget = (x / rect.width) * 100;
-    });
-
-    vp.addEventListener('mouseleave', () => { panTarget = 50; });
-
-    // Use object-position to pan the video
-    function animatePan() {
-      panCurrent += (panTarget - panCurrent) * 0.06;
-      sv.style.objectPosition = panCurrent + '% 50%';
-      requestAnimationFrame(animatePan);
-    }
-    animatePan();
-  }
 
   // About mobile vid
   gsap.to('#aboutMobVid',{clipPath:'inset(0 0 0% 0)',scrollTrigger:{trigger:'#aboutMobVid',start:'top 85%',once:true},duration:.9,ease:'power3.inOut'});

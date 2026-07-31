@@ -167,6 +167,7 @@ main{background:#f5f5f5}
 .hero-mobile .imgs-row{display:flex;flex-direction:row;justify-content:space-between;align-items:center;gap:.5rem}
 .hero-mobile .imgs-row .oh{overflow:hidden}
 .hero-mobile .imgs-row .oh .inner{transform:translateY(100%)}
+.hero-big-word-mob{font-size:clamp(2rem,10vw,5rem);font-weight:700;letter-spacing:-.05em;line-height:.85;color:#171717;display:block}
 .hero-mobile .imgs-row .oh .inner img{height:15vw;pointer-events:none}
 
 /* ═══ HERO DESKTOP ═══ */
@@ -178,16 +179,15 @@ main{background:#f5f5f5}
 .hero-desktop .mute-btn{position:absolute;bottom:2rem;right:2rem;z-index:10;width:clamp(40px,4vw,60px);height:clamp(40px,4vw,60px);border-radius:50%;background:rgba(245,245,245,.5);backdrop-filter:blur(40px);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(12px) scale(.8);transition:all .3s cubic-bezier(.16,1,.3,1);cursor:pointer}
 .hero-desktop .video-preview:hover .mute-btn{opacity:1;transform:translateY(0) scale(1)}
 
-.hero-text-overlay{text-transform:uppercase;font-weight:600;pointer-events:none;z-index:5;padding-bottom:2rem}
+.hero-text-overlay{text-transform:uppercase;font-weight:600;pointer-events:none;z-index:5;margin-bottom:3rem}
 .hero-text-overlay .htd-asg-row1{overflow:hidden;margin-bottom:.25rem;position:relative;width:100%}
 .hero-text-overlay .htd-asg-row1 .inner{display:flex;justify-content:space-between;width:100%;transform:translateY(100%)}
 .hero-text-overlay .htd-asg-row1 .inner p{font-size:clamp(14px,1.2vw,20px)}
 .hero-text-overlay .htd-asg-row1 .inner p.mid{position:absolute;left:50%;transform:translate(-50%,100%)}
-.hero-text-overlay .htd-asg-row2{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
-.hero-text-overlay .htd-asg-row2 .oh-l{overflow:hidden;margin-right:4vw}
-.hero-text-overlay .htd-asg-row2 .oh-l img{width:clamp(280px,50vw,700px);height:auto;pointer-events:none;transform:translateY(100%);max-width:none}
+.hero-big-word{font-size:clamp(3rem,10vw,10rem);font-weight:700;letter-spacing:-.05em;line-height:.85;display:block;transform:translateY(100%);color:#171717}
+.hero-text-overlay .htd-asg-row2{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:.5rem}
+.hero-text-overlay .htd-asg-row2 .oh-l{overflow:hidden;margin-right:2vw}
 .hero-text-overlay .htd-asg-row2 .oh-r{overflow:hidden}
-.hero-text-overlay .htd-asg-row2 .oh-r img{width:clamp(280px,50vw,700px);height:auto;pointer-events:none;transform:translateY(100%);max-width:none}
 
 .scroll-prompts{display:flex;justify-content:space-between;overflow:hidden;margin-top:1.5rem}
 .scroll-left,.scroll-right{overflow:hidden;display:inline-flex}
@@ -415,8 +415,8 @@ footer{background:#f5f5f5}
     <div class="asg-line"><div class="inner" id="mAsg"><p>A</p><p>Seriously</p><p>Good</p></div></div>
     <div class="vid-wrap"><div class="vid" id="mVid"><video src="" poster="" muted autoplay loop playsinline></video></div></div>
     <div class="imgs-row">
-      <div class="oh"><div class="inner" id="mImg1"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='80'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='48' x='0' y='55'%3EMotion%3C/text%3E%3C/svg%3E" alt="Motion"></div></div>
-      <div class="oh"><div class="inner" id="mImg2"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='80'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='48' x='0' y='55'%3EStudio%3C/text%3E%3C/svg%3E" alt="Studio"></div></div>
+      <div class="oh"><div class="inner" id="mImg1"><span class="hero-big-word-mob">Motion</span></div></div>
+      <div class="oh"><div class="inner" id="mImg2"><span class="hero-big-word-mob">Studio</span></div></div>
     </div>
   </section>
 
@@ -433,7 +433,7 @@ footer{background:#f5f5f5}
     <!-- Text overlay — sits on top of the video -->
     <div class="hero-text-overlay">
       <div class="htd-asg-row1"><div class="inner" id="dAsg"><p>A</p><p class="mid" id="dAsgMid">Seriously</p><p>Good</p></div></div>
-      <div class="htd-asg-row2"><div class="oh-l"><img id="dImg1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='120'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='100' x='0' y='100'%3EMotion%3C/text%3E%3C/svg%3E" alt="Motion" style="width:100%;height:auto;max-width:none"></div><div class="oh-r"><img id="dImg2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='120'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='100' x='0' y='100'%3EStudio%3C/text%3E%3C/svg%3E" alt="Studio" style="width:100%;height:auto;max-width:none"></div></div>
+      <div class="htd-asg-row2"><div class="oh-l"><span class="hero-big-word" id="dImg1">Motion</span></div><div class="oh-r"><span class="hero-big-word" id="dImg2">Studio</span></div></div>
     </div>
 
     <!-- Scroll prompts -->

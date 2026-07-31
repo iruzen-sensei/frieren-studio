@@ -460,16 +460,16 @@ footer{background:#f5f5f5}
   </section>
 
   <!-- ═══ HERO DESKTOP TEXT ═══ -->
-  <section class="hero-text-desktop" style="position:relative">
-    <div class="asg-line1" style="position:absolute;top:-30vh;left:2rem;right:2rem">
+  <section class="hero-text-desktop" style="position:relative;pointer-events:none">
+    <div class="asg-line1" style="position:absolute;bottom:20vh;left:2rem;right:2rem">
       <div class="inner" id="dAsg"><p>A</p><p class="mid" id="dAsgMid">Seriously</p><p>Good</p></div>
     </div>
-    <div class="asg-line2" style="position:absolute;top:-22vh;left:2rem;right:2rem">
-      <div class="oh-l"><img id="dImg1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='80'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='56' x='0' y='55'%3EMotion%3C/text%3E%3C/svg%3E" alt="Motion"></div>
-      <div class="oh-r"><img id="dImg2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='80'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='56' x='0' y='55'%3EStudio%3C/text%3E%3C/svg%3E" alt="Studio"></div>
+    <div class="asg-line2" style="position:absolute;bottom:12vh;left:2rem;right:2rem">
+      <div class="oh-l"><img id="dImg1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='120'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='100' x='0' y='100'%3EMotion%3C/text%3E%3C/svg%3E" alt="Motion" style="width:100%;height:auto;max-width:none"></div>
+      <div class="oh-r"><img id="dImg2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='120'%3E%3Ctext fill='%23171717' font-family='Inter' font-weight='700' font-size='100' x='0' y='100'%3EStudio%3C/text%3E%3C/svg%3E" alt="Studio" style="width:100%;height:auto;max-width:none"></div>
     </div>
-    <div class="scroll-left"><div class="inner" id="scrL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg><p>Scroll for</p></div></div>
-    <div class="scroll-right"><div class="inner" id="scrR"><p>cool sh*t</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg></div></div>
+    <div class="scroll-left" style="bottom:1.5rem"><div class="inner" id="scrL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg><p>Scroll for</p></div></div>
+    <div class="scroll-right" style="bottom:1.5rem"><div class="inner" id="scrR"><p>cool sh*t</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg></div></div>
   </section>
 
   <!-- ═══ ABOUT ═══ -->
@@ -477,7 +477,7 @@ footer{background:#f5f5f5}
     <div class="about-left">
       <h4>Myself</h4>
       <div class="mob-vid" id="aboutMobVid"><video src="" poster="" muted autoplay loop playsinline></video></div>
-      <p class="big-text">Passionate about merging motion and meaning, we craft bold, fluid animation with purpose. With a focus on timing, and obsessive detail, we help bring brands to life for forward-thinking companies around the world.</p>
+      <p class="big-text" id="aboutText"></p>
     </div>
     <div class="about-right"><div class="sticky-vid" id="aboutStickyVid"><video src="" poster="" muted autoplay loop playsinline></video></div></div>
   </section>
@@ -651,18 +651,55 @@ function startAll(){
   const sv=document.getElementById('showreelVideo'),mb=document.getElementById('muteBtn');
   if(mb){mb.addEventListener('click',e=>{e.stopPropagation();if(sv)sv.muted=!sv.muted;const s=mb.querySelector('svg');s.innerHTML=sv.muted?'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/>':'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>';});}
 
+  // ── MOUSE-REACTIVE SHOWREEL ──
+  // The video pans horizontally based on mouse X position within the video area
+  const vp = document.getElementById('videoPreview');
+  if (sv && vp) {
+    let panTarget = 50, panCurrent = 50; // percentage
+
+    vp.addEventListener('mousemove', e => {
+      const rect = vp.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      panTarget = (x / rect.width) * 100;
+    });
+
+    vp.addEventListener('mouseleave', () => { panTarget = 50; });
+
+    // Use object-position to pan the video
+    function animatePan() {
+      panCurrent += (panTarget - panCurrent) * 0.06;
+      sv.style.objectPosition = panCurrent + '% 50%';
+      requestAnimationFrame(animatePan);
+    }
+    animatePan();
+  }
+
   // About mobile vid
   gsap.to('#aboutMobVid',{clipPath:'inset(0 0 0% 0)',scrollTrigger:{trigger:'#aboutMobVid',start:'top 85%',once:true},duration:.9,ease:'power3.inOut'});
 
-  // About text
-  const aboutWords=document.querySelectorAll('.about-left p.big-text');
-  if(aboutWords.length){
-    // Split into words for animation
-    aboutWords.forEach(p=>{
-      const words=p.textContent.split(' ');
-      p.innerHTML=words.map(w=>`<span style="display:inline-block;opacity:0;transform:translateY(40px)">${w}</span>`).join(' ');
-      const spans=p.querySelectorAll('span');
-      spans.forEach((s,i)=>{gsap.to(s,{opacity:1,y:0,duration:.5,ease:'power3.out',scrollTrigger:{trigger:p,start:'top 80%',once:true},delay:i*0.02});});
+  // 9. About text — staggered scatter animation (matching itsjay.us .word1/.word2/.word3 pattern)
+  const aboutP = document.getElementById('aboutText');
+  const aboutText = 'Passionate about merging motion and meaning, we craft bold, fluid animation with purpose. With a focus on timing and obsessive detail, we help bring brands to life for forward-thinking companies around the world.';
+  const aboutWords = aboutText.split(' ');
+  if (aboutP) {
+    // Build spans with alternating position classes
+    aboutP.innerHTML = aboutWords.map((w,i) => {
+      const cls = i % 3 === 0 ? 'w1' : i % 3 === 1 ? 'w2' : 'w3';
+      return `<span class="word ${cls}" style="display:inline-block;will-change:transform;opacity:0;transform:translateY(${i%2===0?'-30px':'30px'})">${w}</span>`;
+    }).join(' ');
+    
+    const spans = aboutP.querySelectorAll('span.word');
+    spans.forEach((s,i) => {
+      // Alternate directions: even index words come from left, odd from right
+      const dirX = i % 3 === 0 ? -20 : i % 3 === 1 ? 20 : -10;
+      gsap.set(s, { x: dirX, y: i % 2 === 0 ? -30 : 30, opacity: 0 });
+      gsap.to(s, {
+        x: 0, y: 0, opacity: 1,
+        duration: 0.55,
+        delay: i * 0.025,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: aboutP, start: 'top 80%', once: true }
+      });
     });
   }
 

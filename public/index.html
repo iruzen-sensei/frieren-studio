@@ -329,7 +329,7 @@ footer{background:#f5f5f5}
     </div>
   </section></div>
 
-  <div class="ls-wrap"><canvas id="textFlowCanvas" style="width:100%;height:500px;display:block;cursor:pointer"></canvas></div></div>
+  <div class="ls-wrap"><canvas id="textFlowCanvas" style="width:100%;display:block;cursor:pointer"></canvas></div>
 
   <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Blender</span></div><div class="tool"><span>Cinema 4D</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Rive</span></div><div class="tool"><span>DaVinci Resolve</span></div><div class="tool"><span>Houdini</span></div><div class="tool"><span>Unreal Engine</span></div><div class="tool"><span>Lottie</span></div><div class="tool"><span>GSAP</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
 </main>
@@ -417,50 +417,64 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 })();
 
 
-/* TEXT FLOW */
+/* TEXT FLOW — particles form text, scatter on hover */
 (function(){
 const C=document.getElementById('textFlowCanvas');if(!C)return;
 const X=C.getContext('2d');
-let pts=[],W=0,H=0,mx=-999,my=-999;
+let pts=[],W=0,H=0,mx=-999,my=-999,building=true;
 
 function build(){
+building=true;
 const dpr=Math.min(2,devicePixelRatio||1);
-const r=C.getBoundingClientRect();W=r.width;H=C.parentElement.offsetHeight||500;
-C.width=W*dpr;C.height=H*dpr;X.setTransform(dpr,0,0,dpr,0,0);
+const r=C.getBoundingClientRect();
+W=r.width;H=Math.max(400,W*.35);
+C.width=Math.floor(W*dpr);C.height=Math.floor(H*dpr);
+C.style.height=H+'px';
+X.setTransform(dpr,0,0,dpr,0,0);
 X.clearRect(0,0,W,H);
-// Use offscreen canvas for clean sampling
-const off=document.createElement('canvas');off.width=C.width;off.height=C.height;
-const ox=off.getContext('2d');ox.setTransform(dpr,0,0,dpr,0,0);
-const fs=Math.min(W/8,H/2.2);ox.font=`700 ${fs}px Inter,system-ui,sans-serif`;
+
+// Draw text on offscreen canvas
+const oc=document.createElement('canvas');
+oc.width=C.width;oc.height=C.height;
+const ox=oc.getContext('2d');ox.setTransform(dpr,0,0,dpr,0,0);
+const fs=Math.min(W/7,H/2);ox.font=`700 ${fs}px Inter,system-ui,sans-serif`;
 const lines=['MOTION','DESIGNER'];
-let all=[];
+const allPts=[];
+
 lines.forEach((line,li)=>{
 const m=ox.measureText(line);
-const x0=(W-m.width)/2,y0=H*.35+li*fs*1.1;
+const x0=Math.floor((W-m.width)/2);
+const y0=Math.floor(H*.35+li*fs*1.05);
 ox.fillStyle='#000';ox.fillText(line,x0,y0);
-const step=Math.max(2,Math.floor(fs/12));
-for(let col=0;col<m.width;col+=step){
-for(let row=-Math.floor(fs*.15);row<Math.floor(fs*.55);row+=step){
-try{const d=ox.getImageData((x0+col)*dpr,(y0+row)*dpr,1,1);if(d.data[3]>50)all.push({ox:x0+col,oy:y0+row,x:x0+col+(Math.random()-.5)*60,y:y0+row+(Math.random()-.5)*60,vx:0,vy:0,size:Math.random()*2.5+1.5})}catch(e){}
-}}
-off.width=0;//clear
+const step=Math.max(2,Math.floor(fs/10));
+for(let cx=0;cx<Math.floor(m.width);cx+=step){
+for(let ry=-Math.floor(fs*.2);ry<Math.floor(fs*.55);ry+=step){
+const px=Math.floor((x0+cx)*dpr);const py=Math.floor((y0+ry)*dpr);
+if(px>=0&&py>=0&&px<oc.width&&py<oc.height){
+try{const d=ox.getImageData(px,py,1,1);if(d.data[3]>60)allPts.push({ox:x0+cx,oy:y0+ry,x:x0+cx+(Math.random()-.5)*40,y:y0+ry+(Math.random()-.5)*40,vx:0,vy:0,size:Math.random()*2.5+1.5})}catch(e){}
+}}}
+ox.clearRect(0,0,W,H);
 });
-pts=all.length>600?all.filter((_,i)=>i%Math.ceil(all.length/600)<1):all;
+
+pts=allPts.length>700?allPts.filter((_,i)=>i%Math.ceil(allPts.length/700)<1):allPts;
+building=false;
 }
 
 function tick(){
 X.clearRect(0,0,W,H);
 pts.forEach(p=>{
 const dx=mx-p.x,dy=my-p.y,dist=Math.sqrt(dx*dx+dy*dy)+.01;
-if(mx>-998&&dist<160){const f=(1-dist/160)*.12;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
-p.vx+=(p.ox-p.x)*.018;p.vy+=(p.oy-p.y)*.018;p.vx*=.82;p.vy*=.82;p.x+=p.vx;p.y+=p.vy;
+if(mx>-998&&dist<140){const f=(1-dist/140)*.15;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
+p.vx+=(p.ox-p.x)*.015;p.vy+=(p.oy-p.y)*.015;p.vx*=.8;p.vy*=.8;p.x+=p.vx;p.y+=p.vy;
 const dd=Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2);
-X.fillStyle=`rgba(13,13,13,${.35+.65*Math.min(1,dd/25)})`;X.beginPath();X.arc(p.x,p.y,p.size,0,Math.PI*2);X.fill()});
+X.fillStyle=`rgba(13,13,13,${.3+.7*Math.min(1,dd/20)})`;
+X.beginPath();X.arc(p.x,p.y,p.size,0,Math.PI*2);X.fill();
+});
 requestAnimationFrame(tick);
 }
 
-setTimeout(build,200);tick();
-window.addEventListener('resize',()=>setTimeout(build,300));
+setTimeout(build,300);tick();
+window.addEventListener('resize',()=>setTimeout(build,400));
 C.addEventListener('mousemove',e=>{const r=C.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
 C.addEventListener('mouseleave',()=>{mx=-999});
 })();

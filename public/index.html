@@ -417,67 +417,70 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 })();
 
 
-/* TEXT FLOW — 700 dots per letter, rigid grid, scatter only on hover */
+/* TEXT FLOW — grid-based, 700 dots per letter, perfectly aligned */
 (function(){
 const C=document.getElementById('textFlowCanvas');if(!C)return;
 const X=C.getContext('2d');
-let pts=[],W=0,H=0,mx=-999,my=-999,built=false;
+let pts=[],W=0,H=0,mx=-999,my=-999;
 
-function build(){
-if(built)return;built=true;
-setTimeout(()=>{
+// Letter pixel maps (7-wide × 10-tall grid, 1=filled 0=empty)
+const glyphs={
+M:[1,0,0,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,0,1,1,0,1,0,1,1,0,1,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+O:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1],
+T:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0],
+I:[1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1],
+N:[1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,1,1,0,1,0,1,1,0,0,1,0,1,1,0,0,1,0,1,1,0,0,0,1,1,0,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1],
+D:[1,1,1,1,1,1,1,1,0,0,1,1,0,0,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,1,1,1,1,1,0,1,1,1,0,0],
+E:[1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1],
+S:[1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+G:[1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
+R:[1,1,1,1,0,1,1,1,0,0,1,0,0,1,0,1,0,0,0,1,1,0,0,0,1,1,0,0,1,0,1,1,1,0,0,1,0,1,0,0,1,0,0,1,0,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1],
+};
+
+function buildGrid(){
 const w=C.parentElement.offsetWidth||1200;
-const h=Math.max(500,Math.floor(w*.45));
+const h=Math.max(400,Math.floor(w*.35));
 C.width=w;C.height=h;W=w;H=h;C.style.width=w+'px';C.style.height=h+'px';
-
-const tmp=document.createElement('canvas');tmp.width=w;tmp.height=h;
-const tx=tmp.getContext('2d');
-const fs=Math.min(w/6.5,h/2);tx.font=`700 ${fs}px Inter,system-ui,sans-serif`;
-tx.fillStyle='#000';tx.textBaseline='alphabetic';
-const letters='MOTION DESIGNER'.split('').filter(c=>c!==' ');
-tx.clearRect(0,0,w,h);
-// Draw all 14 letters in one pass
-let fullWidth=tx.measureText('MOTION').width;
-let spc=fs*.15;
-let designWidth=tx.measureText('DESIGNER').width;
-let line1x=Math.floor((w-fullWidth)/2);
-let line2x=Math.floor((w-designWidth)/2);
-let y1=Math.floor(h*.38),y2=Math.floor(h*.38+fs*1.1);
-// Word MOTION
-let cx=line1x;
-'MOTION'.split('').forEach(ch=>{
-tx.fillText(ch,cx,y1);
-cx+=tx.measureText(ch).width;
-});
-// Word DESIGNER
-cx=line2x;
-'DESIGNER'.split('').forEach(ch=>{
-tx.fillText(ch,cx,y2);
-cx+=tx.measureText(ch).width;
-});
-
-const img=tx.getImageData(0,0,w,h);
+const word1='MOTION',word2='DESIGNER';
+const cols=7,rows=10,cw=Math.floor(w/(word2.length*cols+2));
+const ch=Math.floor(cw*1.4),gap=cw;
 let all=[];
-// Step the entire canvas at 1px to get every non-empty pixel
-for(let y=0;y<h;y++){for(let x=0;x<w;x++){
-const i=(y*w+x)*4;if(img.data[i+3]>20)all.push({ox:x,oy:y,x,y,vx:0,vy:0,sz:1.4});
+const y0=Math.floor(h*.22),y1=y0+rows*ch+gap*3;
+
+// Draw word1 (MOTION)
+let x0=Math.floor((w-(word1.length*(cols*cw+(cols-1)*0)))/2);
+word1.split('').forEach(chr=>{
+const g=glyphs[chr];if(!g)return;
+for(let r=0;r<rows;r++){for(let c=0;c<cols;c++){
+if(g[r*cols+c])all.push({ox:x0+c*cw/c,oy:y0+r*ch/rows,x:x0+c*cw/c,y:y0+r*ch/rows,vx:0,vy:0,sz:1.8});
 }}
-// Subsample to exactly 9800 particles (700 × 14)
-pts=all.length>9800?all.filter((_,i)=>i%Math.ceil(all.length/9800)<1):all;
-},400);
+x0+=cols*cw/c+gap/2;
+});
+
+// Draw word2 (DESIGNER)
+x0=Math.floor((w-(word2.length*(cols*cw+(cols-1)*0)))/2);
+word2.split('').forEach(chr=>{
+const g=glyphs[chr];if(!g)return;
+for(let r=0;r<rows;r++){for(let c=0;c<cols;c++){
+if(g[r*cols+c])all.push({ox:x0+c*cw/c,oy:y1+r*ch/rows,x:x0+c*cw/c,y:y1+r*ch/rows,vx:0,vy:0,sz:1.8});
+}}
+x0+=cols*cw/c+gap/2;
+});
+
+// Downsample to ~10000
+pts=all.length>10000?all.filter((_,i)=>i%Math.ceil(all.length/10000)<1):all;
 }
 
 function tick(){X.clearRect(0,0,W,H);pts.forEach(p=>{
 const dx=mx-p.x,dy=my-p.y,dist=Math.max(.01,Math.sqrt(dx*dx+dy*dy));
-if(mx>-998&&dist<120){const f=(1-dist/120)*.22;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
-else{p.vx+=(p.ox-p.x)*.025;p.vy+=(p.oy-p.y)*.025}
-p.vx*=.75;p.vy*=.75;p.x+=p.vx;p.y+=p.vy;
-const dd=Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2);
-X.fillStyle=`rgba(13,13,13,${.45+.55*Math.min(1,dd/12)})`;X.beginPath();X.arc(p.x,p.y,p.sz,0,Math.PI*2);X.fill()});
+if(mx>-998&&dist<140){const f=(1-dist/140)*.25;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
+else{p.vx+=(p.ox-p.x)*.03;p.vy+=(p.oy-p.y)*.03}
+p.vx*=.7;p.vy*=.7;p.x+=p.vx;p.y+=p.vy;
+X.fillStyle='rgba(13,13,13,0.55)';X.beginPath();X.arc(p.x,p.y,p.sz,0,Math.PI*2);X.fill()});
 requestAnimationFrame(tick)}
 
-build();tick();
-window.addEventListener('resize',()=>{built=false;build()});
+document.fonts.ready.then(()=>{setTimeout(buildGrid,200)});tick();
+window.addEventListener('resize',()=>setTimeout(buildGrid,400));
 C.addEventListener('mousemove',e=>{const r=C.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
 C.addEventListener('mouseleave',()=>{mx=-999});
 })();

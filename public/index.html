@@ -25,7 +25,7 @@ window.FRIEREN_CONFIG = {
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;border:0}
 html{overflow-x:hidden;-webkit-text-size-adjust:100%}
-body{font-family:'Inter',system-ui,sans-serif;background:#171717;color:#171717;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{cursor:none;font-family:'Inter',system-ui,sans-serif;background:#171717;color:#171717;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,svg,video{display:block;max-width:100%;vertical-align:middle}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
@@ -462,6 +462,91 @@ function UP(tm){if(!alive)return;let dt=LT?Math.min(tm-LT,200):0;LT=tm;if(PC){DA
 let alive=1;RS();window.addEventListener('resize',()=>RS());requestAnimationFrame(UP)})();
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>ScrollTrigger.refresh(),200)});
+</script>
+<!-- 3D CURSOR PET -->
+<div id="cursorDot" style="position:fixed;width:8px;height:8px;background:#171717;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .3s,height .3s"></div>
+<canvas id="petCanvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:9998"></canvas>
+<!-- THREE.JS CURSOR PET -->
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const canvas=document.getElementById('petCanvas'),dot=document.getElementById('cursorDot');
+const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+renderer.setPixelRatio(Math.min(2,window.devicePixelRatio));
+renderer.setSize(window.innerWidth,window.innerHeight);
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,100);
+camera.position.z=8;
+
+// Lighting
+scene.add(new THREE.AmbientLight(0xffffff,.6));
+const dl=new THREE.DirectionalLight(0xffffff,1.2);dl.position.set(5,5,5);scene.add(dl);
+const dl2=new THREE.DirectionalLight(0xffffff,.4);dl2.position.set(-5,-5,-5);scene.add(dl2);
+
+// Pet geometry — rounded blob
+const geo=new THREE.SphereGeometry(.35,64,64);
+// Slightly squish it for character
+geo.scale(1,.85,1);
+const mat=new THREE.MeshStandardMaterial({color:0xff6b2b,roughness:.3,metalness:.1});
+const pet=new THREE.Mesh(geo,mat);scene.add(pet);
+
+// Eyes
+const eyeGeo=new THREE.SphereGeometry(.08,32,32);
+const eyeMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.1});
+const leftEye=new THREE.Mesh(eyeGeo,eyeMat);leftEye.position.set(-.12,.08,.3);pet.add(leftEye);
+const rightEye=new THREE.Mesh(eyeGeo,eyeMat);rightEye.position.set(.12,.08,.3);pet.add(rightEye);
+const pupilGeo=new THREE.SphereGeometry(.05,32,32);
+const pupilMat=new THREE.MeshStandardMaterial({color:0x0d0d0d,roughness:.1});
+const leftPupil=new THREE.Mesh(pupilGeo,pupilMat);leftPupil.position.set(0,0,.06);leftEye.add(leftPupil);
+const rightPupil=new THREE.Mesh(pupilGeo,pupilMat);rightPupil.position.set(0,0,.06);rightEye.add(rightPupil);
+
+// Mouse state
+let mx=innerWidth/2,my=innerHeight/2,px=innerWidth/2,py=innerHeight/2;
+let vx=0,vy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+
+function tick(t){
+requestAnimationFrame(tick);
+const dt=Math.min(.05,t*.001);
+
+// Spring physics — pet follows cursor
+const pullX=(mx-px)*3;const pullY=(my-py)*3;
+vx+=(pullX-vx)*8*dt;vy+=(pullY-vy)*8*dt;
+px+=vx*dt;py+=vy*dt;
+
+// Convert screen to 3D
+const sx=(px/innerWidth)*2-1;
+const sy=-(py/innerHeight)*2+1;
+pet.position.x=sx*4;
+pet.position.y=sy*3;
+
+// Breathing
+const breath=1+Math.sin(t*.003)*.04;
+pet.scale.setScalar(breath);
+
+// Wobble from velocity
+pet.rotation.y=vx*.02;
+pet.rotation.x=-vy*.015;
+
+// Look toward cursor slightly
+leftPupil.position.set(vx*.003,-vy*.003,.06);
+rightPupil.position.set(vx*.003,-vy*.003,.06);
+
+// Dot hover effect
+const a=document.querySelectorAll('a,button,.work-card,.svc-row');let hovered=false;
+a.forEach(el=>{const r=el.getBoundingClientRect();if(mx>r.left&&mx<r.right&&my>r.top&&my<r.bottom)hovered=true});
+dot.style.width=hovered?'32px':'8px';dot.style.height=hovered?'32px':'8px';
+dot.style.background=hovered?'transparent':'#171717';
+dot.style.border=hovered?'2px solid #171717':'none';
+dot.style.mixBlendMode=hovered?'normal':'difference';
+
+renderer.render(scene,camera);
+}
+requestAnimationFrame(tick);
+window.addEventListener('resize',()=>{
+renderer.setSize(window.innerWidth,window.innerHeight);
+camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+});
 </script>
 </body>
 </html>

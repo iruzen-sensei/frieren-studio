@@ -443,7 +443,7 @@ C.width=w;C.height=h;W=w;H=h;C.style.width=w+'px';C.style.height=h+'px';
 
 const cols=10,rows=7; // 700 dots per letter = 10×7×10 dense grid
 const words=['MOTION','DESIGNER'];
-const dotW=Math.floor(w/(words[1].length*cols+3.5));
+const dotW=Math.floor(w/(words[1].length*cols+1.5));
 const dotH=Math.floor(h/(rows*2+3)),gap=dotW*2;
 let all=[];
 
@@ -457,13 +457,12 @@ const lines=g.split(' ');
 lines.forEach((line,r)=>{
 for(let c=0;c<cols;c++){
 if(line[c]==='1'){
-const cx=x0+c*(dotW/cols),cy=y0+r*(dotH/rows),dw=(dotW/cols)*.35,dh=(dotH/rows)*.35;
-// 5 dots: center + 4 corners
-all.push({ox:cx,oy:cy,x:cx,y:cy,vx:0,vy:0,sz:1.5});
-all.push({ox:cx-dw,oy:cy-dh,x:cx-dw,y:cy-dh,vx:0,vy:0,sz:1.2});
-all.push({ox:cx+dw,oy:cy-dh,x:cx+dw,y:cy-dh,vx:0,vy:0,sz:1.2});
-all.push({ox:cx-dw,oy:cy+dh,x:cx-dw,y:cy+dh,vx:0,vy:0,sz:1.2});
-all.push({ox:cx+dw,oy:cy+dh,x:cx+dw,y:cy+dh,vx:0,vy:0,sz:1.2});
+const cx=x0+c*(dotW/cols),cy=y0+r*(dotH/rows),dw=(dotW/cols)*.45,dh=(dotH/rows)*.45;
+// 9 dots: center + 8 surrounding in a ring
+for(let sr=-1;sr<=1;sr++){
+for(let sc=-1;sc<=1;sc++){
+all.push({ox:cx+sc*dw,oy:cy+sr*dh,x:cx+sc*dw,y:cy+sr*dh,vx:0,vy:0,sz:sr===0&&sc===0?2.2:1.8});
+}}
 }
 }
 });
@@ -472,7 +471,7 @@ x0+=cols*dotW/cols+gap;
 });
 
 // Keep ~9800 dots max
-pts=all.length>10500?all.filter((_,i)=>i%Math.ceil(all.length/10500)<1):all;
+pts=all.length>14000?all.filter((_,i)=>i%Math.ceil(all.length/14000)<1):all;
 }
 
 function tick(){X.clearRect(0,0,W,H);pts.forEach(p=>{

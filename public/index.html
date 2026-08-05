@@ -437,16 +437,16 @@ lines.forEach((line,li)=>{
 const m=X.measureText(line);
 const x0=Math.floor((w-m.width)/2),y0=Math.floor(h*.4+li*fs*1.05);
 X.fillText(line,x0,y0);
-const step=Math.ceil(fs/10);
+const step=Math.max(1,Math.ceil(fs/20));
 for(let col=0;col<Math.floor(m.width);col+=step){
-for(let row=-Math.floor(fs*.2);row<Math.floor(fs*.58);row+=step){
+for(let row=-Math.floor(fs*.25);row<Math.floor(fs*.68);row+=step){
 const sx=x0+col,sy=y0+row;
 if(sx>=0&&sy>=0&&sx<w&&sy<h){
-try{const d=X.getImageData(sx,sy,1,1);if(d&&d.data&&d.data[3]>60)pts.push({ox:sx,oy:sy,x:sx+(Math.random()-.5)*40,y:sy+(Math.random()-.5)*40,vx:0,vy:0,sz:Math.random()*3+1})}catch(e){}
+try{const d=X.getImageData(sx,sy,1,1);if(d&&d.data&&d.data[3]>30)pts.push({ox:sx,oy:sy,x:sx+(Math.random()-.5)*40,y:sy+(Math.random()-.5)*40,vx:0,vy:0,sz:Math.random()*3+1})}catch(e){}
 }}}
 X.clearRect(0,0,w,h);
 });
-if(pts.length>700)pts=pts.filter((_,i)=>i%Math.ceil(pts.length/700)<1);
+if(pts.length>840)pts=pts.filter((_,i)=>i%Math.ceil(pts.length/840)<1);
 }
 
 function tick(){X.clearRect(0,0,W,H);pts.forEach(p=>{

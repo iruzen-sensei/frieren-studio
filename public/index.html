@@ -208,14 +208,14 @@ main{background:#f5f5f5}
 .scroll-carousel-spacer{height:180vh}
 
 /* TETRIS + TEXT SECTION */
-.tetris-section{padding:.5rem}
-.tetris-box{background:#171717;border-radius:1rem;overflow:hidden;padding:3rem 2rem;display:flex;flex-direction:column;gap:3rem}
-@media(min-width:768px){.tetris-box{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:4rem 2.5rem}}
-@media(min-width:1024px){.tetris-box{border-radius:1.25rem;padding:5rem 3rem}}
-.tetris-box canvas{width:100%;height:clamp(240px,40vw,360px);display:block;border-radius:.75rem}
-.tetris-box .tetris-text h3{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:#f5f5f5}
-.tetris-box .tetris-text h3 em{font-family:'Inter',serif;font-style:italic;font-weight:400}
-.tetris-box .tetris-text .sub{font-size:.85rem;color:#a1a1a1;margin-top:1rem;line-height:1.7;max-width:90%}
+.tetris-section{padding:.5rem 1rem;display:flex;flex-direction:column;gap:2rem}
+@media(min-width:768px){.tetris-section{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:3rem 4rem}}
+.tetris-canvas-box{background:#000;border-radius:1rem;overflow:hidden;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center}
+@media(min-width:1024px){.tetris-canvas-box{border-radius:1.25rem}}
+.tetris-canvas-box canvas{width:100%;height:100%;display:block}
+.tetris-text-side h3{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:#171717}
+.tetris-text-side h3 em{font-family:'Inter',serif;font-style:italic;font-weight:400}
+.tetris-text-side .sub{font-size:.85rem;color:#6b6b6b;margin-top:1rem;line-height:1.7;max-width:90%}
 
 /* LETTER SCROLL */
 .ls-wrap{padding:6rem 1rem}
@@ -336,12 +336,12 @@ footer{background:#f5f5f5}
 
   <!-- TETRIS + TEXT -->
   <div class="tetris-section">
-    <div class="tetris-box">
+    <div class="tetris-canvas-box">
       <canvas id="tetrisCanvas"></canvas>
-      <div class="tetris-text">
-        <h3>We like to <em>deliver</em><br>while solving your problems.</h3>
-        <p class="sub">Every project is a puzzle we're excited to crack. Clean code, bold motion, sharp design — we build with intention and ship with confidence.</p>
-      </div>
+    </div>
+    <div class="tetris-text-side">
+      <h3>We like to <em>deliver</em><br>while solving your problems.</h3>
+      <p class="sub">Every project is a puzzle we're excited to crack. Clean code, bold motion, sharp design — we build with intention and ship with confidence.</p>
     </div>
   </div>
 

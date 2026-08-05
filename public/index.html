@@ -207,6 +207,16 @@ main{background:#f5f5f5}
 .sc-card .card-tag .tag-sub{font-size:.6rem;color:rgba(255,255,255,.55);margin-top:.1rem}
 .scroll-carousel-spacer{height:180vh}
 
+/* TETRIS + TEXT SECTION */
+.tetris-section{padding:.5rem}
+.tetris-box{background:#171717;border-radius:1rem;overflow:hidden;padding:3rem 2rem;display:flex;flex-direction:column;gap:3rem}
+@media(min-width:768px){.tetris-box{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:4rem 2.5rem}}
+@media(min-width:1024px){.tetris-box{border-radius:1.25rem;padding:5rem 3rem}}
+.tetris-box canvas{width:100%;height:clamp(240px,40vw,360px);display:block;border-radius:.75rem}
+.tetris-box .tetris-text h3{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:#f5f5f5}
+.tetris-box .tetris-text h3 em{font-family:'Inter',serif;font-style:italic;font-weight:400}
+.tetris-box .tetris-text .sub{font-size:.85rem;color:#a1a1a1;margin-top:1rem;line-height:1.7;max-width:90%}
+
 /* LETTER SCROLL */
 .ls-wrap{padding:6rem 1rem}
 @media(min-width:1024px){.ls-wrap{padding:6rem 2rem}}
@@ -324,6 +334,17 @@ footer{background:#f5f5f5}
     </div>
   </section></div>
 
+  <!-- TETRIS + TEXT -->
+  <div class="tetris-section">
+    <div class="tetris-box">
+      <canvas id="tetrisCanvas"></canvas>
+      <div class="tetris-text">
+        <h3>We like to <em>deliver</em><br>while solving your problems.</h3>
+        <p class="sub">Every project is a puzzle we're excited to crack. Clean code, bold motion, sharp design — we build with intention and ship with confidence.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="ls-wrap"><ul class="letter-scroll" id="letterScroll"><li><span class="let"><span>M</span><span class="below">M</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>T</span><span class="below">T</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>N</span><span class="below">N</span></span></li><li><span class="let"><span>D</span><span class="below">D</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>S</span><span class="below">S</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>G</span><span class="below">G</span></span><span class="let"><span>N</span><span class="below">N</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>R</span><span class="below">R</span></span></li></ul></div>
 
   <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Blender</span></div><div class="tool"><span>Cinema 4D</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Rive</span></div><div class="tool"><span>DaVinci Resolve</span></div><div class="tool"><span>Houdini</span></div><div class="tool"><span>Unreal Engine</span></div><div class="tool"><span>Lottie</span></div><div class="tool"><span>GSAP</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
@@ -412,6 +433,9 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 })();
 
 /* ── TETRIS ANIMATION ── */
+
+/* ── TETRIS ── */
+(function(){const canvas=document.getElementById('tetrisCanvas');if(!canvas)return;const ctx=canvas.getContext('2d');if(!ctx)return;const SHAPES=[[[0,1],[1,1],[2,1],[3,1]],[[0,0],[0,1],[1,1],[2,1]],[[2,0],[0,1],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[0,1],[1,1]]];const BOX=['#F9731A','#FFFFFF','#FFB800','#22D3EE','#A78BFA','#F43F5E'];let cols,rows,cw,ch,g=1,px,py,grid,piece,lt=0,da=0,alive=true;function rd(){return Math.random()}function rot(s,t){let cells=SHAPES[s].map(([c,r])=>[c,r]);for(let i=0;i<t;i++){let mr=0;for(const[,r]of cells)mr=Math.max(mr,r);cells=cells.map(([c,r])=>[mr-r,c])}let mc=1/0,mr=1/0;for(const[c,r]of cells){mc=Math.min(mc,c);mr=Math.min(mr,r)}return cells.map(([c,r])=>[c-mc,r-mr])}function at(c,r){return grid[r*cols+c]}function fits(cells,col,row){for(const[c,r]of cells){const gc=col+c,gr=row+r;if(gc<0||gc>=cols||gr>=rows)return!1;if(gr>=0&&at(gc,gr)!==-1)return!1}return!0}function land(cells,col){if(!fits(cells,col,0))return-1;let r=0;while(fits(cells,col,r+1))r++;return r}function scr(cells,col,row){const t=grid.slice();for(const[c,r]of cells){const gr=row+r;if(gr>=0)t[gr*cols+(col+c)]=1}let ln=0,ag=0,hl=0,bm=0,pv=-1;for(let r=0;r<rows;r++){let fl=!0;for(let c=0;c<cols;c++){if(t[r*cols+c]===-1){fl=!1;break}}if(fl)ln++}for(let c=0;c<cols;c++){let tp=rows;for(let r=0;r<rows;r++){if(t[r*cols+c]!==-1){tp=r;break}}let h=rows-tp;ag+=h;for(let r=tp+1;r<rows;r++){if(t[r*cols+c]===-1)hl++}if(pv>=0)bm+=Math.abs(tp-pv);pv=tp}return ln*4-ag*.5-hl*3.5-bm*.3}function spawn(){const si=Math.floor(rd()*SHAPES.length);let bc=null,bcl=0,brr=0,bs=-1/0;for(let t=0;t<4;t++){const cells=rot(si,t);let w=0;for(const[c]of cells)w=Math.max(w,c);for(let col=0;col+w<cols;col++){const r=land(cells,col);if(r<0)continue;const s=scr(cells,col,r);if(s>bs){bs=s;bc=cells;bcl=col;brr=r}}}if(!bc){grid=new Array(cols*rows).fill(-1);spawn();return}let sr=0,wid=0;for(const[c,r]of bc){sr=Math.max(sr,r);wid=Math.max(wid,c)}sr=-1-sr;const mc=cols-1-wid;const sc=Math.min(mc,Math.max(0,bcl+Math.round((rd()*2-1)*.3*cols)));piece={shape:si,cells:bc,color:Math.floor(rd()*BOX.length),col:sc,row:sr,sCol:sc,sRow:sr,tCol:bcl,tRow:brr}}function lock(){if(!piece)return;for(const[c,r]of piece.cells){const gr=piece.row+r,gc=piece.col+c;if(gr>=0&&gr<rows&&gc>=0&&gc<cols)grid[gr*cols+gc]=piece.color}const full=[];for(let r=0;r<rows;r++){let solid=!0;for(let c=0;c<cols;c++){if(grid[r*cols+c]===-1){solid=!1;break}}if(solid)full.push(r)}if(full.length){setTimeout(()=>{const gone=new Set(full);const nx=new Array(cols*rows).fill(-1);let w=rows-1;for(let r=rows-1;r>=0;r--){if(gone.has(r))continue;for(let c=0;c<cols;c++){nx[w*cols+c]=grid[r*cols+c]}w--}grid=nx;spawn()},200)}else{spawn()}piece=null}function resize(){const dpr=Math.min(2,window.devicePixelRatio||1);const w=Math.max(1,Math.round(canvas.clientWidth));const h=Math.max(1,Math.round(canvas.clientHeight));canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);cols=Math.max(4,Math.floor((w+g)/(26+g)));rows=Math.max(8,Math.floor((h+g)/(26+g)));cw=Math.max(1,(w-g*(cols-1))/cols);ch=Math.max(1,(h-g*(rows-1))/rows);px=cw+g;py=ch+g;grid=new Array(cols*rows).fill(-1);piece=null;spawn()}function draw(){ctx.fillStyle='rgba(255,255,255,0.03)';ctx.fillRect(0,0,canvas.width,canvas.height);for(let r=0;r<rows;r++){for(let c=0;c<cols;c++){const x=c*px,y=r*py,v=at(c,r);ctx.fillStyle=v!==-1?BOX[v%BOX.length]:'rgba(255,255,255,0.025)';ctx.beginPath();ctx.rect(x+1,y+1,cw-2,ch-2);ctx.fill()}}if(piece){ctx.fillStyle=BOX[piece.color];for(const[c,r]of piece.cells){const gr=piece.row+r;if(gr<0)continue;ctx.beginPath();ctx.rect((piece.col+c)*px+1,gr*py+1,cw-2,ch-2);ctx.fill()}}}function upd(time){if(!alive)return;const dt=lt?Math.min(time-lt,200):0;lt=time;if(piece){da+=dt;const dm=Math.max(50,350-(Math.min(10,rows/2))*25);while(da>=dm&&piece){da-=dm;if(piece.row<piece.tRow){piece.row++;const sp=piece.tRow-piece.sRow;piece.col=Math.round(piece.sCol+(piece.tCol-piece.sCol)*(sp>0?(piece.row-piece.sRow)/sp:1))}else{piece.col=piece.tCol;lock()}}}else{spawn()}draw();requestAnimationFrame(upd)}resize();window.addEventListener('resize',()=>{resize()});requestAnimationFrame(upd)})();
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>ScrollTrigger.refresh(),200)});
 </script>

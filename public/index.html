@@ -181,34 +181,32 @@ main{background:#f5f5f5}
 /* SERVICES */
 .services-outer{padding:.5rem}
 @media(min-width:1024px){.services-outer{padding:1rem}}
-.services-section{display:flex;flex-direction:column;gap:4rem;background:#171717;padding:4rem 1rem 1rem;border-radius:1rem}
-@media(min-width:1024px){.services-section{gap:6rem;padding:6rem 1rem 1rem;border-radius:1.25rem}}
-.services-header{display:grid;grid-template-columns:repeat(12,1fr);gap:6rem}
-.services-header h2{font-size:clamp(14px,.8vw,18px);color:#a1a1a1;text-transform:uppercase;font-weight:500;letter-spacing:.05em;margin-bottom:.5rem;grid-column:span 12}
-@media(min-width:1024px){.services-header h2{grid-column:span 10;grid-column-start:3}}
-.services-header p{grid-column:span 12;color:#f5f5f5;font-size:clamp(24px,3.3vw,56px);font-weight:500;line-height:1.1}
-@media(min-width:1024px){.services-header p{grid-column:span 10;grid-column-start:3;line-height:1.05}}
-.services-list{display:flex;flex-direction:column;background:#262626;border-radius:.75rem}
-@media(min-width:1024px){.services-list{border-radius:1rem}}
-.svc-item{display:flex;flex-direction:column;padding:2.5rem 1rem}
-@media(min-width:1024px){.svc-item{display:grid;grid-template-columns:repeat(12,1fr);gap:2rem;padding:2.5rem 1.25rem}}
-.svc-item:not(:last-child){border-bottom:1px solid #404040}
-.svc-item .num{font-size:clamp(14px,.8vw,18px);color:#d4d4d4;text-transform:uppercase;font-weight:500;letter-spacing:.05em;margin-bottom:.25rem}
-@media(min-width:1024px){.svc-item .num{grid-column:span 2;margin-bottom:0}}
-.svc-item h3{font-size:clamp(24px,3.3vw,56px);color:#f5f5f5;font-weight:500;margin-bottom:1.5rem}
-@media(min-width:1024px){.svc-item h3{grid-column:span 4;margin-top:-1rem;margin-bottom:0}}
-.svc-item .body{display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem}
-@media(min-width:1024px){.svc-item .body{grid-column:span 3;gap:1.5rem;margin-bottom:0}}
-.svc-item .body p{font-size:clamp(16px,1.2vw,20px);color:#f5f5f5;font-weight:500;line-height:1.3}
-.svc-item .body .tags{display:flex;gap:.375rem;flex-wrap:wrap}
-.svc-item .body .tags span{font-family:'Courier New',monospace;font-size:.625rem;color:#f5f5f5;text-transform:uppercase;letter-spacing:.1em;background:rgba(245,245,245,.1);padding:.5rem .5rem .375rem;border-radius:.375rem;white-space:nowrap;opacity:0;transform:translateY(24px) scale(.9)}
-.svc-item .vis{height:220px;border-radius:.5rem;overflow:hidden;position:relative}
-@media(min-width:640px){.svc-item .vis{height:400px}}
-@media(min-width:768px){.svc-item .vis{height:450px}}
-@media(min-width:1024px){.svc-item .vis{grid-column:span 3;height:clamp(220px,15vw,360px)}}
-.svc-item .vis .clip{position:absolute;inset:0;width:100%;height:120%;clip-path:polygon(0 0,100% 0,100% 0,0 0);transform:translateY(-3vh)}
-@media(min-width:1024px){.svc-item .vis .clip{top:-10%}}
-.svc-item .vis .clip img{width:100%;height:100%;object-fit:cover}
+.services-section{background:#171717;padding:5rem 1.5rem;border-radius:1rem}
+@media(min-width:1024px){.services-section{padding:5rem 2.5rem;border-radius:1.25rem}}
+.services-grid{display:flex;flex-direction:column;gap:3rem}
+@media(min-width:768px){.services-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}}
+.services-text h2{font-size:clamp(14px,.8vw,18px);color:#a1a1a1;text-transform:uppercase;font-weight:500;letter-spacing:.05em;margin-bottom:1.5rem}
+.services-text .svc-list{display:flex;flex-direction:column;gap:1.5rem}
+.services-text .svc-list .svc-row{display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;padding:.5rem;border-radius:.5rem;transition:background .3s}
+.services-text .svc-list .svc-row.active{background:rgba(255,255,255,.06)}
+.services-text .svc-list .svc-row .svc-num{font-family:'Courier New',monospace;font-size:.7rem;color:#a1a1a1;padding-top:.2rem;min-width:1.5rem}
+.services-text .svc-list .svc-row .svc-info h3{font-size:clamp(18px,1.5vw,24px);color:#f5f5f5;font-weight:600;letter-spacing:-.02em;margin-bottom:.15rem}
+.services-text .svc-list .svc-row .svc-info p{font-size:.8rem;color:#a1a1a1;line-height:1.5}
+
+/* Curve Carousel */
+.curve-carousel{position:relative;width:100%;height:380px;overflow:hidden;perspective:1000px}
+@media(min-width:768px){.curve-carousel{height:420px}}
+@media(min-width:1024px){.curve-carousel{height:500px}}
+.carousel-track{position:absolute;top:50%;left:50%;transform-style:preserve-3d;width:0;height:0}
+.carousel-card{position:absolute;width:clamp(220px,28vw,340px);aspect-ratio:4/3;border-radius:1rem;overflow:hidden;background:#262626;cursor:grab;transition:transform .6s cubic-bezier(.25,1,.5,1),opacity .6s;transform-origin:center center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.carousel-card:active{cursor:grabbing}
+.carousel-card video,.carousel-card img{width:100%;height:100%;object-fit:cover}
+.carousel-card .card-label{position:absolute;bottom:0;left:0;right:0;padding:.75rem 1rem;background:linear-gradient(to top,rgba(0,0,0,.85),transparent);pointer-events:none}
+.carousel-card .card-label .lbl-name{font-size:.8rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.04em}
+.carousel-card .card-label .lbl-cat{font-size:.65rem;color:rgba(255,255,255,.6);margin-top:.15rem}
+.carousel-nav{display:flex;justify-content:center;gap:.5rem;margin-top:1.5rem}
+.carousel-nav .nav-dot{width:8px;height:8px;border-radius:50%;background:#404040;cursor:pointer;transition:background .3s,transform .3s}
+.carousel-nav .nav-dot.active{background:#f5f5f5;transform:scale(1.3)}
 
 /* LETTER SCROLL */
 .ls-wrap{padding:6rem 1rem}
@@ -307,11 +305,39 @@ footer{background:#f5f5f5}
     <a href="#" class="see-all">See all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
   </section>
 
-  <div class="services-outer"><section class="services-section" id="services"><div class="services-header"><h2>Services</h2><p>Evolving with every brief and built for impact, our process spans concept, design, and production — aligning vision with execution to bring clarity and edge to every project.</p></div><div class="services-list">
-    <div class="svc-item"><p class="num">01</p><h3>Brand & Campaign Films</h3><div class="body"><p>Helping brands uncover their visual voice through cinematic motion that drives campaign performance across every screen.</p><div class="tags"><span>Brand Anthems</span><span>Product Films</span><span>Social Campaigns</span><span>TV & Broadcast</span><span>Event Openers</span></div></div><div class="vis"><div class="clip"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23444' width='400' height='300'/%3E%3C/svg%3E" alt=""></div></div></div>
-    <div class="svc-item"><p class="num">02</p><h3>UI / UX Motion Design</h3><div class="body"><p>Designing engaging digital interactions that combine brand strategy and creativity with UX insights to deliver functionality and delight.</p><div class="tags"><span>Micro-interactions</span><span>Onboarding Flows</span><span>Lottie & Rive</span><span>Design Systems</span><span>Prototyping</span></div></div><div class="vis"><div class="clip"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23444' width='400' height='300'/%3E%3C/svg%3E" alt=""></div></div></div>
-    <div class="svc-item"><p class="num">03</p><h3>3D & CGI</h3><div class="body"><p>Building visual worlds that combine art, technology, and creative strategy to deliver seamless, immersive experiences.</p><div class="tags"><span>Product Renders</span><span>Character Animation</span><span>Abstract 3D</span><span>VFX Compositing</span><span>Virtual Production</span></div></div><div class="vis"><div class="clip"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23444' width='400' height='300'/%3E%3C/svg%3E" alt=""></div></div></div>
-  </div></section></div>
+  <div class="services-outer"><section class="services-section" id="services">
+    <div class="services-grid">
+      <!-- Left: Text -->
+      <div class="services-text">
+        <h2>Services</h2>
+        <div class="svc-list">
+          <div class="svc-row active" data-idx="0">
+            <span class="svc-num">01</span>
+            <div class="svc-info"><h3>Brand & Campaign Films</h3><p>Cinematic motion for brands, products, TV, and social — driven by strategy and delivered with craft.</p></div>
+          </div>
+          <div class="svc-row" data-idx="1">
+            <span class="svc-num">02</span>
+            <div class="svc-info"><h3>UI / UX Motion Design</h3><p>Micro-interactions, onboarding flows, and animated design systems that make products feel alive.</p></div>
+          </div>
+          <div class="svc-row" data-idx="2">
+            <span class="svc-num">03</span>
+            <div class="svc-info"><h3>3D & CGI</h3><p>Photoreal renders, character animation, and abstract 3D — everything from product viz to virtual production.</p></div>
+          </div>
+          <div class="svc-row" data-idx="3">
+            <span class="svc-num">04</span>
+            <div class="svc-info"><h3>Explainer & Education</h3><p>Clear, compelling explainers and data visualization that turn complexity into clarity.</p></div>
+          </div>
+        </div>
+      </div>
+      <!-- Right: Curve Carousel -->
+      <div>
+        <div class="curve-carousel" id="curveCarousel">
+          <div class="carousel-track" id="carouselTrack">&#8203;</div>
+        </div>
+        <div class="carousel-nav" id="carouselNav">&#8203;</div>
+      </div>
+    </div>
+  </section></div>
 
   <div class="ls-wrap"><ul class="letter-scroll" id="letterScroll"><li><span class="let"><span>M</span><span class="below">M</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>T</span><span class="below">T</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>N</span><span class="below">N</span></span></li><li><span class="let"><span>D</span><span class="below">D</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>S</span><span class="below">S</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>G</span><span class="below">G</span></span><span class="let"><span>N</span><span class="below">N</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>R</span><span class="below">R</span></span></li></ul></div>
 
@@ -334,6 +360,8 @@ let c=0;const iv=setInterval(()=>{c++;counter.textContent=c;if(c>=100){clearInte
 
 function startAll(){ScrollTrigger.refresh();const tl=gsap.timeline({delay:.2});document.querySelectorAll('.hl').forEach(el=>tl.to(el,{y:'0%',duration:.8,ease:'power3.out'},'<'));tl.to('#getInTouch',{opacity:1,y:0,scale:1,duration:.6,ease:'power3.out'},'<+.3');const bn=document.getElementById('bottomNav');tl.to(bn,{opacity:1,y:0,scale:1,duration:.7,ease:'power3.out'},'<+.2');if(window.innerWidth>=768)tl.to(bn,{xPercent:-50,y:0,scale:1,duration:.7,ease:'power3.out'},'<');const mask=document.getElementById('vidMask');tl.to(mask,{height:'0%',duration:1.1,ease:'power3.inOut'},'<+.1');const ou=document.querySelector('.hero-vid-outer');if(ou){let px=window.innerWidth/2,vx=0;let maxPx=0;function calcBounds(){const bw=ou.offsetWidth;maxPx=Math.max(0,(window.innerWidth-bw)/2)}calcBounds();window.addEventListener('resize',calcBounds);window.addEventListener('mousemove',e=>{const dx=e.movementX;vx+=dx*0.072;vx*=0.92;px+=vx;if(px>maxPx){px=maxPx;vx*=-0.6}else if(px<-maxPx){px=-maxPx;vx*=-0.6}ou.style.transform=`translateX(${px}px)`});requestAnimationFrame(function drift(){vx*=0.96;px+=vx;if(px>maxPx){px=maxPx;vx*=-0.6}else if(px<-maxPx){px=-maxPx;vx*=-0.6}ou.style.transform=`translateX(${px}px)`;requestAnimationFrame(drift)})}tl.to('#dAsg',{y:'0%',duration:.7,ease:'power3.out'},'<+.2');tl.to('#dImg1,#dImg2',{y:'0%',duration:.7,ease:'power3.out',stagger:.05,onComplete:()=>{document.querySelectorAll('.big-wrap').forEach(el=>el.classList.add('revealed'))}},'<+.1');tl.to('#scrL',{y:'0%',duration:.6,ease:'power3.out'},'<+.2');tl.to('#scrR',{y:'0%',duration:.6,ease:'power3.out'},'<');tl.to('#mAsg',{y:'0%',duration:.7,ease:'power3.out'},'<+.2');tl.to('#mVid',{clipPath:'inset(0 0 0% 0)',duration:.9,ease:'power3.inOut'},'<');tl.to('#mImg1,#mImg2',{y:'0%',duration:.7,ease:'power3.out',stagger:.08},'<+.1');const mb=document.getElementById('muteBtn');if(mb){mb.addEventListener('click',e=>{e.stopPropagation();if(sv)sv.muted=!sv.muted;const s=mb.querySelector('svg');s.innerHTML=sv&&sv.muted?'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/>':'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>'})}gsap.to('#aboutMobVid',{clipPath:'inset(0 0 0% 0)',scrollTrigger:{trigger:'#aboutMobVid',start:'top 85%',once:true},duration:.9,ease:'power3.inOut'});const aboutP=document.getElementById('aboutText');const txt='Passionate about merging motion and meaning, we craft bold, fluid animation with purpose. With a focus on timing and obsessive detail, we help bring brands to life for forward-thinking companies around the world.';const words=txt.split(' ');if(aboutP){aboutP.innerHTML=words.map((w,i)=>'<span style="display:inline-block;will-change:transform">'+w+'</span>').join(' ');const spans=aboutP.querySelectorAll('span');spans.forEach((s,i)=>{const dx=i%3===0?-25:i%3===1?25:-12,dy=i%2===0?-35:35;gsap.set(s,{x:dx,y:dy,opacity:0});gsap.to(s,{x:0,y:0,opacity:1,duration:.55,delay:i*0.025,ease:'power3.out',scrollTrigger:{trigger:aboutP,start:'top 80%',once:true}})})}['#wc1','#wc2','#wc3','#wc4','#wc5','#wc6'].forEach((id,i)=>{gsap.to(id,{opacity:1,y:0,scale:1,duration:.7,scrollTrigger:{trigger:id,start:'top 88%',once:true},delay:i*.08})});document.querySelectorAll('.svc-item .tags span').forEach((s,i)=>{gsap.to(s,{opacity:1,y:0,scale:1,duration:.5,scrollTrigger:{trigger:s.closest('.svc-item'),start:'top 80%',once:true},delay:i*.07})});document.querySelectorAll('.svc-item .clip').forEach(el=>{gsap.to(el,{clipPath:'polygon(0 0,100% 0,100% 100%,0 100%)',scrollTrigger:{trigger:el.closest('.svc-item'),start:'top 80%',once:true},duration:1,ease:'power3.inOut'})});document.querySelectorAll('.letter-scroll .let .below').forEach(el=>{gsap.to(el,{y:-80,scrollTrigger:{trigger:'#letterScroll',start:'top bottom',end:'bottom top',scrub:1}})});gsap.to('.wm',{y:-60,scrollTrigger:{trigger:'footer',start:'top bottom',end:'bottom top',scrub:1}})}
 
+/* CURVE CAROUSEL */
+(function(){const cards=[{video:'',poster:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22340%22 height=%22255%22%3E%3Crect fill=%22%23333%22 width=%22340%22 height=%22255%22/%3E%3Ctext fill=%22%23666%22 font-family=%22sans-serif%22 font-size=%2214%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EBrand Films%3C/text%3E%3C/svg%3E',name:'Brand Films',cat:'Cinematic Anthems'},{video:'',poster:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22340%22 height=%22255%22%3E%3Crect fill=%22%23333%22 width=%22340%22 height=%22255%22/%3E%3Ctext fill=%22%23666%22 font-family=%22sans-serif%22 font-size=%2214%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EUI Motion%3C/text%3E%3C/svg%3E',name:'UI Motion',cat:'Micro-interactions'},{video:'',poster:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22340%22 height=%22255%22%3E%3Crect fill=%22%23333%22 width=%22340%22 height=%22255%22/%3E%3Ctext fill=%22%23666%22 font-family=%22sans-serif%22 font-size=%2214%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E3D %26 CGI%3C/text%3E%3C/svg%3E',name:'3D & CGI',cat:'Renders & Animation'},{video:'',poster:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22340%22 height=%22255%22%3E%3Crect fill=%22%23333%22 width=%22340%22 height=%22255%22/%3E%3Ctext fill=%22%23666%22 font-family=%22sans-serif%22 font-size=%2214%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EExplainer%3C/text%3E%3C/svg%3E',name:'Explainer',cat:'Data Visualization'}];const track=document.getElementById('carouselTrack');const nav=document.getElementById('carouselNav');const svcRows=document.querySelectorAll('.svc-row');let idx=0,rotY=0,dragging=false,startX=0,startRot=0;if(!track)return;function build(){track.innerHTML='';nav.innerHTML='';cards.forEach((c,i)=>{const el=document.createElement('div');el.className='carousel-card';el.setAttribute('data-idx',i);el.innerHTML=`<img src="${c.poster}" alt="${c.name}"><div class="card-label"><p class="lbl-name">${c.name}</p><p class="lbl-cat">${c.cat}</p></div>`;track.appendChild(el);const dot=document.createElement('span');dot.className='nav-dot'+(i===0?' active':'');dot.setAttribute('data-idx',i);dot.addEventListener('click',()=>goTo(i));nav.appendChild(dot)})}function arrange(){const total=cards.length;const radius=260;const els=track.querySelectorAll('.carousel-card');els.forEach((el,i)=>{const angle=((i-idx+total/2)%total-(total-1)/2)/(total-1)*Math.PI*.8+rotY*0.003;const x=Math.sin(angle)*radius;const z=Math.cos(angle)*radius-200;const scale=.7+.3*Math.cos(angle);const opacity=.4+.6*Math.cos(angle);const blur=Math.abs(angle)*3;el.style.transform=`translateX(${x}px) translateZ(${z}px) rotateY(${angle*30}deg) scale(${scale})`;el.style.opacity=opacity;el.style.filter=`blur(${blur}px)`;el.style.zIndex=Math.round(z+500)});nav.querySelectorAll('.nav-dot').forEach((d,i)=>{d.classList.toggle('active',i===idx)});svcRows.forEach((r,i)=>{r.classList.toggle('active',i===idx)})}function goTo(i){idx=i;rotY=i*120;arrange()}function animate(){arrange();requestAnimationFrame(animate)}build();arrange();const carousel=document.getElementById('curveCarousel');if(carousel){carousel.addEventListener('mousedown',e=>{dragging=true;startX=e.clientX;startRot=rotY;carousel.style.cursor='grabbing'});window.addEventListener('mousemove',e=>{if(!dragging)return;rotY=startRot+(e.clientX-startX)*.8;arrange()});window.addEventListener('mouseup',()=>{if(!dragging)return;dragging=false;carousel.style.cursor='grab';const snap=Math.round(rotY/120)*120;rotY=snap;idx=Math.round(((snap%360)+360)%360/120)%cards.length;arrange()})}svcRows.forEach(row=>{row.addEventListener('click',()=>{goTo(parseInt(row.getAttribute('data-idx')));rotY=idx*120;arrange()})})})();
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>ScrollTrigger.refresh(),200)});
 </script>

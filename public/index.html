@@ -214,10 +214,10 @@ main{background:#f5f5f5}
 @media(min-width:1024px){.tools-section{padding:0 2rem 6rem}}
 .tools-section h4{font-weight:700;text-transform:uppercase;margin-bottom:1rem;font-size:1.2rem}
 .tools-grid{position:relative}
-.tools-grid .row{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #d4d4d4;height:clamp(200px,20vw,400px)}
-@media(min-width:1024px){.tools-grid .row{grid-template-columns:repeat(7,1fr);height:clamp(200px,15vw,400px)}.tools-grid .row.row-top{grid-template-columns:repeat(3,1fr)}}
-.tools-grid .row .tool{display:flex;align-items:center;justify-content:center;border-right:1px solid #d4d4d4;cursor:pointer;z-index:10;transition:opacity .3s}
-.tools-grid .row .tool:last-child{border-right:none}
+.tools-grid .row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));height:auto;padding:1rem 0}
+@media(min-width:1024px){.tools-grid .row{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+.tools-grid .row .tool{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1rem;cursor:pointer;z-index:10;transition:opacity .3s;gap:.5rem}
+.tools-grid .row .tool{}
 .tools-grid .row .tool:hover{opacity:.6}
 .tools-grid .row .tool span{font-size:.75rem;font-weight:600;text-align:center;color:#404040}
 .tools-grid .hl-box{position:absolute;top:0;left:0;background:#171717;pointer-events:none;transition:all .3s;display:none}
@@ -319,7 +319,15 @@ footer{background:#f5f5f5}
 
   
 
-  <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Blender</span></div><div class="tool"><span>Cinema 4D</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Rive</span></div><div class="tool"><span>DaVinci Resolve</span></div><div class="tool"><span>Houdini</span></div><div class="tool"><span>Unreal Engine</span></div><div class="tool"><span>Lottie</span></div><div class="tool"><span>GSAP</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
+  <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row">
+<div class="tool"><svg viewBox="0 0 24 24" style="width:36px;height:36px"><rect x="3" y="5" width="8" height="10" rx="1" fill="#9999FF"/><rect x="13" y="2" width="8" height="13" rx="1" fill="#7A5FFF"/><rect x="8" y="12" width="8" height="8" rx="1" fill="#5A3FFF"/></svg><span>After Effects</span></div>
+<div class="tool"><svg viewBox="0 0 24 24" style="width:36px;height:36px"><rect x="2" y="3" width="20" height="18" rx="2" fill="#2A0033"/><path d="M5 6h4l2 8-2 5H7l2-4L7 6zm10 1h2v10h-2V7z" fill="#9999FF"/></svg><span>Premiere Pro</span></div>
+<div class="tool"><svg viewBox="0 0 24 24" style="width:36px;height:36px"><circle cx="12" cy="7" r="4" fill="#F24E1E"/><circle cx="18" cy="15" r="4" fill="#1ABCFE"/><circle cx="6" cy="15" r="4" fill="#A259FF"/><circle cx="12" cy="19" r="4" fill="#0ACF83"/></svg><span>Figma</span></div>
+<div class="tool"><svg viewBox="0 0 24 24" style="width:36px;height:36px"><path d="M4 4h16v8H4l8 8H4V4z" fill="#0066FF"/></svg><span>Framer</span></div>
+<div class="tool"><svg viewBox="0 0 24 24" style="width:36px;height:36px"><rect x="3" y="4" width="18" height="16" rx="3" fill="#222"/><path d="M7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zM7 13h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z" fill="#FF3E6C"/></svg><span>Spline</span></div>
+<div class="tool"><svg viewBox="0 0 24 24" style="width:36px;height:36px"><path d="M12 2l2.5 5.5L20 9l-4 4 1 5.5-5-2.5-5 2.5 1-5.5L4 9l5.5-1.5z" fill="#FF6B9D"/></svg><span>Lovable</span></div>
+<div class="tool"><svg viewBox="0 0 24 24" style="width:36px;height:36px"><circle cx="12" cy="12" r="9" fill="none" stroke="#EA7600" stroke-width="1.5"/><path d="M12 3a9 9 0 010 18" stroke="#EA7600" stroke-width="1"/><circle cx="12" cy="8" r="1.5" fill="#265787"/><circle cx="9" cy="14" r="1.5" fill="#265787"/><circle cx="15" cy="14" r="1.5" fill="#265787"/></svg><span>Blender</span></div>
+</div><div class="hl-box" id="toolsHL"></div></div></div></div></div>
 </main>
 
 <footer><div class="footer-grid"><h2 class="wm">frieren.studio</h2><a href="#work" class="fw">Work</a><a href="#" class="fl">Lab</a><a href="mailto:hello@frieren.studio" class="fc">Contact</a><a href="#" class="fgh" target="_blank" rel="noopener">Vimeo</a><a href="#" class="fig" target="_blank" rel="noopener">Instagram</a><a href="#" class="fli" target="_blank" rel="noopener">LinkedIn</a></div></footer>

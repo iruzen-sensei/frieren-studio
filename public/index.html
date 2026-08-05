@@ -463,10 +463,9 @@ let alive=1;RS();window.addEventListener('resize',()=>RS());requestAnimationFram
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>ScrollTrigger.refresh(),200)});
 </script>
-<!-- 3D CURSOR PET -->
+<!-- 3D CURSOR PET — CAT -->
 <div id="cursorDot" style="position:fixed;width:8px;height:8px;background:#171717;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .3s,height .3s"></div>
 <canvas id="petCanvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:9998"></canvas>
-<!-- THREE.JS CURSOR PET -->
 <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
@@ -476,77 +475,71 @@ renderer.setPixelRatio(Math.min(2,window.devicePixelRatio));
 renderer.setSize(window.innerWidth,window.innerHeight);
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,100);
-camera.position.z=8;
+camera.position.z=9;
+scene.add(new THREE.AmbientLight(0xffffff,.7));
+const dl=new THREE.DirectionalLight(0xffffff,1.5);dl.position.set(5,5,5);scene.add(dl);
+const dl2=new THREE.DirectionalLight(0xffffff,.3);dl2.position.set(-5,-5,-5);scene.add(dl2);
 
-// Lighting
-scene.add(new THREE.AmbientLight(0xffffff,.6));
-const dl=new THREE.DirectionalLight(0xffffff,1.2);dl.position.set(5,5,5);scene.add(dl);
-const dl2=new THREE.DirectionalLight(0xffffff,.4);dl2.position.set(-5,-5,-5);scene.add(dl2);
+// CAT
+const cat=new THREE.Group();scene.add(cat);
+const dark=new THREE.MeshStandardMaterial({color:0x1a1a1a,roughness:.15,metalness:.05});
+const pink=new THREE.MeshStandardMaterial({color:0xffb3b3,roughness:.3});
+const white=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.05});
+const black=new THREE.MeshStandardMaterial({color:0x000000,roughness:.05});
 
-// Pet geometry — rounded blob
-const geo=new THREE.SphereGeometry(.35,64,64);
-// Slightly squish it for character
-geo.scale(1,.85,1);
-const mat=new THREE.MeshStandardMaterial({color:0xff6b2b,roughness:.3,metalness:.1});
-const pet=new THREE.Mesh(geo,mat);scene.add(pet);
-
+// Body
+const body=new THREE.Mesh(new THREE.SphereGeometry(.38,48,48),dark);body.scale.set(1,.8,.9);cat.add(body);
+// Head
+const head=new THREE.Mesh(new THREE.SphereGeometry(.34,48,48),dark);head.position.set(0,.48,.18);cat.add(head);
+// Ears
+const earGeo=new THREE.ConeGeometry(.11,.2,8);
+cat.add(new THREE.Mesh(earGeo,new THREE.MeshStandardMaterial({color:0x1a1a1a,roughness:.15})));
+const LE=cat.children[cat.children.length-1];LE.position.set(-.18,.65,.12);LE.rotation.z=.35;
+cat.add(new THREE.Mesh(earGeo,new THREE.MeshStandardMaterial({color:0x1a1a1a,roughness:.15})));
+const RE=cat.children[cat.children.length-1];RE.position.set(.18,.65,.12);RE.rotation.z=-.35;
+// Inner ears
+const ieGeo=new THREE.ConeGeometry(.06,.12,8);
+cat.add(new THREE.Mesh(ieGeo,pink));
+cat.children[cat.children.length-1].position.set(-.18,.6,.25);cat.children[cat.children.length-1].rotation.z=.35;
+cat.add(new THREE.Mesh(ieGeo,pink));
+cat.children[cat.children.length-1].position.set(.18,.6,.25);cat.children[cat.children.length-1].rotation.z=-.35;
 // Eyes
-const eyeGeo=new THREE.SphereGeometry(.08,32,32);
-const eyeMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.1});
-const leftEye=new THREE.Mesh(eyeGeo,eyeMat);leftEye.position.set(-.12,.08,.3);pet.add(leftEye);
-const rightEye=new THREE.Mesh(eyeGeo,eyeMat);rightEye.position.set(.12,.08,.3);pet.add(rightEye);
-const pupilGeo=new THREE.SphereGeometry(.05,32,32);
-const pupilMat=new THREE.MeshStandardMaterial({color:0x0d0d0d,roughness:.1});
-const leftPupil=new THREE.Mesh(pupilGeo,pupilMat);leftPupil.position.set(0,0,.06);leftEye.add(leftPupil);
-const rightPupil=new THREE.Mesh(pupilGeo,pupilMat);rightPupil.position.set(0,0,.06);rightEye.add(rightPupil);
-
-// Mouse state
-let mx=innerWidth/2,my=innerHeight/2,px=innerWidth/2,py=innerHeight/2;
-let vx=0,vy=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
-
-function tick(t){
-requestAnimationFrame(tick);
-const dt=Math.min(.05,t*.001);
-
-// Spring physics — pet follows cursor
-const pullX=(mx-px)*3;const pullY=(my-py)*3;
-vx+=(pullX-vx)*8*dt;vy+=(pullY-vy)*8*dt;
-px+=vx*dt;py+=vy*dt;
-
-// Convert screen to 3D
-const sx=(px/innerWidth)*2-1;
-const sy=-(py/innerHeight)*2+1;
-pet.position.x=sx*4;
-pet.position.y=sy*3;
-
-// Breathing
-const breath=1+Math.sin(t*.003)*.04;
-pet.scale.setScalar(breath);
-
-// Wobble from velocity
-pet.rotation.y=vx*.02;
-pet.rotation.x=-vy*.015;
-
-// Look toward cursor slightly
-leftPupil.position.set(vx*.003,-vy*.003,.06);
-rightPupil.position.set(vx*.003,-vy*.003,.06);
-
-// Dot hover effect
-const a=document.querySelectorAll('a,button,.work-card,.svc-row');let hovered=false;
-a.forEach(el=>{const r=el.getBoundingClientRect();if(mx>r.left&&mx<r.right&&my>r.top&&my<r.bottom)hovered=true});
-dot.style.width=hovered?'32px':'8px';dot.style.height=hovered?'32px':'8px';
-dot.style.background=hovered?'transparent':'#171717';
-dot.style.border=hovered?'2px solid #171717':'none';
-dot.style.mixBlendMode=hovered?'normal':'difference';
-
-renderer.render(scene,camera);
+const eyeG=new THREE.SphereGeometry(.06,16,16);
+cat.add(new THREE.Mesh(eyeG,white));cat.children[cat.children.length-1].position.set(-.1,.53,.4);
+cat.add(new THREE.Mesh(eyeG,white));cat.children[cat.children.length-1].position.set(.1,.53,.4);
+// Pupils
+const PG=new THREE.SphereGeometry(.035,8,8);
+cat.add(new THREE.Mesh(PG,black));cat.children[cat.children.length-1].position.set(-.1,.53,.45);
+cat.add(new THREE.Mesh(PG,black));cat.children[cat.children.length-1].position.set(.1,.53,.45);
+const LPI=cat.children.length-2,RPI=cat.children.length-1;
+// Nose
+cat.add(new THREE.Mesh(new THREE.SphereGeometry(.025,8,8),pink));
+cat.children[cat.children.length-1].position.set(0,.45,.42);
+// Tail
+const tailGrp=new THREE.Group();cat.add(tailGrp);
+const TAIL=cat.children.length-1;
+for(let i=0;i<8;i++){
+cat.children[TAIL].add(new THREE.Mesh(new THREE.SphereGeometry(.045,8,8),dark));
+cat.children[TAIL].children[i].position.set(0,-.12-i*.09,-.2+i*.05);
 }
+
+let mx=innerWidth/2,my=innerHeight/2,px=innerWidth/2,py=innerHeight/2,vx=0,vy=0,tm=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+function tick(t){requestAnimationFrame(tick);tm=t*.001;const dt=Math.min(.05,tm%1||.016);
+const px0=(mx-px)*2.5,py0=(my-py)*2.5;vx+=(px0-vx)*6*dt;vy+=(py0-vy)*6*dt;px+=vx*dt;py+=vy*dt;
+const sx=(px/innerWidth)*2-1,sy=-(py/innerHeight)*2+1;
+cat.position.set(sx*4.5,sy*3.5+Math.sin(tm*1.8)*.1,0);
+cat.rotation.z=vx*.005;
+cat.children[TAIL].rotation.z=Math.sin(tm*2.5)*.3;
+cat.children[LPI].position.x=-.1+vx*.002;cat.children[LPI].position.y=.53+vy*.002;
+cat.children[RPI].position.x=.1+vx*.002;cat.children[RPI].position.y=.53+vy*.002;
+const a=document.querySelectorAll('a,button,.work-card,.svc-row');let hv=false;
+a.forEach(el=>{const r=el.getBoundingClientRect();if(mx>r.left&&mx<r.right&&my>r.top&&my<r.bottom)hv=true});
+dot.style.width=hv?'32px':'8px';dot.style.height=hv?'32px':'8px';dot.style.background=hv?'transparent':'#171717';dot.style.border=hv?'2px solid #171717':'none';dot.style.mixBlendMode=hv?'normal':'difference';
+renderer.render(scene,camera);}
 requestAnimationFrame(tick);
-window.addEventListener('resize',()=>{
-renderer.setSize(window.innerWidth,window.innerHeight);
-camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
-});
+window.addEventListener('resize',()=>{renderer.setSize(window.innerWidth,window.innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();});
 </script>
+
 </body>
 </html>

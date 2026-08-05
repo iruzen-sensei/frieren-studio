@@ -425,37 +425,41 @@ let pts=[],W=0,H=0,mx=-999,my=-999;
 
 function build(){
 const dpr=Math.min(2,devicePixelRatio||1);
-const r=C.getBoundingClientRect();W=r.width;H=500;
+const r=C.getBoundingClientRect();W=r.width;H=C.parentElement.offsetHeight||500;
 C.width=W*dpr;C.height=H*dpr;X.setTransform(dpr,0,0,dpr,0,0);
 X.clearRect(0,0,W,H);
-const fs=Math.min(W/10,H/2.2);X.font=`700 ${fs}px Inter,system-ui,sans-serif`;
+// Use offscreen canvas for clean sampling
+const off=document.createElement('canvas');off.width=C.width;off.height=C.height;
+const ox=off.getContext('2d');ox.setTransform(dpr,0,0,dpr,0,0);
+const fs=Math.min(W/8,H/2.2);ox.font=`700 ${fs}px Inter,system-ui,sans-serif`;
 const lines=['MOTION','DESIGNER'];
 let all=[];
 lines.forEach((line,li)=>{
-const m=X.measureText(line);
+const m=ox.measureText(line);
 const x0=(W-m.width)/2,y0=H*.35+li*fs*1.1;
-X.fillStyle='#000';X.fillText(line,x0,y0);
-const step=Math.max(2,Math.floor(fs/14));
+ox.fillStyle='#000';ox.fillText(line,x0,y0);
+const step=Math.max(2,Math.floor(fs/12));
 for(let col=0;col<m.width;col+=step){
 for(let row=-Math.floor(fs*.15);row<Math.floor(fs*.55);row+=step){
-try{const d=X.getImageData(x0+col,y0+row,1,1);if(d.data[3]>60)all.push({ox:x0+col,oy:y0+row,x:x0+col+(Math.random()-.5)*100,y:y0+row+(Math.random()-.5)*100,vx:0,vy:0,size:Math.random()*3+2})}catch(e){}
+try{const d=ox.getImageData((x0+col)*dpr,(y0+row)*dpr,1,1);if(d.data[3]>50)all.push({ox:x0+col,oy:y0+row,x:x0+col+(Math.random()-.5)*60,y:y0+row+(Math.random()-.5)*60,vx:0,vy:0,size:Math.random()*2.5+1.5})}catch(e){}
 }}
-X.clearRect(0,0,W,H);
+off.width=0;//clear
 });
-pts=all.length>500?all.filter((_,i)=>i%Math.ceil(all.length/500)<1):all;
+pts=all.length>600?all.filter((_,i)=>i%Math.ceil(all.length/600)<1):all;
 }
 
 function tick(){
 X.clearRect(0,0,W,H);
 pts.forEach(p=>{
 const dx=mx-p.x,dy=my-p.y,dist=Math.sqrt(dx*dx+dy*dy)+.01;
-if(mx>-998&&dist<150){const f=(1-dist/150)*.1;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
-p.vx+=(p.ox-p.x)*.02;p.vy+=(p.oy-p.y)*.02;p.vx*=.84;p.vy*=.84;p.x+=p.vx;p.y+=p.vy;
-X.fillStyle=`rgba(13,13,13,${.3+.7*Math.min(1,Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2)/30)})`;X.beginPath();X.arc(p.x,p.y,p.size,0,Math.PI*2);X.fill()});
+if(mx>-998&&dist<160){const f=(1-dist/160)*.12;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
+p.vx+=(p.ox-p.x)*.018;p.vy+=(p.oy-p.y)*.018;p.vx*=.82;p.vy*=.82;p.x+=p.vx;p.y+=p.vy;
+const dd=Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2);
+X.fillStyle=`rgba(13,13,13,${.35+.65*Math.min(1,dd/25)})`;X.beginPath();X.arc(p.x,p.y,p.size,0,Math.PI*2);X.fill()});
 requestAnimationFrame(tick);
 }
 
-build();tick();
+setTimeout(build,200);tick();
 window.addEventListener('resize',()=>setTimeout(build,300));
 C.addEventListener('mousemove',e=>{const r=C.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
 C.addEventListener('mouseleave',()=>{mx=-999});

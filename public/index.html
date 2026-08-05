@@ -209,16 +209,6 @@ main{background:#f5f5f5}
 
 
 
-/* TETRIS + TEXT SECTION */
-.tetris-section{display:flex;flex-direction:column;gap:2rem;padding:2rem 1rem}
-@media(min-width:768px){.tetris-section{display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center;padding:3rem 2rem}}
-@media(min-width:1024px){.tetris-section{padding:4rem 3rem}}
-.tetris-canvas-box{position:relative;background:#000;border-radius:.75rem;overflow:hidden;width:clamp(200px,30vw,340px);aspect-ratio:1/1;flex-shrink:0;border:none}
-.tetris-canvas-box canvas{width:100%;height:100%;display:block}
-.tetris-text-side h3{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:#171717}
-.tetris-text-side h3 em{font-family:'Inter',serif;font-style:italic;font-weight:400}
-.tetris-text-side .sub{font-size:.85rem;color:#6b6b6b;margin-top:1rem;line-height:1.7;max-width:90%}
-
 /* LETTER SCROLL */
 .ls-wrap{padding:6rem 1rem}
 @media(min-width:1024px){.ls-wrap{padding:6rem 2rem}}
@@ -336,18 +326,6 @@ footer{background:#f5f5f5}
     </div>
   </section></div>
 
-  <!-- TETRIS + TEXT -->
-  <div class="tetris-section">
-    <div class="tetris-canvas-box">
-      <canvas id="tetrisCanvas"></canvas>
-      
-    </div>
-    <div class="tetris-text-side">
-      <h3>We like to <em>deliver</em><br>while solving your problems.</h3>
-      <p class="sub">Every project is a puzzle we're excited to crack. Clean code, bold motion, sharp design — we build with intention and ship with confidence.</p>
-    </div>
-  </div>
-
   <div class="ls-wrap"><ul class="letter-scroll" id="letterScroll"><li><span class="let"><span>M</span><span class="below">M</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>T</span><span class="below">T</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>N</span><span class="below">N</span></span></li><li><span class="let"><span>D</span><span class="below">D</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>S</span><span class="below">S</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>G</span><span class="below">G</span></span><span class="let"><span>N</span><span class="below">N</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>R</span><span class="below">R</span></span></li></ul></div>
 
   <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Blender</span></div><div class="tool"><span>Cinema 4D</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Rive</span></div><div class="tool"><span>DaVinci Resolve</span></div><div class="tool"><span>Houdini</span></div><div class="tool"><span>Unreal Engine</span></div><div class="tool"><span>Lottie</span></div><div class="tool"><span>GSAP</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
@@ -435,33 +413,6 @@ window.addEventListener('mousemove',e=>{if(!dragging)return;if(Math.abs(e.client
 window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'});
 })();
 
-/* ── TETRIS ANIMATION ── */
-
-/* ── TETRIS ── */
-/* CIRCLE TETRIS — white + orange, circular blocks */
-(function(){const C=document.getElementById('tetrisCanvas');if(!C)return;const X=C.getContext('2d');const S=[[[0,1],[1,1],[2,1],[3,1]],[[0,0],[0,1],[1,1],[2,1]],[[2,0],[0,1],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[0,1],[1,1]]];
-const K=['#FF6B2B','#FFFFFF'];let CO,RO,CW,CH,G=1,PX,PY,GD=[],PC=null,LT=0,DA=0;
-function RN(){return Math.random()}
-function RT(s,t){let c=S[s].map(p=>[p[0],p[1]]);for(let i=0;i<t;i++){let mr=0;c.forEach(([,r])=>{if(r>mr)mr=r});c=c.map(([cx,ry])=>[mr-ry,cx])}let mc=99,mr=99;c.forEach(([cx,ry])=>{if(cx<mc)mc=cx;if(ry<mr)mr=ry});return c.map(([cx,ry])=>[cx-mc,ry-mr])}
-function AT(c,r){return GD[r*CO+c]}
-function FT(cs,col,row){for(let[c,r]of cs){let gc=col+c,gr=row+r;if(gc<0||gc>=CO||gr>=RO)return 0;if(gr>=0&&AT(gc,gr)>=0)return 0}return 1}
-function LN(cs,col){if(!FT(cs,col,0))return-1;let r=0;while(FT(cs,col,r+1))r++;return r}
-function SC(cs,col,row){let t=GD.slice();cs.forEach(([c,r])=>{let gr=row+r;if(gr>=0)t[gr*CO+(col+c)]=1});let ln=0,ag=0,hl=0,bm=0,pv=-1;for(let r=0;r<RO;r++){let fl=1;for(let c=0;c<CO;c++)if(t[r*CO+c]<0){fl=0;break}if(fl)ln++}for(let c=0;c<CO;c++){let tp=RO;for(let r=0;r<RO;r++)if(t[r*CO+c]>=0){tp=r;break}let h=RO-tp;ag+=h;for(let r=tp+1;r<RO;r++)if(t[r*CO+c]<0)hl++;if(pv>=0)bm+=Math.abs(tp-pv);pv=tp}return ln*4-ag*.5-hl*3.5-bm*.3}
-function SP(){let si=Math.floor(RN()*7),bc=null,bcl=0,brr=0,bs=-9e9;for(let t=0;t<4;t++){let cs=RT(si,t),w=0;cs.forEach(([cx])=>{if(cx>w)w=cx});for(let col=0;col+w<CO;col++){let r=LN(cs,col);if(r<0)continue;let s=SC(cs,col,r);if(s>bs){bs=s;bc=cs;bcl=col;brr=r}}}if(!bc){GD=new Array(CO*RO).fill(-1);SP();return}let sr=0,wd=0;bc.forEach(([cx,ry])=>{if(ry>sr)sr=ry;if(cx>wd)wd=cx});sr=-1-sr;let mc=CO-1-wd,sc=Math.min(mc,Math.max(0,bcl+Math.round((RN()*2-1)*.3*CO)));PC={ci:Math.floor(RN()*7),cs:bc,cl:sc,rw:sr,scl:sc,srw:sr,tcl:bcl,trw:brr}}
-function LK(){if(!PC)return;PC.cs.forEach(([c,r])=>{let gr=PC.rw+r,gc=PC.cl+c;if(gr>=0&&gr<RO&&gc>=0&&gc<CO)GD[gr*CO+gc]=PC.ci});let fl=[];for(let r=0;r<RO;r++){let sd=1;for(let c=0;c<CO;c++)if(GD[r*CO+c]<0){sd=0;break}if(sd)fl.push(r)}if(fl.length){setTimeout(()=>{fl.sort((a,b)=>b-a);fl.forEach(fr=>GD.splice(fr*CO,CO));while(GD.length<CO*RO)GD.unshift(...new Array(CO).fill(-1));SP()},200)}else{SP()}PC=null}
-function RS(){let d=Math.min(2,window.devicePixelRatio||1),w=Math.max(1,Math.round(C.clientWidth)),h=Math.max(1,Math.round(C.clientHeight));C.width=Math.round(w*d);C.height=Math.round(h*d);X.setTransform(d,0,0,d,0,0);CO=Math.floor((w+G)/(18+G));RO=Math.floor((h+G)/(18+G));CW=Math.max(1,(w-G*(CO-1))/CO);CH=Math.max(1,(h-G*(RO-1))/RO);PX=CW+G;PY=CH+G;if(CO<8)CO=8;if(RO<12)RO=12;GD=new Array(CO*RO).fill(-1);PC=null;SP()}
-function DR(){X.fillStyle='#000';X.fillRect(0,0,C.width,C.height);
-let R=Math.min(CW,CH)*.48;
-// Draw placeholder dots for ALL cells
-X.fillStyle='rgba(255,255,255,.04)';
-for(let r=0;r<RO;r++){for(let c=0;c<CO;c++){let cx=c*PX+PX/2,cy=r*PY+PY/2;X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()}}
-// Overlay colored blocks on top
-for(let r=0;r<RO;r++){for(let c=0;c<CO;c++){let cx=c*PX+PX/2,cy=r*PY+PY/2,v=AT(c,r);
-if(v>=0){X.fillStyle=K[v%2];X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()}}}
-// Falling piece
-if(PC){X.fillStyle=K[PC.ci%2];PC.cs.forEach(([c,r])=>{let gr=PC.rw+r;if(gr<0)return;let cx=(PC.cl+c)*PX+PX/2,cy=gr*PY+PY/2;X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()})}}
-function UP(tm){if(!alive)return;let dt=LT?Math.min(tm-LT,200):0;LT=tm;if(PC){DA+=dt;let dm=Math.max(30,300-(Math.min(12,RO/2))*20);while(DA>=dm&&PC){DA-=dm;if(PC.rw<PC.trw){PC.rw++;let sp=PC.trw-PC.srw;PC.cl=Math.round(PC.scl+(PC.tcl-PC.scl)*(sp>0?(PC.rw-PC.srw)/sp:1))}else{PC.cl=PC.tcl;LK()}}}else{SP()}DR();requestAnimationFrame(UP)}
-let alive=1;RS();window.addEventListener('resize',()=>RS());requestAnimationFrame(UP)})();
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>ScrollTrigger.refresh(),200)});
 </script>

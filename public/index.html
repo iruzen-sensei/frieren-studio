@@ -329,7 +329,7 @@ footer{background:#f5f5f5}
     </div>
   </section></div>
 
-  <div class="ls-wrap"><div class="letter-scroll" id="letterScroll" style="position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;height:500px"><canvas id="particleCanvas"></canvas><div style="overflow:hidden;display:flex"><span class="lit" >M</span><span class="lit" >O</span><span class="lit" >T</span><span class="lit" >I</span><span class="lit" >O</span><span class="lit" >N</span></div><div style="overflow:hidden;display:flex"><span class="lit" >D</span><span class="lit" >E</span><span class="lit" >S</span><span class="lit" >I</span><span class="lit" >G</span><span class="lit" >N</span><span class="lit" >E</span><span class="lit" >R</span></div></div></div>
+  <div class="ls-wrap"><canvas id="textFlowCanvas" style="width:100%;height:500px;display:block;cursor:pointer"></canvas></div></div>
 
   <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Blender</span></div><div class="tool"><span>Cinema 4D</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Rive</span></div><div class="tool"><span>DaVinci Resolve</span></div><div class="tool"><span>Houdini</span></div><div class="tool"><span>Unreal Engine</span></div><div class="tool"><span>Lottie</span></div><div class="tool"><span>GSAP</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
 </main>
@@ -417,49 +417,48 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 })();
 
 
-/* TEXT FLOW — particle system for MOTION DESIGNER */
+/* TEXT FLOW */
 (function(){
 const C=document.getElementById('textFlowCanvas');if(!C)return;
 const X=C.getContext('2d');
-let pts=[],W=0,H=0,mx=-999,my=-999,build=0;
+let pts=[],W=0,H=0,mx=-999,my=-999;
 
-function buildParticles(){
-build++;
-if(build<2)return;
-pts=[];
+function build(){
 const dpr=Math.min(2,devicePixelRatio||1);
-const r=C.getBoundingClientRect();W=r.width;H=C.height/dpr;
+const r=C.getBoundingClientRect();W=r.width;H=500;
 C.width=W*dpr;C.height=H*dpr;X.setTransform(dpr,0,0,dpr,0,0);
 X.clearRect(0,0,W,H);
-const fs=Math.min(W/10,H/2.8);X.font=`700 ${fs}px Inter,system-ui,sans-serif`;
+const fs=Math.min(W/10,H/2.2);X.font=`700 ${fs}px Inter,system-ui,sans-serif`;
 const lines=['MOTION','DESIGNER'];
 let all=[];
 lines.forEach((line,li)=>{
 const m=X.measureText(line);
-const x0=(W-m.width)/2,y0=H*.38+li*fs*1.05;
-X.fillStyle='#171717';X.fillText(line,x0,y0);
-const step=Math.max(2,Math.floor(fs/12));
+const x0=(W-m.width)/2,y0=H*.35+li*fs*1.1;
+X.fillStyle='#000';X.fillText(line,x0,y0);
+const step=Math.max(2,Math.floor(fs/14));
 for(let col=0;col<m.width;col+=step){
-for(let row=-Math.floor(fs*.2);row<Math.floor(fs*.6);row+=step){
-const d=X.getImageData(x0+col,y0+row,1,1);
-if(d.data[3]>80){all.push({ox:x0+col,oy:y0+row,x:x0+col+(Math.random()-.5)*80,y:y0+row+(Math.random()-.5)*80,vx:0,vy:0,size:Math.random()*3+1.5})}
+for(let row=-Math.floor(fs*.15);row<Math.floor(fs*.55);row+=step){
+try{const d=X.getImageData(x0+col,y0+row,1,1);if(d.data[3]>60)all.push({ox:x0+col,oy:y0+row,x:x0+col+(Math.random()-.5)*100,y:y0+row+(Math.random()-.5)*100,vx:0,vy:0,size:Math.random()*3+2})}catch(e){}
 }}
 X.clearRect(0,0,W,H);
 });
-pts=all.filter((_,i)=>all.length<=500?true:i%Math.ceil(all.length/500)===0);
+pts=all.length>500?all.filter((_,i)=>i%Math.ceil(all.length/500)<1):all;
 }
-function tick(){X.clearRect(0,0,W,H);
-pts.forEach(p=>{const dx=mx-p.x,dy=my-p.y,dist=Math.sqrt(dx*dx+dy*dy)+.01;
-if(mx>-998&&dist<140){const f=(1-dist/140)*.08;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
-p.vx+=(p.ox-p.x)*.025;p.vy+=(p.oy-p.y)*.025;p.vx*=.85;p.vy*=.85;p.x+=p.vx;p.y+=p.vy;
-const dd=Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2);
-X.fillStyle=`rgba(23,23,23,${.35+.65*Math.min(1,dd/25)})`;X.beginPath();X.arc(p.x,p.y,p.size,0,Math.PI*2);X.fill()});
-requestAnimationFrame(tick)}
-function resize(){buildParticles()}resize();
-window.addEventListener('resize',()=>{setTimeout(resize,200)});
+
+function tick(){
+X.clearRect(0,0,W,H);
+pts.forEach(p=>{
+const dx=mx-p.x,dy=my-p.y,dist=Math.sqrt(dx*dx+dy*dy)+.01;
+if(mx>-998&&dist<150){const f=(1-dist/150)*.1;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
+p.vx+=(p.ox-p.x)*.02;p.vy+=(p.oy-p.y)*.02;p.vx*=.84;p.vy*=.84;p.x+=p.vx;p.y+=p.vy;
+X.fillStyle=`rgba(13,13,13,${.3+.7*Math.min(1,Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2)/30)})`;X.beginPath();X.arc(p.x,p.y,p.size,0,Math.PI*2);X.fill()});
+requestAnimationFrame(tick);
+}
+
+build();tick();
+window.addEventListener('resize',()=>setTimeout(build,300));
 C.addEventListener('mousemove',e=>{const r=C.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
 C.addEventListener('mouseleave',()=>{mx=-999});
-tick();
 })();
 
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}

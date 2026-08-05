@@ -446,7 +446,7 @@ tx.fillText(line,x0,y0);
 const img=tx.getImageData(0,0,w,h);
 for(let y=0;y<h;y+=3){for(let x=0;x<w;x+=3){
 const i=(y*w+x)*4;if(img.data[i+3]>40){
-all.push({ox:x,oy:y,x:x+(Math.random()-.5)*30,y:y+(Math.random()-.5)*30,vx:0,vy:0,sz:Math.random()*2+1});
+all.push({ox:x,oy:y,x:x+(Math.random()-.5)*30,y:y+(Math.random()-.5)*30,vx:0,vy:0,sz:1.8});
 }}
 }
 

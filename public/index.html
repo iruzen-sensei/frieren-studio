@@ -436,9 +436,9 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 /* ── TETRIS ANIMATION ── */
 
 /* ── TETRIS ── */
-/* CLEAN TETRIS */
+/* CIRCLE TETRIS — white + orange, circular blocks */
 (function(){const C=document.getElementById('tetrisCanvas');if(!C)return;const X=C.getContext('2d');const S=[[[0,1],[1,1],[2,1],[3,1]],[[0,0],[0,1],[1,1],[2,1]],[[2,0],[0,1],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[0,1],[1,1]]];
-const K=['#FF0D72','#0DC2FF','#0DFF72','#F538FF','#FF8E0D','#3877FF','#FFE138'];let CO,RO,CW,CH,G=1,PX,PY,GD=[],PC=null,LT=0,DA=0;
+const K=['#FF6B2B','#FFFFFF'];let CO,RO,CW,CH,G=1,PX,PY,GD=[],PC=null,LT=0,DA=0;
 function RN(){return Math.random()}
 function RT(s,t){let c=S[s].map(p=>[p[0],p[1]]);for(let i=0;i<t;i++){let mr=0;c.forEach(([,r])=>{if(r>mr)mr=r});c=c.map(([cx,ry])=>[mr-ry,cx])}let mc=99,mr=99;c.forEach(([cx,ry])=>{if(cx<mc)mc=cx;if(ry<mr)mr=ry});return c.map(([cx,ry])=>[cx-mc,ry-mr])}
 function AT(c,r){return GD[r*CO+c]}
@@ -449,8 +449,11 @@ function SP(){let si=Math.floor(RN()*7),bc=null,bcl=0,brr=0,bs=-9e9;for(let t=0;
 function LK(){if(!PC)return;PC.cs.forEach(([c,r])=>{let gr=PC.rw+r,gc=PC.cl+c;if(gr>=0&&gr<RO&&gc>=0&&gc<CO)GD[gr*CO+gc]=PC.ci});let fl=[];for(let r=0;r<RO;r++){let sd=1;for(let c=0;c<CO;c++)if(GD[r*CO+c]<0){sd=0;break}if(sd)fl.push(r)}if(fl.length){setTimeout(()=>{fl.sort((a,b)=>b-a);fl.forEach(fr=>GD.splice(fr*CO,CO));while(GD.length<CO*RO)GD.unshift(...new Array(CO).fill(-1));SP()},200)}else{SP()}PC=null}
 function RS(){let d=Math.min(2,window.devicePixelRatio||1),w=Math.max(1,Math.round(C.clientWidth)),h=Math.max(1,Math.round(C.clientHeight));C.width=Math.round(w*d);C.height=Math.round(h*d);X.setTransform(d,0,0,d,0,0);CO=Math.max(10,Math.floor((w+G)/(24+G)));RO=Math.max(18,Math.floor((h+G)/(24+G)));CW=Math.max(1,(w-G*(CO-1))/CO);CH=Math.max(1,(h-G*(RO-1))/RO);PX=CW+G;PY=CH+G;GD=new Array(CO*RO).fill(-1);PC=null;SP()}
 function DR(){X.fillStyle='#000';X.fillRect(0,0,C.width,C.height);
-for(let r=0;r<RO;r++){for(let c=0;c<CO;c++){let x=c*PX,y=r*PY,v=AT(c,r);if(v>=0){X.fillStyle=K[v%7];X.fillRect(x+1,y+1,CW-2,CH-2)}else{X.strokeStyle='rgba(255,255,255,.03)';X.strokeRect(x+1,y+1,CW-2,CH-2)}}}
-if(PC){X.fillStyle=K[PC.ci%7];PC.cs.forEach(([c,r])=>{let gr=PC.rw+r;if(gr<0)return;X.fillRect((PC.cl+c)*PX+1,gr*PY+1,CW-2,CH-2)})}}
+let R=CW*.42;
+for(let r=0;r<RO;r++){for(let c=0;c<CO;c++){let cx=c*PX+PX/2,cy=r*PY+PY/2,v=AT(c,r);
+if(v>=0){X.fillStyle=K[v%2];X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()}
+else{X.strokeStyle='rgba(255,255,255,.02)';X.beginPath();X.arc(cx,cy,R*.6,0,Math.PI*2);X.stroke()}}}
+if(PC){X.fillStyle=K[PC.ci%2];PC.cs.forEach(([c,r])=>{let gr=PC.rw+r;if(gr<0)return;let cx=(PC.cl+c)*PX+PX/2,cy=gr*PY+PY/2;X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()})}}
 function UP(tm){if(!alive)return;let dt=LT?Math.min(tm-LT,200):0;LT=tm;if(PC){DA+=dt;let dm=Math.max(30,300-(Math.min(12,RO/2))*20);while(DA>=dm&&PC){DA-=dm;if(PC.rw<PC.trw){PC.rw++;let sp=PC.trw-PC.srw;PC.cl=Math.round(PC.scl+(PC.tcl-PC.scl)*(sp>0?(PC.rw-PC.srw)/sp:1))}else{PC.cl=PC.tcl;LK()}}}else{SP()}DR();requestAnimationFrame(UP)}
 let alive=1;RS();window.addEventListener('resize',()=>RS());requestAnimationFrame(UP)})();
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}

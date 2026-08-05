@@ -416,62 +416,49 @@ window.addEventListener('mousemove',e=>{if(!dragging)return;if(Math.abs(e.client
 window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'});
 })();
 
+
 /* TEXT FLOW — particle system for MOTION DESIGNER */
 (function(){
 const C=document.getElementById('textFlowCanvas');if(!C)return;
 const X=C.getContext('2d');
-let pts=[],W=0,H=0,mx=-999,my=-999,anim=0;
+let pts=[],W=0,H=0,mx=-999,my=-999,build=0;
 
-function resize(){
-const dpr=Math.min(2,devicePixelRatio||1);
-const r=C.getBoundingClientRect();W=r.width;H=r.height;
-C.width=W*dpr;C.height=H*dpr;X.setTransform(dpr,0,0,dpr,0,0);
-buildParticles();
-}
 function buildParticles(){
+build++;
+if(build<2)return;
 pts=[];
-const fs=Math.min(W/11,H/3.5);X.font=`700 ${fs}px Inter,system-ui,sans-serif`;
+const dpr=Math.min(2,devicePixelRatio||1);
+const r=C.getBoundingClientRect();W=r.width;H=C.height/dpr;
+C.width=W*dpr;C.height=H*dpr;X.setTransform(dpr,0,0,dpr,0,0);
+X.clearRect(0,0,W,H);
+const fs=Math.min(W/10,H/2.8);X.font=`700 ${fs}px Inter,system-ui,sans-serif`;
 const lines=['MOTION','DESIGNER'];
+let all=[];
 lines.forEach((line,li)=>{
 const m=X.measureText(line);
-const x0=(W-m.width)/2;
-const y0=H*.35+li*fs*1.1;
-// Sample text into particles
-const step=Math.max(1,Math.floor(fs/8));
+const x0=(W-m.width)/2,y0=H*.38+li*fs*1.05;
+X.fillStyle='#171717';X.fillText(line,x0,y0);
+const step=Math.max(2,Math.floor(fs/12));
 for(let col=0;col<m.width;col+=step){
-for(let row=-fs*.3;row<fs*.7;row+=step){
-X.fillStyle='#fff';
-X.fillText(line,x0,y0);
-const data=X.getImageData(x0+col,y0+row,1,1);
-if(data.data[3]>80){
-const px=x0+col,py=y0+row;
-pts.push({ox:px,oy:py,x:px+Math.random()*80-40,y:py+Math.random()*80-40,vx:0,vy:0,size:Math.random()*2+1.5});
-}}}
+for(let row=-Math.floor(fs*.2);row<Math.floor(fs*.6);row+=step){
+const d=X.getImageData(x0+col,y0+row,1,1);
+if(d.data[3]>80){all.push({ox:x0+col,oy:y0+row,x:x0+col+(Math.random()-.5)*80,y:y0+row+(Math.random()-.5)*80,vx:0,vy:0,size:Math.random()*3+1.5})}
+}}
+X.clearRect(0,0,W,H);
 });
+pts=all.filter((_,i)=>all.length<=500?true:i%Math.ceil(all.length/500)===0);
 }
-function tick(){
-anim++;X.clearRect(0,0,W,H);
-if(mx<0&&anim===10)resize();
-pts.forEach(p=>{
-const dx=mx-p.x,dy=my-p.y,dist=Math.sqrt(dx*dx+dy*dy);
-const force=Math.max(0,1-dist/120);
-p.vx+=dx*force*.015;p.vy+=dy*force*.015;
-// Return home
-p.vx+=(p.ox-p.x)*.03;p.vy+=(p.oy-p.y)*.03;
-p.vx*=.88;p.vy*=.88;p.x+=p.vx;p.y+=p.vy;
+function tick(){X.clearRect(0,0,W,H);
+pts.forEach(p=>{const dx=mx-p.x,dy=my-p.y,dist=Math.sqrt(dx*dx+dy*dy)+.01;
+if(mx>-998&&dist<140){const f=(1-dist/140)*.08;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
+p.vx+=(p.ox-p.x)*.025;p.vy+=(p.oy-p.y)*.025;p.vx*=.85;p.vy*=.85;p.x+=p.vx;p.y+=p.vy;
 const dd=Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2);
-const alpha=.25+.75*Math.min(1,Math.max(0,(dd-5)/30));
-X.fillStyle=`rgba(23,23,23,${alpha})`;
-X.beginPath();X.arc(p.x,p.y,p.size,0,Math.PI*2);X.fill();
-});
-requestAnimationFrame(tick);
-}
-resize();
-window.addEventListener('resize',resize);
+X.fillStyle=`rgba(23,23,23,${.35+.65*Math.min(1,dd/25)})`;X.beginPath();X.arc(p.x,p.y,p.size,0,Math.PI*2);X.fill()});
+requestAnimationFrame(tick)}
+function resize(){buildParticles()}resize();
+window.addEventListener('resize',()=>{setTimeout(resize,200)});
 C.addEventListener('mousemove',e=>{const r=C.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
-C.addEventListener('mouseleave',()=>{mx=-999;my=-999});
-C.addEventListener('touchmove',e=>{e.preventDefault();const r=C.getBoundingClientRect();mx=e.touches[0].clientX-r.left;my=e.touches[0].clientY-r.top},{passive:false});
-C.addEventListener('touchend',()=>{mx=-999;my=-999});
+C.addEventListener('mouseleave',()=>{mx=-999});
 tick();
 })();
 

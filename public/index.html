@@ -211,7 +211,7 @@ main{background:#f5f5f5}
 .tetris-section{display:flex;flex-direction:column;gap:2rem;padding:2rem 1rem}
 @media(min-width:768px){.tetris-section{display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center;padding:3rem 2rem}}
 @media(min-width:1024px){.tetris-section{padding:4rem 3rem}}
-.tetris-canvas-box{position:relative;background:#000;border-radius:.75rem;overflow:hidden;width:clamp(200px,30vw,340px);aspect-ratio:1/1;flex-shrink:0;border:4px solid #0d0d0d}
+.tetris-canvas-box{position:relative;background:#000;border-radius:.75rem;overflow:hidden;width:clamp(200px,30vw,340px);aspect-ratio:1/1;flex-shrink:0;border:none}
 .tetris-canvas-box canvas{width:100%;height:100%;display:block}
 .tetris-text-side h3{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:#171717}
 .tetris-text-side h3 em{font-family:'Inter',serif;font-style:italic;font-weight:400}
@@ -449,10 +449,10 @@ function SP(){let si=Math.floor(RN()*7),bc=null,bcl=0,brr=0,bs=-9e9;for(let t=0;
 function LK(){if(!PC)return;PC.cs.forEach(([c,r])=>{let gr=PC.rw+r,gc=PC.cl+c;if(gr>=0&&gr<RO&&gc>=0&&gc<CO)GD[gr*CO+gc]=PC.ci});let fl=[];for(let r=0;r<RO;r++){let sd=1;for(let c=0;c<CO;c++)if(GD[r*CO+c]<0){sd=0;break}if(sd)fl.push(r)}if(fl.length){setTimeout(()=>{fl.sort((a,b)=>b-a);fl.forEach(fr=>GD.splice(fr*CO,CO));while(GD.length<CO*RO)GD.unshift(...new Array(CO).fill(-1));SP()},200)}else{SP()}PC=null}
 function RS(){let d=Math.min(2,window.devicePixelRatio||1),w=Math.max(1,Math.round(C.clientWidth)),h=Math.max(1,Math.round(C.clientHeight));C.width=Math.round(w*d);C.height=Math.round(h*d);X.setTransform(d,0,0,d,0,0);CO=Math.max(10,Math.floor((w+G)/(24+G)));RO=Math.max(18,Math.floor((h+G)/(24+G)));CW=Math.max(1,(w-G*(CO-1))/CO);CH=Math.max(1,(h-G*(RO-1))/RO);PX=CW+G;PY=CH+G;GD=new Array(CO*RO).fill(-1);PC=null;SP()}
 function DR(){X.fillStyle='#000';X.fillRect(0,0,C.width,C.height);
-let R=CW*.42;
+let R=Math.min(CW,CH)*.35;
 for(let r=0;r<RO;r++){for(let c=0;c<CO;c++){let cx=c*PX+PX/2,cy=r*PY+PY/2,v=AT(c,r);
 if(v>=0){X.fillStyle=K[v%2];X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()}
-else{X.strokeStyle='rgba(255,255,255,.02)';X.beginPath();X.arc(cx,cy,R*.6,0,Math.PI*2);X.stroke()}}}
+else{X.strokeStyle='rgba(255,255,255,.02)';X.beginPath();X.arc(cx,cy,R*.5,0,Math.PI*2);X.stroke()}}}
 if(PC){X.fillStyle=K[PC.ci%2];PC.cs.forEach(([c,r])=>{let gr=PC.rw+r;if(gr<0)return;let cx=(PC.cl+c)*PX+PX/2,cy=gr*PY+PY/2;X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()})}}
 function UP(tm){if(!alive)return;let dt=LT?Math.min(tm-LT,200):0;LT=tm;if(PC){DA+=dt;let dm=Math.max(30,300-(Math.min(12,RO/2))*20);while(DA>=dm&&PC){DA-=dm;if(PC.rw<PC.trw){PC.rw++;let sp=PC.trw-PC.srw;PC.cl=Math.round(PC.scl+(PC.tcl-PC.scl)*(sp>0?(PC.rw-PC.srw)/sp:1))}else{PC.cl=PC.tcl;LK()}}}else{SP()}DR();requestAnimationFrame(UP)}
 let alive=1;RS();window.addEventListener('resize',()=>RS());requestAnimationFrame(UP)})();

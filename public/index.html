@@ -214,9 +214,11 @@ main{background:#f5f5f5}
 @media(min-width:1024px){.ls-wrap{padding:4rem 2rem 6rem}}
 .letter-scroll{display:flex;flex-direction:column;justify-content:center;align-items:center;height:500px}
 @media(min-width:1024px){.letter-scroll{height:800px}}
-.letter-scroll li{font-size:clamp(48px,14vw,250px);font-weight:700;letter-spacing:-.025em;line-height:.85;overflow:hidden;display:flex}
+
 .letter-scroll li .let{position:relative;display:inline-block}
-.letter-scroll li .let .below{position:absolute;bottom:100%;left:0}
+.letter-scroll .lit{font-size:clamp(48px,14vw,250px);font-weight:100;letter-spacing:-.025em;line-height:.85;transition:font-weight .3s ease,color .3s;display:inline-block}
+.letter-scroll .lit:hover{font-weight:700}
+@media(min-width:768px){.letter-scroll{height:800px}}
 .letter-scroll canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
 
 /* TOOLS */
@@ -327,7 +329,7 @@ footer{background:#f5f5f5}
     </div>
   </section></div>
 
-  <div class="ls-wrap"><ul class="letter-scroll" id="letterScroll" style="position:relative"><canvas id="particleCanvas"></canvas><li><span class="let"><span>M</span><span class="below">M</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>T</span><span class="below">T</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>N</span><span class="below">N</span></span></li><li><span class="let"><span>D</span><span class="below">D</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>S</span><span class="below">S</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>G</span><span class="below">G</span></span><span class="let"><span>N</span><span class="below">N</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>R</span><span class="below">R</span></span></li></ul></div>
+  <div class="ls-wrap"><div class="letter-scroll" id="letterScroll" style="position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;height:500px"><canvas id="particleCanvas"></canvas><div style="overflow:hidden;display:flex"><span class="lit" style="font-weight:100">M</span><span class="lit" style="font-weight:100">O</span><span class="lit" style="font-weight:100">T</span><span class="lit" style="font-weight:100">I</span><span class="lit" style="font-weight:100">O</span><span class="lit" style="font-weight:100">N</span></div><div style="overflow:hidden;display:flex"><span class="lit" style="font-weight:100">D</span><span class="lit" style="font-weight:100">E</span><span class="lit" style="font-weight:100">S</span><span class="lit" style="font-weight:100">I</span><span class="lit" style="font-weight:100">G</span><span class="lit" style="font-weight:100">N</span><span class="lit" style="font-weight:100">E</span><span class="lit" style="font-weight:100">R</span></div></div></div>
 
   <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Blender</span></div><div class="tool"><span>Cinema 4D</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Rive</span></div><div class="tool"><span>DaVinci Resolve</span></div><div class="tool"><span>Houdini</span></div><div class="tool"><span>Unreal Engine</span></div><div class="tool"><span>Lottie</span></div><div class="tool"><span>GSAP</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
 </main>

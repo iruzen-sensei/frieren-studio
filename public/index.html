@@ -207,6 +207,10 @@ main{background:#f5f5f5}
 .sc-card .card-tag .tag-sub{font-size:.6rem;color:rgba(255,255,255,.55);margin-top:.1rem}
 .scroll-carousel-spacer{height:180vh}
 
+/* TYPEWRITER CARET */
+.typewriter-caret{display:inline-block;width:3px;height:1em;background:#f5f5f5;margin-left:2px;vertical-align:text-bottom;animation:blink .8s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
 /* TETRIS + TEXT SECTION */
 .tetris-section{display:flex;flex-direction:column;gap:2rem;padding:2rem 1rem}
 @media(min-width:768px){.tetris-section{display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center;padding:3rem 2rem}}
@@ -317,7 +321,7 @@ footer{background:#f5f5f5}
   <div class="services-outer"><section class="services-section" id="services">
     <div class="services-grid">
       <div class="services-text">
-        <h2>Services We Offer</h2>
+        <h2 id="typewriterHeading">Services We Offer</h2>
         <div class="svc-list">
           <div class="svc-row" data-idx="0"><span class="svc-num">01</span><div class="svc-info"><h3>Brand & Campaign Films</h3><p>Cinematic motion for brands, products, TV, and social — driven by strategy and delivered with craft.</p></div></div>
           <div class="svc-row" data-idx="1"><span class="svc-num">02</span><div class="svc-info"><h3>UI / UX Motion Design</h3><p>Micro-interactions, onboarding flows, and animated design systems that make products feel alive.</p></div></div>
@@ -460,6 +464,14 @@ if(v>=0){X.fillStyle=K[v%2];X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()}}}
 if(PC){X.fillStyle=K[PC.ci%2];PC.cs.forEach(([c,r])=>{let gr=PC.rw+r;if(gr<0)return;let cx=(PC.cl+c)*PX+PX/2,cy=gr*PY+PY/2;X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()})}}
 function UP(tm){if(!alive)return;let dt=LT?Math.min(tm-LT,200):0;LT=tm;if(PC){DA+=dt;let dm=Math.max(30,300-(Math.min(12,RO/2))*20);while(DA>=dm&&PC){DA-=dm;if(PC.rw<PC.trw){PC.rw++;let sp=PC.trw-PC.srw;PC.cl=Math.round(PC.scl+(PC.tcl-PC.scl)*(sp>0?(PC.rw-PC.srw)/sp:1))}else{PC.cl=PC.tcl;LK()}}}else{SP()}DR();requestAnimationFrame(UP)}
 let alive=1;RS();window.addEventListener('resize',()=>RS());requestAnimationFrame(UP)})();
+/* TYPEWRITER FOR SERVICES TEXT */
+(function(){
+const el=document.getElementById('typewriterHeading');if(!el)return;
+const full='SERVICES WE OFFER';let i=0;el.textContent='';
+const caret=document.createElement('span');caret.className='typewriter-caret';el.appendChild(caret);
+function type(){if(i<full.length){el.textContent=full.substring(0,i+1);el.appendChild(caret);i++;setTimeout(type,80+Math.random()*60)}else{caret.remove()}}
+ScrollTrigger.create({trigger:el,start:'top 80%',once:true,onEnter:type});
+})();
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>ScrollTrigger.refresh(),200)});
 </script>

@@ -210,13 +210,14 @@ main{background:#f5f5f5}
 
 
 /* LETTER SCROLL */
-.ls-wrap{padding:6rem 1rem}
-@media(min-width:1024px){.ls-wrap{padding:6rem 2rem}}
+.ls-wrap{padding:3rem 1rem 6rem}
+@media(min-width:1024px){.ls-wrap{padding:4rem 2rem 6rem}}
 .letter-scroll{display:flex;flex-direction:column;justify-content:center;align-items:center;height:500px}
 @media(min-width:1024px){.letter-scroll{height:800px}}
 .letter-scroll li{font-size:clamp(48px,14vw,250px);font-weight:700;letter-spacing:-.025em;line-height:.85;overflow:hidden;display:flex}
 .letter-scroll li .let{position:relative;display:inline-block}
 .letter-scroll li .let .below{position:absolute;bottom:100%;left:0}
+.letter-scroll canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
 
 /* TOOLS */
 .tools-section{padding:0 1rem 6rem}
@@ -326,7 +327,7 @@ footer{background:#f5f5f5}
     </div>
   </section></div>
 
-  <div class="ls-wrap"><ul class="letter-scroll" id="letterScroll"><li><span class="let"><span>M</span><span class="below">M</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>T</span><span class="below">T</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>N</span><span class="below">N</span></span></li><li><span class="let"><span>D</span><span class="below">D</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>S</span><span class="below">S</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>G</span><span class="below">G</span></span><span class="let"><span>N</span><span class="below">N</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>R</span><span class="below">R</span></span></li></ul></div>
+  <div class="ls-wrap"><ul class="letter-scroll" id="letterScroll" style="position:relative"><canvas id="particleCanvas"></canvas><li><span class="let"><span>M</span><span class="below">M</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>T</span><span class="below">T</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>O</span><span class="below">O</span></span><span class="let"><span>N</span><span class="below">N</span></span></li><li><span class="let"><span>D</span><span class="below">D</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>S</span><span class="below">S</span></span><span class="let"><span>I</span><span class="below">I</span></span><span class="let"><span>G</span><span class="below">G</span></span><span class="let"><span>N</span><span class="below">N</span></span><span class="let"><span>E</span><span class="below">E</span></span><span class="let"><span>R</span><span class="below">R</span></span></li></ul></div>
 
   <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Blender</span></div><div class="tool"><span>Cinema 4D</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Rive</span></div><div class="tool"><span>DaVinci Resolve</span></div><div class="tool"><span>Houdini</span></div><div class="tool"><span>Unreal Engine</span></div><div class="tool"><span>Lottie</span></div><div class="tool"><span>GSAP</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
 </main>
@@ -413,6 +414,20 @@ window.addEventListener('mousemove',e=>{if(!dragging)return;if(Math.abs(e.client
 window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'});
 })();
 
+/* PARTICLE HOVER ON MOTION DESIGNER */
+(function(){
+const c=document.getElementById('particleCanvas');if(!c)return;
+const x=c.getContext('2d');const ls=document.getElementById('letterScroll');
+let pts=[],W=0,H=0,mx=-999,my=-999,active=false;
+function resize(){const r=ls.getBoundingClientRect();W=r.width;H=r.height;c.width=W;c.height=H;c.style.width=W+'px';c.style.height=H+'px'}
+resize();window.addEventListener('resize',resize);
+ls.addEventListener('mousemove',e=>{const r=ls.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;active=true});
+ls.addEventListener('mouseleave',()=>{active=false});
+function spawn(){if(!active)return;for(let i=0;i<2;i++){pts.push({x:mx+(Math.random()-.5)*40,y:my+(Math.random()-.5)*10,vx:(Math.random()-.5)*2,vy:-Math.random()*3-1,life:1,size:Math.random()*3+1})}}
+setInterval(spawn,40);
+function draw(){x.clearRect(0,0,W,H);pts=pts.filter(p=>p.life>0);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.05;p.life-=.02;p.size*=.995;x.fillStyle=`rgba(0,0,0,${p.life*.5})`;x.beginPath();x.arc(p.x,p.y,p.size,0,Math.PI*2);x.fill()});requestAnimationFrame(draw)}
+draw();
+})();
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>ScrollTrigger.refresh(),200)});
 </script>

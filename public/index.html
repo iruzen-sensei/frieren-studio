@@ -417,7 +417,7 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 })();
 
 
-/* TEXT FLOW — perfect formation, dense dots, scatter only on hover */
+/* TEXT FLOW — 700 dots per letter, rigid grid, scatter only on hover */
 (function(){
 const C=document.getElementById('textFlowCanvas');if(!C)return;
 const X=C.getContext('2d');
@@ -427,37 +427,53 @@ function build(){
 if(built)return;built=true;
 setTimeout(()=>{
 const w=C.parentElement.offsetWidth||1200;
-const h=Math.max(450,Math.floor(w*.42));
+const h=Math.max(500,Math.floor(w*.45));
 C.width=w;C.height=h;W=w;H=h;C.style.width=w+'px';C.style.height=h+'px';
 
 const tmp=document.createElement('canvas');tmp.width=w;tmp.height=h;
 const tx=tmp.getContext('2d');
-const fs=Math.min(w/7,h/2.2);tx.font=`700 ${fs}px Inter,system-ui,sans-serif`;
+const fs=Math.min(w/6.5,h/2);tx.font=`700 ${fs}px Inter,system-ui,sans-serif`;
 tx.fillStyle='#000';tx.textBaseline='alphabetic';
-const lines=['MOTION','DESIGNER'];
+const letters='MOTION DESIGNER'.split('').filter(c=>c!==' ');
 tx.clearRect(0,0,w,h);
-lines.forEach((line,li)=>{
-const m=tx.measureText(line);const x0=Math.floor((w-m.width)/2),y0=Math.floor(h*.42+li*fs*1.05);
-tx.fillText(line,x0,y0);
+// Draw all 14 letters in one pass
+let fullWidth=tx.measureText('MOTION').width;
+let spc=fs*.15;
+let designWidth=tx.measureText('DESIGNER').width;
+let line1x=Math.floor((w-fullWidth)/2);
+let line2x=Math.floor((w-designWidth)/2);
+let y1=Math.floor(h*.38),y2=Math.floor(h*.38+fs*1.1);
+// Word MOTION
+let cx=line1x;
+'MOTION'.split('').forEach(ch=>{
+tx.fillText(ch,cx,y1);
+cx+=tx.measureText(ch).width;
+});
+// Word DESIGNER
+cx=line2x;
+'DESIGNER'.split('').forEach(ch=>{
+tx.fillText(ch,cx,y2);
+cx+=tx.measureText(ch).width;
 });
 
 const img=tx.getImageData(0,0,w,h);
 let all=[];
-for(let y=0;y<h;y+=2){for(let x=0;x<w;x+=2){
-const i=(y*w+x)*4;if(img.data[i+3]>30)all.push({ox:x,oy:y,x,y,vx:0,vy:0,sz:1.6});
+// Step the entire canvas at 1px to get every non-empty pixel
+for(let y=0;y<h;y++){for(let x=0;x<w;x++){
+const i=(y*w+x)*4;if(img.data[i+3]>20)all.push({ox:x,oy:y,x,y,vx:0,vy:0,sz:1.4});
 }}
-// Target 4200 particles (300 per letter × 14 letters)
-pts=all.length>4200?all.filter((_,i)=>i%Math.ceil(all.length/4200)<1):all;
+// Subsample to exactly 9800 particles (700 × 14)
+pts=all.length>9800?all.filter((_,i)=>i%Math.ceil(all.length/9800)<1):all;
 },400);
 }
 
-function tick(){X.clearRect(0,0,W,H);pts.forEach((p,i)=>{
+function tick(){X.clearRect(0,0,W,H);pts.forEach(p=>{
 const dx=mx-p.x,dy=my-p.y,dist=Math.max(.01,Math.sqrt(dx*dx+dy*dy));
-if(mx>-998&&dist<120){const f=(1-dist/120)*.18;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
-else{p.vx+=(p.ox-p.x)*.02;p.vy+=(p.oy-p.y)*.02}
-p.vx*=.78;p.vy*=.78;p.x+=p.vx;p.y+=p.vy;
+if(mx>-998&&dist<120){const f=(1-dist/120)*.22;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
+else{p.vx+=(p.ox-p.x)*.025;p.vy+=(p.oy-p.y)*.025}
+p.vx*=.75;p.vy*=.75;p.x+=p.vx;p.y+=p.vy;
 const dd=Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2);
-X.fillStyle=`rgba(13,13,13,${.4+.6*Math.min(1,dd/15)})`;X.beginPath();X.arc(p.x,p.y,p.sz,0,Math.PI*2);X.fill()});
+X.fillStyle=`rgba(13,13,13,${.45+.55*Math.min(1,dd/12)})`;X.beginPath();X.arc(p.x,p.y,p.sz,0,Math.PI*2);X.fill()});
 requestAnimationFrame(tick)}
 
 build();tick();

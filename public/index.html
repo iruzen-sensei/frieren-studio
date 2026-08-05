@@ -207,12 +207,7 @@ main{background:#f5f5f5}
 .sc-card .card-tag .tag-sub{font-size:.6rem;color:rgba(255,255,255,.55);margin-top:.1rem}
 .scroll-carousel-spacer{height:180vh}
 
-/* TYPEWRITER */
-.typewriter-caret{display:inline-block;width:3px;height:.85em;background:#f5f5f5;margin-left:1px;vertical-align:baseline;animation:tw-blink .7s step-end infinite;box-shadow:0 0 8px rgba(245,245,245,.4)}
-@keyframes tw-blink{0%,100%{opacity:1}50%{opacity:.15}}
-.scramble-char{display:inline-block;color:#a1a1a1}
-.highlight-flash{animation:hl-flash .3s ease-out}
-@keyframes hl-flash{0%{filter:brightness(2);text-shadow:0 0 12px rgba(255,255,255,.6)}100%{filter:brightness(1);text-shadow:none}}
+
 
 /* TETRIS + TEXT SECTION */
 .tetris-section{display:flex;flex-direction:column;gap:2rem;padding:2rem 1rem}
@@ -324,7 +319,7 @@ footer{background:#f5f5f5}
   <div class="services-outer"><section class="services-section" id="services">
     <div class="services-grid">
       <div class="services-text">
-        <h2 id="typewriterHeading">Services We Offer</h2>
+        <h2>Services We Offer</h2>
         <div class="svc-list">
           <div class="svc-row" data-idx="0"><span class="svc-num">01</span><div class="svc-info"><h3>Brand & Campaign Films</h3><p>Cinematic motion for brands, products, TV, and social — driven by strategy and delivered with craft.</p></div></div>
           <div class="svc-row" data-idx="1"><span class="svc-num">02</span><div class="svc-info"><h3>UI / UX Motion Design</h3><p>Micro-interactions, onboarding flows, and animated design systems that make products feel alive.</p></div></div>
@@ -467,42 +462,6 @@ if(v>=0){X.fillStyle=K[v%2];X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()}}}
 if(PC){X.fillStyle=K[PC.ci%2];PC.cs.forEach(([c,r])=>{let gr=PC.rw+r;if(gr<0)return;let cx=(PC.cl+c)*PX+PX/2,cy=gr*PY+PY/2;X.beginPath();X.arc(cx,cy,R,0,Math.PI*2);X.fill()})}}
 function UP(tm){if(!alive)return;let dt=LT?Math.min(tm-LT,200):0;LT=tm;if(PC){DA+=dt;let dm=Math.max(30,300-(Math.min(12,RO/2))*20);while(DA>=dm&&PC){DA-=dm;if(PC.rw<PC.trw){PC.rw++;let sp=PC.trw-PC.srw;PC.cl=Math.round(PC.scl+(PC.tcl-PC.scl)*(sp>0?(PC.rw-PC.srw)/sp:1))}else{PC.cl=PC.tcl;LK()}}}else{SP()}DR();requestAnimationFrame(UP)}
 let alive=1;RS();window.addEventListener('resize',()=>RS());requestAnimationFrame(UP)})();
-/* PRO TYPEWRITER — scramble + caret glow + smart pauses + delete loop */
-(function(){
-const el=document.getElementById('typewriterHeading');if(!el)return;
-const words=['SERVICES WE OFFER','BRAND FILMS','UI MOTION','3D & CGI','MOTION DESIGN'];
-let wordIdx=0,charIdx=0,deleting=false,started=false;
-const caret=document.createElement('span');caret.className='typewriter-caret';
-const glyphs='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
-function scramble(len,cb){
-let f=[];for(let i=0;i<len;i++)f[i]=glyphs[Math.floor(Math.random()*glyphs.length)];
-el.textContent=f.join('');el.appendChild(caret);
-let cyc=0;const iv=setInterval(()=>{cyc++;if(cyc>=6){clearInterval(iv);el.querySelectorAll('span').forEach(s=>s.remove());cb()}else{for(let i=0;i<len;i++)f[i]=glyphs[Math.floor(Math.random()*glyphs.length)];el.textContent=f.join('');el.appendChild(caret)}},35);
-}
-function typeChar(){
-if(deleting){
-if(charIdx>0){charIdx--;el.textContent=words[wordIdx].substring(0,charIdx);el.appendChild(caret);setTimeout(typeChar,30)}else{deleting=false;wordIdx=(wordIdx+1)%words.length;setTimeout(typeChar,300)}
-return;
-}
-if(charIdx<words[wordIdx].length){
-const ch=words[wordIdx][charIdx];charIdx++;
-el.textContent=words[wordIdx].substring(0,charIdx);el.appendChild(caret);
-// Highlight flash on each char
-el.classList.add('highlight-flash');setTimeout(()=>el.classList.remove('highlight-flash'),300);
-const delay=',.'.includes(ch)?180:' '.includes(ch)?120:60+Math.random()*40;
-setTimeout(typeChar,delay);
-}else{// Finished word — pause then delete
-setTimeout(()=>{deleting=true;typeChar()},1800);
-}
-}
-function start(){
-if(started)return;started=true;
-scramble(words[0].length,()=>{
-el.textContent='';charIdx=0;el.appendChild(caret);typeChar();
-});
-}
-ScrollTrigger.create({trigger:el,start:'top 80%',once:true,onEnter:start});
-})();
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>ScrollTrigger.refresh(),200)});
 </script>

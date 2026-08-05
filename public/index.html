@@ -208,13 +208,14 @@ main{background:#f5f5f5}
 .scroll-carousel-spacer{height:180vh}
 
 /* TETRIS + TEXT SECTION */
-.tetris-section{padding:2rem 1rem;display:flex;flex-direction:column;gap:2rem}
-@media(min-width:768px){.tetris-section{display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center;padding:3rem 4rem}}
-.tetris-canvas-box{position:relative;background:#000;border-radius:1rem;overflow:hidden;width:clamp(200px,30vw,340px);aspect-ratio:1/1;flex-shrink:0;border:4px solid #0d0d0d}
+.tetris-section{display:flex;flex-direction:column;gap:2rem;background:#171717;border-radius:1rem;padding:3rem 2rem}
+@media(min-width:768px){.tetris-section{display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center;padding:4rem 2.5rem}}
+@media(min-width:1024px){.tetris-section{padding:5rem 3rem;border-radius:1.25rem}}
+.tetris-canvas-box{position:relative;background:#000;border-radius:.75rem;overflow:hidden;width:clamp(200px,30vw,340px);aspect-ratio:1/1;flex-shrink:0;border:4px solid #262626}
 .tetris-canvas-box canvas{width:100%;height:100%;display:block}
-.tetris-text-side h3{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:#171717}
+.tetris-text-side h3{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:#f5f5f5}
 .tetris-text-side h3 em{font-family:'Inter',serif;font-style:italic;font-weight:400}
-.tetris-text-side .sub{font-size:.85rem;color:#6b6b6b;margin-top:1rem;line-height:1.7;max-width:90%}
+.tetris-text-side .sub{font-size:.85rem;color:#a1a1a1;margin-top:1rem;line-height:1.7;max-width:90%}
 
 /* LETTER SCROLL */
 .ls-wrap{padding:6rem 1rem}
@@ -334,7 +335,8 @@ footer{background:#f5f5f5}
   </section></div>
 
   <!-- TETRIS + TEXT -->
-  <div class="tetris-section">
+  <div style="padding:.5rem">
+    <div class="tetris-section">
     <div class="tetris-canvas-box">
       <canvas id="tetrisCanvas"></canvas>
       

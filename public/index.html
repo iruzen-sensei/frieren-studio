@@ -417,7 +417,7 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 })();
 
 
-/* TEXT FLOW — particles form MOTION DESIGNER text */
+/* TEXT FLOW — perfect formation, dense dots, scatter only on hover */
 (function(){
 const C=document.getElementById('textFlowCanvas');if(!C)return;
 const X=C.getContext('2d');
@@ -427,39 +427,37 @@ function build(){
 if(built)return;built=true;
 setTimeout(()=>{
 const w=C.parentElement.offsetWidth||1200;
-const h=Math.max(380,Math.floor(w*.4));
+const h=Math.max(450,Math.floor(w*.42));
 C.width=w;C.height=h;W=w;H=h;C.style.width=w+'px';C.style.height=h+'px';
 
-// Temporary canvas for text sampling
 const tmp=document.createElement('canvas');tmp.width=w;tmp.height=h;
 const tx=tmp.getContext('2d');
-const fs=Math.min(w/8,h/2.3);tx.font=`700 ${fs}px Inter,system-ui,sans-serif`;
+const fs=Math.min(w/7,h/2.2);tx.font=`700 ${fs}px Inter,system-ui,sans-serif`;
 tx.fillStyle='#000';tx.textBaseline='alphabetic';
 const lines=['MOTION','DESIGNER'];
-let all=[];
+tx.clearRect(0,0,w,h);
 lines.forEach((line,li)=>{
 const m=tx.measureText(line);const x0=Math.floor((w-m.width)/2),y0=Math.floor(h*.42+li*fs*1.05);
 tx.fillText(line,x0,y0);
 });
 
-// Sample — gather all non-transparent pixels
 const img=tx.getImageData(0,0,w,h);
-for(let y=0;y<h;y+=3){for(let x=0;x<w;x+=3){
-const i=(y*w+x)*4;if(img.data[i+3]>40){
-all.push({ox:x,oy:y,x:x+(Math.random()-.5)*30,y:y+(Math.random()-.5)*30,vx:0,vy:0,sz:1.8});
+let all=[];
+for(let y=0;y<h;y+=2){for(let x=0;x<w;x+=2){
+const i=(y*w+x)*4;if(img.data[i+3]>30)all.push({ox:x,oy:y,x,y,vx:0,vy:0,sz:1.6});
 }}
+// Target 4200 particles (300 per letter × 14 letters)
+pts=all.length>4200?all.filter((_,i)=>i%Math.ceil(all.length/4200)<1):all;
+},400);
 }
 
-pts=all.length>800?all.filter((_,i)=>i%Math.ceil(all.length/800)<1):all;
-},500);
-}
-
-function tick(){X.clearRect(0,0,W,H);pts.forEach(p=>{
+function tick(){X.clearRect(0,0,W,H);pts.forEach((p,i)=>{
 const dx=mx-p.x,dy=my-p.y,dist=Math.max(.01,Math.sqrt(dx*dx+dy*dy));
-if(mx>-998&&dist<140){const f=(1-dist/140)*.12;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
-p.vx+=(p.ox-p.x)*.015;p.vy+=(p.oy-p.y)*.015;p.vx*=.8;p.vy*=.8;p.x+=p.vx;p.y+=p.vy;
+if(mx>-998&&dist<120){const f=(1-dist/120)*.18;p.vx-=dx/dist*f;p.vy-=dy/dist*f}
+else{p.vx+=(p.ox-p.x)*.02;p.vy+=(p.oy-p.y)*.02}
+p.vx*=.78;p.vy*=.78;p.x+=p.vx;p.y+=p.vy;
 const dd=Math.sqrt((p.x-p.ox)**2+(p.y-p.oy)**2);
-X.fillStyle=`rgba(13,13,13,${.35+.65*Math.min(1,dd/20)})`;X.beginPath();X.arc(p.x,p.y,p.sz,0,Math.PI*2);X.fill()});
+X.fillStyle=`rgba(13,13,13,${.4+.6*Math.min(1,dd/15)})`;X.beginPath();X.arc(p.x,p.y,p.sz,0,Math.PI*2);X.fill()});
 requestAnimationFrame(tick)}
 
 build();tick();

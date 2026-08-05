@@ -200,7 +200,7 @@ main{background:#f5f5f5}
 .s-carousel-view{position:relative;width:100%;max-width:1400px;height:100%;margin:0 auto;cursor:grab;user-select:none;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .s-carousel-view:active{cursor:grabbing}
 .s-carousel-view .sc-card{position:absolute;top:50%;left:50%;display:inline-flex;width:fit-content;height:fit-content;background:transparent;transform-origin:center center;pointer-events:none;border-radius:0;border:none}
-.s-carousel-view .sc-card .card-inner{position:relative;display:inline-flex;border-radius:1rem;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.65);transition:filter 1000ms}
+.s-carousel-view .sc-card .card-inner{position:relative;display:inline-flex;border-radius:1rem;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.65);transition:filter 500ms}
 .sc-card .card-inner img,.sc-card .card-inner video{width:clamp(140px,16vw,220px);height:auto;aspect-ratio:3/4;object-fit:cover;display:block}
 .sc-card .card-tag{position:absolute;bottom:0;left:0;right:0;padding:.6rem .8rem;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);pointer-events:none}
 .sc-card .card-tag .tag-title{font-size:.75rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.06em}
@@ -402,7 +402,7 @@ arrange(0);
 // Scroll-driven: activeIndex = scroll progress through total cards
 // Scroll drives from card 3 → card 7, reverses when scrolling up
 const startCard=3,endCard=7;
-gsap.to({p:startCard},{p:endCard,scrollTrigger:{trigger:'#scrollCarousel',start:'top center',end:'bottom center',scrub:1,onUpdate:s=>{const v=s.progress*(endCard-startCard)+startCard;const ai=Math.round(v);ai>=startCard&&ai<=endCard&&ai!==activeIndex?(activeIndex=ai,arrange(activeIndex)):null;if(s.progress<=0&&activeIndex!==startCard){activeIndex=startCard;arrange(startCard)}if(s.progress>=1&&activeIndex!==endCard){activeIndex=endCard;arrange(endCard)}},onLeaveBack:()=>{activeIndex=startCard;arrange(startCard)},onLeave:()=>{activeIndex=endCard;arrange(endCard)}},ease:'none'});arrange(startCard);
+gsap.to({p:startCard},{p:endCard,scrollTrigger:{trigger:'#scrollCarousel',start:'top center',end:'bottom center',scrub:0.6,onUpdate:s=>{const v=s.progress*(endCard-startCard)+startCard;const ai=Math.floor(v+.3);const snapped=Math.min(endCard,Math.max(startCard,ai));if(snapped!==activeIndex){activeIndex=snapped;arrange(activeIndex)}if(s.progress<=0&&activeIndex!==startCard){activeIndex=startCard;arrange(startCard)}if(s.progress>=1&&activeIndex!==endCard){activeIndex=endCard;arrange(endCard)}},onLeaveBack:()=>{activeIndex=startCard;arrange(startCard)},onLeave:()=>{activeIndex=endCard;arrange(endCard)}},ease:'none'});arrange(startCard);
 
 // Drag
 let dragging=false,startX=0;

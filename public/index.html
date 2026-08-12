@@ -342,7 +342,7 @@ let lenis2;if(typeof Lenis!="undefined"){lenis2=new Lenis({duration:1.2,easing:t
 (function(){const vs=document.querySelectorAll('[data-lazy-video]');if(!vs.length)return;if(window.innerWidth>=1024){return}let active=null;let t=!1;function u(){const vh=window.innerHeight,zT=vh*.3,zB=vh*.7;let center=null,bestD=Infinity;vs.forEach(v=>{const r=v.getBoundingClientRect(),c=r.top+r.height/2;if(c>=zT&&c<=zB){const d=Math.abs(c-vh/2);if(d<bestD){bestD=d;center=v}}});if(center&&center!==active){if(active){active.pause();active.currentTime=0;active.load()}if(center){center.currentTime=0;center.load();center.play().catch(()=>{})}active=center}else if(!active){const f=vs[0],r=f.getBoundingClientRect();if(r.bottom>0&&r.top<vh){f.currentTime=0;f.load();f.play().catch(()=>{});active=f}}}window.addEventListener('scroll',()=>{if(!t){t=!0;requestAnimationFrame(()=>{u();t=!1})}},{passive:!0});u();})();
 
 // Preload work card videos on desktop while loading screen is up
-if(window.innerWidth>=1024){document.querySelectorAll('[data-lazy-video]').forEach(v=>{v.setAttribute('autoplay','');v.preload='auto';v.load()})}
+if(window.innerWidth>=1024){document.querySelectorAll('[data-lazy-video]').forEach(v=>{v.setAttribute('autoplay','');v.preload='auto';v.play().catch(()=>{})})}
 const loading=document.getElementById('loading'),counter=document.getElementById('loadingCounter');
 let c=0;const iv=setInterval(()=>{c++;counter.textContent=c;if(c>=100){clearInterval(iv);gsap.to(loading,{opacity:0,duration:.4,delay:.3,onComplete:()=>{loading.style.display='none';startAll()}})}},18);
 

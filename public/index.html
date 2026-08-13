@@ -148,7 +148,6 @@ main{background:#f5f5f5}
 /* FRIEREN LETTERS — hover/tap reveal */
 .frieren-letters{position:relative;display:flex;flex-direction:column;height:100%;width:100%;border-top:1px solid #171717;overflow:hidden}
 .f-letter{position:relative;flex:1;overflow:hidden;background:transparent;border-bottom:1px solid #171717;cursor:pointer;display:flex;align-items:center;padding:0 .75rem;-webkit-tap-highlight-color:transparent}
-.f-scrim{position:absolute;inset:0;z-index:1;background:rgba(245,245,245,.45);pointer-events:none}
 .f-band-blur{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;background:url('upscalemedia-transformed%20(5).jpeg') center/cover no-repeat;filter:blur(14px);transition:filter .75s cubic-bezier(.4,0,.2,1);pointer-events:none;will-change:filter}
 .f-letter .f-char{position:relative;z-index:3;font-family:'Lemon',sans-serif;font-weight:700;font-size:clamp(4.5rem,7.5vw,10rem);letter-spacing:-.02em;line-height:.8;color:#171717;transition:color .5s;user-select:none}
 .f-letter .f-cap{position:absolute;right:.75rem;bottom:.6rem;z-index:4;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#f5f5f5;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none}
@@ -304,7 +303,6 @@ footer{background:#f5f5f5}
   </div>
 
   <section class="about-section" id="about"><div class="about-left"><h4>Myself</h4><div class="mob-vid" id="aboutMobVid"><video src="" poster="" muted autoplay loop playsinline></video></div><p class="big-text" id="aboutText"></p></div><div class="about-right"><div class="frieren-letters" id="frierenLetters">
-  <div class="f-scrim"></div>
   <div class="f-letter"><div class="f-band-blur"></div><span class="f-char">F</span><p class="f-cap">Frames</p></div>
   <div class="f-letter"><div class="f-band-blur"></div><span class="f-char">R</span><p class="f-cap">Rhythm</p></div>
   <div class="f-letter"><div class="f-band-blur"></div><span class="f-char">I</span><p class="f-cap">Ideas</p></div>

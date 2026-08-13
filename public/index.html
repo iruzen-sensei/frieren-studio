@@ -148,9 +148,9 @@ main{background:#f5f5f5}
 /* FRIEREN LETTERS — hover/tap reveal */
 .frieren-letters{position:relative;display:flex;flex-direction:column;height:100%;width:100%;border-top:1px solid #171717;overflow:hidden}
 .f-letter{position:relative;flex:1;overflow:hidden;background:transparent;border-bottom:1px solid #171717;cursor:pointer;display:flex;align-items:center;padding:0 .75rem;-webkit-tap-highlight-color:transparent}
-.f-blur-bg{position:absolute;inset:0;z-index:0;background:url('upscalemedia-transformed%20(5).jpeg') center/cover no-repeat;filter:blur(14px)}
+.f-blur-bg{position:absolute;inset:-24px;z-index:0;background:url('upscalemedia-transformed%20(5).jpeg') center/cover no-repeat;filter:blur(14px);pointer-events:none}
 .f-scrim{position:absolute;inset:0;z-index:1;background:rgba(245,245,245,.45);pointer-events:none}
-.f-sharp{position:absolute;inset:0;z-index:2;background:url('upscalemedia-transformed%20(5).jpeg') center/cover no-repeat;opacity:0;transition:opacity .5s ease;clip-path:inset(100% 0 0 0);will-change:opacity,clip-path}
+.f-sharp{position:absolute;inset:0;z-index:2;background:url('upscalemedia-transformed%20(5).jpeg') center/cover no-repeat;opacity:0;transition:opacity .45s ease;clip-path:inset(100% 0 0 0);pointer-events:none;will-change:opacity,clip-path}
 .f-letter .f-char{position:relative;z-index:3;font-family:'Lemon',sans-serif;font-weight:700;font-size:clamp(4.5rem,7.5vw,10rem);letter-spacing:-.02em;line-height:.8;color:#171717;transition:color .5s;user-select:none}
 .f-letter .f-cap{position:absolute;right:.75rem;bottom:.6rem;z-index:4;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#f5f5f5;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none}
 .f-letter:hover .f-char,.f-letter.active .f-char{color:#f5f5f5}

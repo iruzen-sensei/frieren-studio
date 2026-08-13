@@ -23,7 +23,7 @@ window.FRIEREN_CONFIG = {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
 <style>
-@font-face{font-family:'Girona';src:url('girona.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Thunder';src:url('Thunder-BlackLC.ttf') format('truetype');font-weight:900;font-display:swap}
 </style>
 <!-- Mobile optimizations -->
 <meta name="theme-color" content="#171717">
@@ -151,7 +151,7 @@ main{background:#f5f5f5}
 .f-letter{position:relative;flex:1;overflow:hidden;background:#171717;border-bottom:1px solid #262626;cursor:pointer;display:flex;align-items:center;padding:0 .75rem;-webkit-tap-highlight-color:transparent}
 .f-letter .f-img{position:absolute;inset:0;background-size:cover;background-position:center;transform:translateX(-102%);transition:transform .7s cubic-bezier(.22,1,.36,1);z-index:1;will-change:transform}
 .f-letter .f-tint{position:absolute;inset:0;z-index:2;background:linear-gradient(rgba(96,80,220,.34),rgba(96,80,220,.34));mix-blend-mode:multiply;opacity:0;transition:opacity .6s}
-.f-letter .f-char{position:relative;z-index:3;font-family:'Girona',serif;font-weight:400;font-size:clamp(4.5rem,7.5vw,10rem);letter-spacing:-.02em;line-height:.8;color:#f5f5f5;transition:color .5s;user-select:none}
+.f-letter .f-char{position:relative;z-index:3;font-family:'Thunder',sans-serif;font-weight:900;font-size:clamp(4.5rem,7.5vw,10rem);letter-spacing:-.02em;line-height:.8;color:#f5f5f5;transition:color .5s;user-select:none}
 .f-letter .f-cap{position:absolute;right:.75rem;bottom:.6rem;z-index:4;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#f5f5f5;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none}
 .f-letter:hover .f-img,.f-letter.active .f-img{transform:translateX(0)}
 .f-letter:hover .f-tint,.f-letter.active .f-tint{opacity:1}

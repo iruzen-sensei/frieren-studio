@@ -22,6 +22,10 @@ window.FRIEREN_CONFIG = {
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Girona';src:url('girona.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Nohemi';src:url('Nohemi-Light-BF6438cc5899919.ttf') format('truetype');font-weight:300;font-display:swap}
+</style>
 <!-- Mobile optimizations -->
 <meta name="theme-color" content="#171717">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -73,7 +77,7 @@ ul{list-style:none}
 .bottom-nav-avatar video{width:100%;height:100%;object-fit:cover;scale:1.4;position:relative;top:52%;left:47%;transform:translate(-50%,-50%)}
 .bottom-nav-info{display:flex;flex-direction:column;gap:.375rem;width:250px;position:relative}
 @media(min-width:640px){.bottom-nav-info{width:500px}}
-.bottom-nav-info .name{font-size:.875rem;font-weight:600;color:#f5f5f5;text-transform:uppercase}
+.bottom-nav-info .name{font-size:.875rem;font-weight:600;color:#f5f5f5;text-transform:uppercase;font-family:'Girona',serif}
 @media(min-width:768px){.bottom-nav-info .name{font-size:1.125rem}}
 .marquee-wrap{display:flex;align-items:center;height:1rem;overflow:hidden;position:relative}
 @media(min-width:768px){.marquee-wrap{height:1.125rem}}
@@ -148,7 +152,7 @@ main{background:#f5f5f5}
 .f-letter{position:relative;flex:1;overflow:hidden;border-bottom:1px solid #d4d4d4;cursor:pointer;display:flex;align-items:center;padding:0 .75rem;-webkit-tap-highlight-color:transparent}
 .f-letter .f-img{position:absolute;inset:0;background-size:cover;background-position:center;transform:translateX(-102%);transition:transform .7s cubic-bezier(.22,1,.36,1);z-index:1;will-change:transform}
 .f-letter .f-tint{position:absolute;inset:0;z-index:2;background:linear-gradient(rgba(96,80,220,.34),rgba(96,80,220,.34));mix-blend-mode:multiply;opacity:0;transition:opacity .6s}
-.f-letter .f-char{position:relative;z-index:3;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:clamp(4.5rem,7.5vw,10rem);letter-spacing:-.04em;line-height:.8;color:#171717;transition:color .5s;user-select:none}
+.f-letter .f-char{position:relative;z-index:3;font-family:'Girona',serif;font-weight:400;font-size:clamp(4.5rem,7.5vw,10rem);letter-spacing:-.02em;line-height:.8;color:#171717;transition:color .5s;user-select:none}
 .f-letter .f-cap{position:absolute;right:.75rem;bottom:.6rem;z-index:4;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#f5f5f5;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none}
 .f-letter:hover .f-img,.f-letter.active .f-img{transform:translateX(0)}
 .f-letter:hover .f-tint,.f-letter.active .f-tint{opacity:1}
@@ -248,7 +252,7 @@ main{background:#f5f5f5}
 footer{background:#f5f5f5}
 .footer-grid{padding:.5rem .5rem 2rem;display:grid;grid-template-columns:repeat(12,1fr);gap:.5rem;position:relative}
 @media(min-width:1024px){.footer-grid{padding:2rem 1rem 1rem;gap:1rem}}
-.footer-grid .wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-10vh);font-weight:700;font-size:clamp(100px,14vw,250px);letter-spacing:-.025em;pointer-events:none;z-index:0;white-space:nowrap}
+.footer-grid .wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-10vh);font-family:'Girona',serif;font-weight:400;font-size:clamp(100px,14vw,250px);letter-spacing:-.02em;pointer-events:none;z-index:0;white-space:nowrap}
 @media(max-width:1023px){.footer-grid .wm{font-size:clamp(50px,16vw,120px)}}
 .footer-grid a{display:flex;align-items:flex-end;padding:1rem;background:rgba(212,212,212,.5);backdrop-filter:blur(8px);border-radius:.5rem;font-size:clamp(16px,1.4vw,24px);font-weight:500;line-height:1.25;cursor:pointer;transition:backdrop-filter .5s;z-index:1}
 .footer-grid a:hover{backdrop-filter:blur(12px)}
@@ -259,6 +263,9 @@ footer{background:#f5f5f5}
 .footer-grid .fc,.footer-grid .fgh{grid-column:span 6;height:120px}
 .footer-grid .fig,.footer-grid .fli{grid-column:span 6;height:120px}
 @media(min-width:1024px){.footer-grid .fc,.footer-grid .fgh{grid-column:span 6;height:120px}.footer-grid .fig,.footer-grid .fli{grid-column:span 4;height:350px}}
+
+/* NOHEMI — all subtext, uppercase */
+.header-col .hl,.get-in-touch .pill .stack span,.about-left h4,.work-sub,.work-card .style-name,.work-card .style-desc,.work-card .meta .name,.see-all,.svc-num,.svc-info h3,.svc-info p,.tools-section h4,.tools-grid .tool span,.footer-grid a,.f-cap,.marquee-wrap .track span{font-family:'Nohemi','Inter',sans-serif;font-weight:400;text-transform:uppercase}
 </style>
 </head>
 <body>

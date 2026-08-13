@@ -146,15 +146,13 @@ main{background:#f5f5f5}
 .about-right .sticky-vid video{width:100%;height:100%;object-fit:cover;pointer-events:none}
 
 /* FRIEREN LETTERS — hover/tap reveal */
-.frieren-letters{position:sticky;top:2rem;display:flex;flex-direction:column;height:100%;width:100%;border-top:1px solid #171717;overflow:hidden}
-@media(min-width:1024px){.frieren-letters{top:3rem}}
+.frieren-letters{position:relative;display:flex;flex-direction:column;height:100%;width:100%;border-top:1px solid #171717;overflow:hidden}
 .f-letter{position:relative;flex:1;overflow:hidden;background:transparent;border-bottom:1px solid #171717;cursor:pointer;display:flex;align-items:center;padding:0 .75rem;-webkit-tap-highlight-color:transparent}
-.f-blur-bg{position:absolute;inset:-24px;z-index:0;background:url('upscalemedia-transformed%20(5).jpeg') center/contain fixed no-repeat;filter:blur(14px)}
+.f-blur-bg{position:absolute;inset:0;z-index:0;background:url('upscalemedia-transformed%20(5).jpeg') center/cover no-repeat;filter:blur(14px)}
 .f-scrim{position:absolute;inset:0;z-index:1;background:rgba(245,245,245,.45);pointer-events:none}
-.f-letter .f-reveal{position:absolute;inset:0;z-index:2;background:url('upscalemedia-transformed%20(5).jpeg') center/contain fixed no-repeat;opacity:0;transition:opacity .55s ease;will-change:opacity}
+.f-sharp{position:absolute;inset:0;z-index:2;background:url('upscalemedia-transformed%20(5).jpeg') center/cover no-repeat;opacity:0;transition:opacity .5s ease;clip-path:inset(100% 0 0 0);will-change:opacity,clip-path}
 .f-letter .f-char{position:relative;z-index:3;font-family:'Lemon',sans-serif;font-weight:700;font-size:clamp(4.5rem,7.5vw,10rem);letter-spacing:-.02em;line-height:.8;color:#171717;transition:color .5s;user-select:none}
 .f-letter .f-cap{position:absolute;right:.75rem;bottom:.6rem;z-index:4;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#f5f5f5;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none}
-.f-letter:hover .f-reveal,.f-letter.active .f-reveal{opacity:1}
 .f-letter:hover .f-char,.f-letter.active .f-char{color:#f5f5f5}
 .f-letter:hover .f-cap,.f-letter.active .f-cap{opacity:1;transform:translateY(0)}
 
@@ -306,14 +304,14 @@ footer{background:#f5f5f5}
   </div>
 
   <section class="about-section" id="about"><div class="about-left"><h4>Myself</h4><div class="mob-vid" id="aboutMobVid"><video src="" poster="" muted autoplay loop playsinline></video></div><p class="big-text" id="aboutText"></p></div><div class="about-right"><div class="frieren-letters" id="frierenLetters">
-  <div class="f-blur-bg"></div><div class="f-scrim"></div>
-  <div class="f-letter"><span class="f-char">F</span><div class="f-reveal"></div><p class="f-cap">Frames</p></div>
-  <div class="f-letter"><span class="f-char">R</span><div class="f-reveal"></div><p class="f-cap">Rhythm</p></div>
-  <div class="f-letter"><span class="f-char">I</span><div class="f-reveal"></div><p class="f-cap">Ideas</p></div>
-  <div class="f-letter"><span class="f-char">E</span><div class="f-reveal"></div><p class="f-cap">Emotion</p></div>
-  <div class="f-letter"><span class="f-char">R</span><div class="f-reveal"></div><p class="f-cap">Render</p></div>
-  <div class="f-letter"><span class="f-char">E</span><div class="f-reveal"></div><p class="f-cap">Edit</p></div>
-  <div class="f-letter"><span class="f-char">N</span><div class="f-reveal"></div><p class="f-cap">Narrative</p></div>
+  <div class="f-blur-bg"></div><div class="f-scrim"></div><div class="f-sharp" id="fSharp"></div>
+  <div class="f-letter" data-band="0"><span class="f-char">F</span><p class="f-cap">Frames</p></div>
+  <div class="f-letter" data-band="1"><span class="f-char">R</span><p class="f-cap">Rhythm</p></div>
+  <div class="f-letter" data-band="2"><span class="f-char">I</span><p class="f-cap">Ideas</p></div>
+  <div class="f-letter" data-band="3"><span class="f-char">E</span><p class="f-cap">Emotion</p></div>
+  <div class="f-letter" data-band="4"><span class="f-char">R</span><p class="f-cap">Render</p></div>
+  <div class="f-letter" data-band="5"><span class="f-char">E</span><p class="f-cap">Edit</p></div>
+  <div class="f-letter" data-band="6"><span class="f-char">N</span><p class="f-cap">Narrative</p></div>
 </div></div></section>
 
   <section class="work-section" id="work">
@@ -453,8 +451,8 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 
 
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
-// FRIEREN letters — tap to reveal (touch devices)
-document.querySelectorAll('.f-letter').forEach(l=>{l.addEventListener('click',()=>{const was=l.classList.contains('active');document.querySelectorAll('.f-letter').forEach(x=>x.classList.remove('active'));if(!was)l.classList.add('active')})});
+// FRIEREN letters — hover/tap reveals sharp band over blurred background
+(function(){const sharp=document.getElementById('fSharp');const letters=document.querySelectorAll('.f-letter');if(!sharp||!letters.length)return;const n=letters.length;let activeBand=-1;function show(i){const top=i*100/n,bot=(n-1-i)*100/n;sharp.style.clipPath='inset('+top+'% 0 '+bot+'% 0)';sharp.style.opacity='1'}function hide(){sharp.style.opacity='0'}letters.forEach((l,i)=>{l.addEventListener('mouseenter',()=>{l.classList.add('active');show(i)});l.addEventListener('mouseleave',()=>{l.classList.remove('active');if(activeBand!==i)hide()});l.addEventListener('click',()=>{if(activeBand===i){activeBand=-1;hide()}else{activeBand=i;show(i)}})})})();
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t&&typeof lenis2!='undefined')lenis2.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(typeof ScrollTrigger!="undefined")ScrollTrigger.refresh()},200)});
 </script>
 

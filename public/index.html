@@ -12,7 +12,6 @@ window.FRIEREN_CONFIG = {
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.unsplash.com"><link rel="dns-prefetch" href="https://images.unsplash.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
 <style>
 @font-face{font-family:'Lemon';src:url('Lemon-Bold-Exfont7089.otf') format('opentype');font-weight:700;font-display:swap}
@@ -201,9 +200,6 @@ main{background:#f5f5f5}
 .s-carousel-view .sc-card{position:absolute;top:50%;left:50%;display:inline-flex;width:fit-content;height:fit-content;background:transparent;transform-origin:center center;pointer-events:none;border-radius:0;border:none}
 .s-carousel-view .sc-card .card-inner{position:relative;display:inline-flex;border-radius:1rem;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.65);transition:filter 500ms}
 .sc-card .card-inner img,.sc-card .card-inner video{width:clamp(140px,16vw,220px);height:auto;aspect-ratio:3/4;object-fit:cover;display:block}
-.sc-card .card-tag{position:absolute;bottom:0;left:0;right:0;padding:.6rem .8rem;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);pointer-events:none}
-.sc-card .card-tag .tag-title{font-size:.75rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.06em}
-.sc-card .card-tag .tag-sub{font-size:.6rem;color:rgba(255,255,255,.55);margin-top:.1rem}
 .scroll-carousel-spacer{height:180vh}
 
 
@@ -310,10 +306,9 @@ footer{background:#f5f5f5}
       <div class="services-text">
         <h2>Services We Offer</h2>
         <div class="svc-list">
-          <div class="svc-row" data-idx="0"><span class="svc-num">01</span><div class="svc-info"><h3>Brand & Campaign Films</h3><p>Cinematic motion for brands, products, TV, and social — driven by strategy and delivered with craft.</p></div></div>
-          <div class="svc-row" data-idx="1"><span class="svc-num">02</span><div class="svc-info"><h3>UI / UX Motion Design</h3><p>Micro-interactions, onboarding flows, and animated design systems that make products feel alive.</p></div></div>
-          <div class="svc-row" data-idx="2"><span class="svc-num">03</span><div class="svc-info"><h3>3D & CGI</h3><p>Photoreal renders, character animation, and abstract 3D — everything from product viz to virtual production.</p></div></div>
-          <div class="svc-row" data-idx="3"><span class="svc-num">04</span><div class="svc-info"><h3>Explainer & Education</h3><p>Clear, compelling explainers and data visualization that turn complexity into clarity.</p></div></div>
+          <div class="svc-row" data-idx="0"><span class="svc-num">01</span><div class="svc-info"><h3>SaaS Product Videos</h3><p>Polished product demos, feature launches, and app walkthroughs that make software feel effortless.</p></div></div>
+          <div class="svc-row" data-idx="1"><span class="svc-num">02</span><div class="svc-info"><h3>Explainer Videos</h3><p>Clear, compelling explainers that turn complex ideas into simple, engaging stories.</p></div></div>
+          <div class="svc-row" data-idx="2"><span class="svc-num">03</span><div class="svc-info"><h3>UI / UX Motion Design</h3><p>Micro-interactions, onboarding flows, and animated design systems that make products feel alive.</p></div></div>
         </div>
       </div>
       <div class="scroll-carousel" id="scrollCarousel">
@@ -361,16 +356,12 @@ function startAll(){if(typeof ScrollTrigger!="undefined")ScrollTrigger.refresh()
 (function(){
 const view=document.getElementById('carouselView');if(!view)return;
 const cards=[
-{img:'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=500&h=667&fit=crop',name:'Brand Films',cat:'Cinematic Anthems'},
-{img:'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=667&fit=crop',name:'UI Motion',cat:'Micro-interactions'},
-{img:'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=500&h=667&fit=crop',name:'3D & CGI',cat:'Renders & Animation'},
-{img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=667&fit=crop',name:'Explainer',cat:'Data Visualization'},
-{img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=667&fit=crop',name:'VFX',cat:'Compositing'},
-{img:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=500&h=667&fit=crop',name:'Mixed Media',cat:'Collage & Hybrid'},
-{img:'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=500&h=667&fit=crop',name:'Gradients',cat:'Abstract Motion'},
-{img:'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=500&h=667&fit=crop',name:'Cel',cat:'Hand-Drawn Frame'},
-{img:'https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=500&h=667&fit=crop',name:'Rotoscope',cat:'Live Action Trace'},
-{img:'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=500&h=667&fit=crop',name:'Liquid',cat:'Fluid Simulation'}
+{img:'svc-editorial.jpg'},
+{img:'svc-jacket.jpg'},
+{img:'svc-oath.jpg'},
+{img:'svc-savee.jpg'},
+{img:'svc-heat.jpg'},
+{img:'svc-64.jpg'}
 ];
 const total=cards.length;
 const radius=700,angleStep=8,sizeDecrease=.045;
@@ -379,7 +370,7 @@ let activeIndex=0;
 // Build cards
 cards.forEach((c,i)=>{
 const el=document.createElement('div');el.className='sc-card';
-el.innerHTML='<div class="card-inner"><img src="'+c.img+'" alt="'+c.name+'" loading="lazy" decoding="async"><div class="card-tag"><p class="tag-title">'+c.name+'</p><p class="tag-sub">'+c.cat+'</p></div></div>';
+el.innerHTML='<div class="card-inner"><img src="'+c.img+'" alt="" loading="lazy" decoding="async"></div>';
 view.appendChild(el);
 });
 const els=view.querySelectorAll('.sc-card');
@@ -413,7 +404,7 @@ arrange(0);
 
 // Scroll-driven: activeIndex = scroll progress through total cards
 // Scroll drives from card 3 → card 7, reverses when scrolling up
-const startCard=3,endCard=7;
+const startCard=0,endCard=5;
 gsap.to({p:startCard},{p:endCard,scrollTrigger:{trigger:'#scrollCarousel',start:'top center',end:'bottom center',scrub:0.6,onUpdate:s=>{const v=s.progress*(endCard-startCard)+startCard;const ai=Math.floor(v+.3);const snapped=Math.min(endCard,Math.max(startCard,ai));if(snapped!==activeIndex){activeIndex=snapped;arrange(activeIndex)}if(s.progress<=0&&activeIndex!==startCard){activeIndex=startCard;arrange(startCard)}if(s.progress>=1&&activeIndex!==endCard){activeIndex=endCard;arrange(endCard)}},onLeaveBack:()=>{activeIndex=startCard;arrange(startCard)},onLeave:()=>{activeIndex=endCard;arrange(endCard)}},ease:'none'});arrange(startCard);
 
 // Drag

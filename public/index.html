@@ -6,16 +6,7 @@
 <title>Frieren.studio — Motion Design Studio</title>
 <script>
 window.FRIEREN_CONFIG = {
-  showreelVideo: 'show%20reeeel%20final.mp4', showreelPoster: '',
-  aboutVideo: '', aboutPoster: '',
-  avatarVideo: '', avatarPoster: '',
-  workCard1: { cover: '', hoverVideo: 'haaland%2Bdocumentary.mp4', hoverPoster: '' },
-  workCard2: { cover: '', hoverVideo: 'thee%20final%20mix%20media%20project%20for%20portfolio.mp4', hoverPoster: '' },
-  workCard3: { cover: '', hoverVideo: 'apple%20style%20show%20reel.mp4', hoverPoster: '' },
-  workCard4: { cover: '', hoverVideo: 'vox%20style%20reel.mp4', hoverPoster: '' },
-  workCard5: { cover: '', hoverVideo: '', hoverPoster: '' },
-  workCard6: { cover: '', hoverVideo: '', hoverPoster: '' },
-  svcImg1: '', svcImg2: '', svcImg3: '',
+  showreelVideo: 'show%20reeeel%20final.mp4',
   studio: { name: 'Frieren.studio', email: 'frierenstudio@gmail.com', instagram: 'https://instagram.com/frieren.aep', vimeo: '', linkedin: '' }
 };
 </script>
@@ -135,16 +126,13 @@ main{background:#f5f5f5}
 .about-left{grid-column:span 12;display:flex;flex-direction:column}
 @media(min-width:1024px){.about-left{grid-column:span 7;justify-content:center}}
 .about-left h4{font-weight:600;text-transform:uppercase;margin-bottom:1rem}
-.about-left .mob-vid{display:block;aspect-ratio:16/9;border-radius:.5rem;overflow:hidden;margin-bottom:1rem;clip-path:inset(0 0 100% 0)}
-@media(min-width:1024px){.about-left .mob-vid{display:none}}
-.about-left .mob-vid video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+
 .about-left .big-text{font-size:clamp(28px,3.5vw,96px);font-weight:600;letter-spacing:-.025em;line-height:1}
 .about-left .big-text .aw-wrap{display:inline-block;white-space:nowrap}
 .about-left .big-text .aw{display:inline-block;will-change:transform}
 .about-right{display:none;grid-column:span 5}
 @media(min-width:1024px){.about-right{display:block}}
-.about-right .sticky-vid{position:sticky;top:calc(100vh - 20vw - 172px);width:100%;aspect-ratio:16/9;border-radius:.75rem;overflow:hidden}
-.about-right .sticky-vid video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+
 
 /* FRIEREN LETTERS — hover/tap reveal */
 .frieren-letters{position:relative;display:flex;flex-direction:column;height:100%;width:100%;border-top:1px solid #171717;overflow:hidden}
@@ -175,13 +163,8 @@ main{background:#f5f5f5}
 @media(min-width:1024px){.work-card .thumb{border-radius:.75rem;height:clamp(280px,18vw,420px)}}
 .work-card .thumb .cover{position:absolute;inset:0;width:100%;height:120%;top:-10%;transform:translateY(-10vh)}
 @media(min-width:1024px){.work-card .thumb .cover{top:-15%}}
-.work-card .thumb .cover img{width:100%;height:100%;object-fit:cover;scale:1.05;transition:scale .5s}
-.work-card:hover .thumb .cover img{scale:1.05}
-.work-card .thumb .blur{position:absolute;inset:0;background:rgba(23,23,23,.3);backdrop-filter:blur(12px);z-index:10;opacity:0}
-.work-card:hover .thumb .blur{opacity:0}
-.work-card .thumb .hv{position:absolute;top:50%;left:50%;width:clamp(300px,65%,600px);aspect-ratio:16/9;border-radius:.5rem;overflow:hidden;z-index:20;transform:translate(-50%,-8.33%);clip-path:polygon(30% 50%,70% 50%,70% 50%,30% 50%);transition:all .7s cubic-bezier(.87,0,.13,1)}
-.work-card:hover .thumb .hv{clip-path:polygon(30% 50%,70% 50%,70% 50%,30% 50%);transform:translate(-50%,-8.33%)}
-.work-card .thumb .hv video{width:100%;height:100%;object-fit:cover}
+.work-card .thumb .cover img{width:100%;height:100%;object-fit:cover;scale:1.05}
+
 .work-card .style-label{position:absolute;bottom:0;left:0;right:0;padding:.75rem 1rem;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);z-index:15;pointer-events:none}
 .work-card .style-label .style-name{font-size:clamp(12px,.8vw,16px);font-weight:700;color:#fff;letter-spacing:.03em;text-transform:uppercase}
 .work-card .style-label .style-desc{font-size:clamp(10px,.6vw,13px);color:rgba(255,255,255,.7);margin-top:.2rem;letter-spacing:.02em}
@@ -190,13 +173,7 @@ main{background:#f5f5f5}
 .work-card .meta .row1{display:flex;justify-content:space-between;align-items:center;width:100%}
 .work-card .meta .row1 .left{display:flex;align-items:center;gap:.5rem}
 @media(min-width:1024px){.work-card .meta .row1 .left{gap:.75rem}}
-.work-card .meta .row1 .left .icon{width:1.5rem;height:1.5rem;border-radius:9999px;overflow:hidden}
-@media(min-width:1024px){.work-card .meta .row1 .left .icon{width:2rem;height:2rem}}
-.work-card .meta .row1 .left .icon img{width:100%;height:100%;object-fit:cover}
 .work-card .meta .row1 .left .name{font-size:clamp(14px,1.2vw,18px);text-transform:uppercase;font-weight:600;color:#f5f5f5;letter-spacing:.025em}
-.work-card .meta .row1 .right{display:flex;gap:.75rem}
-@media(min-width:1024px){.work-card .meta .row1 .right{gap:1.25rem}}
-.work-card .meta .row1 .right span{font-size:clamp(14px,1.2vw,18px);text-transform:uppercase;font-weight:600;color:#d4d4d4;letter-spacing:.025em}
 .see-all{display:flex;align-items:center;gap:.25rem;font-size:clamp(20px,1.5vw,32px);font-weight:500}
 .see-all svg{width:1.5rem;height:1.5rem}
 
@@ -288,7 +265,7 @@ footer{background:#f5f5f5}
 
   <div class="hero-wrapper">
     <div class="hero-vid-wrap" id="heroVidWrap">
-      <div class="hero-vid-outer" style="style="transform:translateX(0px);opacity:1">
+      <div class="hero-vid-outer">
         <div class="hero-vid-box">
           <video id="showreelVideo" src="" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Crect fill='%231a1a1a' width='800' height='450'/%3E%3Ctext fill='%23555' font-family='monospace' font-size='14' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EShowreel%3C/text%3E%3C/svg%3E" muted loop playsinline></video>
         </div>
@@ -304,7 +281,7 @@ footer{background:#f5f5f5}
     <div class="hero-prompts"><div class="prompt" id="scrL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg>Scroll for</div><div class="prompt" id="scrR">cool sh*t<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7 7 7 7-7"/></svg></div></div>
   </div>
 
-  <section class="about-section" id="about"><div class="about-left"><h4>Myself</h4><div class="mob-vid" id="aboutMobVid"><video src="" poster="" muted autoplay loop playsinline></video></div><p class="big-text" id="aboutText"></p></div><div class="about-right"><div class="frieren-letters" id="frierenLetters">
+  <section class="about-section" id="about"><div class="about-left"><h4>Myself</h4><p class="big-text" id="aboutText"></p></div><div class="about-right"><div class="frieren-letters" id="frierenLetters">
   <div class="f-letter"><div class="f-band-blur"></div><span class="f-char">F</span><p class="f-cap">ITS FRIEREN.STUDIO</p></div>
   <div class="f-letter"><div class="f-band-blur"></div><span class="f-char">R</span><p class="f-cap">ITS FRIEREN.STUDIO</p></div>
   <div class="f-letter"><div class="f-band-blur"></div><span class="f-char">I</span><p class="f-cap">ITS FRIEREN.STUDIO</p></div>
@@ -350,7 +327,7 @@ footer{background:#f5f5f5}
 
   
 
-  <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Premiere Pro</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Framer</span></div><div class="tool"><span>Spline</span></div><div class="tool"><span>Lovable</span></div><div class="tool"><span>Blender</span></div></div><div class="hl-box" id="toolsHL"></div></div></div></div></div>
+  <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Premiere Pro</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Framer</span></div><div class="tool"><span>Spline</span></div><div class="tool"><span>Lovable</span></div><div class="tool"><span>Blender</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
 </main>
 
 <footer><div class="footer-grid"><h2 class="wm">frieren.studio</h2><a href="#work" class="fw">Work</a><a href="#" class="fl">Lab</a><a href="mailto:frierenstudio@gmail.com" class="fc">Contact</a><a href="#" class="fgh" target="_blank" rel="noopener">Vimeo</a><a href="https://instagram.com/frieren.aep" class="fig" target="_blank" rel="noopener">Instagram</a><a href="#" class="fli" target="_blank" rel="noopener">LinkedIn</a></div></footer>
@@ -359,7 +336,7 @@ footer{background:#f5f5f5}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script>
-(function(){const C=window.FRIEREN_CONFIG||{};if(C.showreelVideo){const v=document.getElementById('showreelVideo');const mv=document.querySelector('#mVid video');const w=window.innerWidth;if(w>=768&&v){v.src=C.showreelVideo;setTimeout(()=>{v.play().catch(()=>{})},2000)}if(w<1024&&mv){setTimeout(()=>{mv.src=C.showreelVideo;mv.muted=true;mv.setAttribute('playsinline','');mv.setAttribute('loop','');mv.setAttribute('autoplay','');mv.load();mv.play().catch(()=>{})},2000)}}if(C.aboutVideo){document.querySelectorAll('#aboutMobVid video,#aboutStickyVid video').forEach(v=>{v.src=C.aboutVideo;v.setAttribute('playsinline','');v.setAttribute('autoplay','');v.setAttribute('loop','');v.muted=true;v.play().catch(()=>{})})}if(C.avatarVideo){const a=document.querySelector('.bottom-nav-avatar video');if(a)a.src=C.avatarVideo}const hvs=document.querySelectorAll('.work-card .hv video'),covs=document.querySelectorAll('.work-card .cover img');for(let i=1;i<=6;i++){const wc=C['workCard'+i];if(wc&&hvs[i-1]){if(wc.hoverVideo)hvs[i-1].src=wc.hoverVideo;if(wc.cover)covs[i-1].src=wc.cover}}const svcs=document.querySelectorAll('.svc-item .clip img');[C.svcImg1,C.svcImg2,C.svcImg3].forEach((s,i)=>{if(s&&svcs[i])svcs[i].src=s});if(C.studio){if(C.studio.name)document.querySelector('.name').textContent=C.studio.name;if(C.studio.email)document.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.href='mailto:'+C.studio.email);const map={vimeo:C.studio.vimeo,instagram:C.studio.instagram,linkedin:C.studio.linkedin};document.querySelectorAll('.footer-grid a').forEach(a=>{const t=(a.textContent||'').toLowerCase();if(map[t])a.href=map[t]})}})();
+(function(){const C=window.FRIEREN_CONFIG||{};if(C.showreelVideo){const v=document.getElementById('showreelVideo');const mv=document.querySelector('#mVid video');const w=window.innerWidth;if(w>=768&&v){v.src=C.showreelVideo;setTimeout(()=>{v.play().catch(()=>{})},2000)}if(w<1024&&mv){setTimeout(()=>{mv.src=C.showreelVideo;mv.muted=true;mv.setAttribute('playsinline','');mv.setAttribute('loop','');mv.setAttribute('autoplay','');mv.load();mv.play().catch(()=>{})},2000)}}if(C.studio){if(C.studio.name)document.querySelector('.name').textContent=C.studio.name;if(C.studio.email)document.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.href='mailto:'+C.studio.email);const map={vimeo:C.studio.vimeo,instagram:C.studio.instagram,linkedin:C.studio.linkedin};document.querySelectorAll('.footer-grid a').forEach(a=>{const t=(a.textContent||'').toLowerCase();if(map[t])a.href=map[t]})}})();
 
 if(typeof gsap!="undefined"&&typeof ScrollTrigger!="undefined"){gsap.registerPlugin(ScrollTrigger);}
 // Desktop work card videos: wait for frame buffer then play (avoids blank gap on large files)
@@ -377,7 +354,7 @@ function u(){const vh=window.innerHeight,zT=vh*.3,zB=vh*.7;let center=null,bestD
 
 if(window.__frierenBoot)window.__frierenBoot();
 
-function startAll(){if(typeof ScrollTrigger!="undefined")ScrollTrigger.refresh();const tl=gsap.timeline({delay:.2});document.querySelectorAll('.hl').forEach(el=>tl.to(el,{y:'0%',duration:.8,ease:'power3.out'},'<'));tl.to('#getInTouch',{opacity:1,y:0,scale:1,duration:.6,ease:'power3.out'},'<+.3');const bn=document.getElementById('bottomNav');tl.to(bn,{opacity:1,y:0,scale:1,duration:.7,ease:'power3.out'},'<+.2');if(window.innerWidth>=768)tl.to(bn,{xPercent:-50,y:0,scale:1,duration:.7,ease:'power3.out'},'<');const ou=document.querySelector('.hero-vid-outer');if(ou&&window.innerWidth>=768){let px=0,vx=0;let maxPx=0;function calcBounds(){const bw=ou.offsetWidth;if(bw>0)maxPx=Math.max(0,(window.innerWidth-bw)/2);else maxPx=0}calcBounds();window.addEventListener('resize',calcBounds);window.addEventListener('mousemove',e=>{const dx=e.movementX;vx+=dx*0.072;vx*=0.92;px+=vx;if(px>maxPx){px=maxPx;vx*=-0.6}else if(px<-maxPx){px=-maxPx;vx*=-0.6}ou.style.transform=`translateX(${px}px)`});function drift(){vx*=0.96;px+=vx;if(px>maxPx){px=maxPx;vx*=-0.6}else if(px<-maxPx){px=-maxPx;vx*=-0.6}ou.style.transform=`translateX(${px}px)`;requestAnimationFrame(drift)}requestAnimationFrame(drift)}tl.to('#dAsg',{y:'0%',duration:.7,ease:'power3.out'},'<+.2');tl.to('#dImg1,#dImg2',{y:'0%',duration:.7,ease:'power3.out',stagger:.05,onComplete:()=>{document.querySelectorAll('.big-wrap').forEach(el=>el.classList.add('revealed'))}},'<+.1');tl.to('#scrL',{y:'0%',duration:.6,ease:'power3.out'},'<+.2');tl.to('#scrR',{y:'0%',duration:.6,ease:'power3.out'},'<');tl.to('#mAsg',{y:'0%',duration:.7,ease:'power3.out'},'<+.2');tl.to('#mImg1,#mImg2',{y:'0%',duration:.7,ease:'power3.out',stagger:.08},'<+.1');const sv=document.getElementById('showreelVideo');const mb=document.getElementById('muteBtn');if(mb){mb.addEventListener('click',e=>{e.stopPropagation();if(sv)sv.muted=!sv.muted;const s=mb.querySelector('svg');s.innerHTML=sv&&sv.muted?'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/>':'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>'})}gsap.to('#aboutMobVid',{clipPath:'inset(0 0 0% 0)',scrollTrigger:{trigger:'#aboutMobVid',start:'top 85%',once:true},duration:.9,ease:'power3.inOut'});const aboutP=document.getElementById('aboutText');const txt='here at frieren.studio we are driven by passion to blow life into dead frames, merging emotions with motion through bold, fluid, and awe inspiring animations. with an obsession for detail we help brands reach a new generation, turning viewers into customers, seamlessly.';const wds=txt.split(' ');if(aboutP){if(window.innerWidth>=1024){let dir=1;aboutP.innerHTML=wds.map((w,i)=>{const anim=i%2===0;if(anim)dir*=-1;const ox=anim?dir*(120+Math.random()*80):0;const pad=anim?Math.abs(ox)+'px':0;const side=ox>0?'padding-right':'padding-left';return '<span class="aw-wrap" style="'+side+':'+pad+';margin:0 .3em"><span class="aw" data-ox="'+ox+'">'+w+'</span></span>'}).join(' ');const aws=aboutP.querySelectorAll('.aw');aws.forEach((s,i)=>{const ox=parseFloat(s.getAttribute('data-ox'));if(ox!==0){gsap.set(s,{x:ox});gsap.to(s,{x:0,scrollTrigger:{trigger:'#dImg1',start:'top center',endTrigger:'#work',end:'top center',scrub:1.2},ease:'power2.out'})}})}else{aboutP.innerHTML=wds.map(w=>'<span>'+w+'</span>').join(' ')}}['#wc1','#wc2','#wc3','#wc4','#wc5','#wc6'].forEach((id,i)=>{gsap.to(id,{opacity:1,y:0,scale:1,duration:.7,scrollTrigger:{trigger:id,start:'top 88%',once:true},delay:i*.08})});document.querySelectorAll('.svc-item .tags span').forEach((s,i)=>{gsap.to(s,{opacity:1,y:0,scale:1,duration:.5,scrollTrigger:{trigger:s.closest('.svc-item'),start:'top 80%',once:true},delay:i*.07})});document.querySelectorAll('.svc-item .clip').forEach(el=>{gsap.to(el,{clipPath:'polygon(0 0,100% 0,100% 100%,0 100%)',scrollTrigger:{trigger:el.closest('.svc-item'),start:'top 80%',once:true},duration:1,ease:'power3.inOut'})});gsap.to('.wm',{y:-60,scrollTrigger:{trigger:'footer',start:'top bottom',end:'bottom top',scrub:1}})
+function startAll(){if(typeof ScrollTrigger!="undefined")ScrollTrigger.refresh();const tl=gsap.timeline({delay:.2});document.querySelectorAll('.hl').forEach(el=>tl.to(el,{y:'0%',duration:.8,ease:'power3.out'},'<'));tl.to('#getInTouch',{opacity:1,y:0,scale:1,duration:.6,ease:'power3.out'},'<+.3');const bn=document.getElementById('bottomNav');tl.to(bn,{opacity:1,y:0,scale:1,duration:.7,ease:'power3.out'},'<+.2');if(window.innerWidth>=768)tl.to(bn,{xPercent:-50,y:0,scale:1,duration:.7,ease:'power3.out'},'<');const ou=document.querySelector('.hero-vid-outer');if(ou&&window.innerWidth>=768){let px=0,vx=0;let maxPx=0;function calcBounds(){const bw=ou.offsetWidth;if(bw>0)maxPx=Math.max(0,(window.innerWidth-bw)/2);else maxPx=0}calcBounds();window.addEventListener('resize',calcBounds);window.addEventListener('mousemove',e=>{const dx=e.movementX;vx+=dx*0.072;vx*=0.92;px+=vx;if(px>maxPx){px=maxPx;vx*=-0.6}else if(px<-maxPx){px=-maxPx;vx*=-0.6}ou.style.transform=`translateX(${px}px)`});function drift(){vx*=0.96;px+=vx;if(px>maxPx){px=maxPx;vx*=-0.6}else if(px<-maxPx){px=-maxPx;vx*=-0.6}ou.style.transform=`translateX(${px}px)`;requestAnimationFrame(drift)}requestAnimationFrame(drift)}tl.to('#dAsg',{y:'0%',duration:.7,ease:'power3.out'},'<+.2');tl.to('#dImg1,#dImg2',{y:'0%',duration:.7,ease:'power3.out',stagger:.05,onComplete:()=>{document.querySelectorAll('.big-wrap').forEach(el=>el.classList.add('revealed'))}},'<+.1');tl.to('#scrL',{y:'0%',duration:.6,ease:'power3.out'},'<+.2');tl.to('#scrR',{y:'0%',duration:.6,ease:'power3.out'},'<');tl.to('#mAsg',{y:'0%',duration:.7,ease:'power3.out'},'<+.2');tl.to('#mImg1,#mImg2',{y:'0%',duration:.7,ease:'power3.out',stagger:.08},'<+.1');const sv=document.getElementById('showreelVideo');const mb=document.getElementById('muteBtn');if(mb){mb.addEventListener('click',e=>{e.stopPropagation();if(sv)sv.muted=!sv.muted;const s=mb.querySelector('svg');s.innerHTML=sv&&sv.muted?'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/>':'<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>'})}const aboutP=document.getElementById('aboutText');const txt='here at frieren.studio we are driven by passion to blow life into dead frames, merging emotions with motion through bold, fluid, and awe inspiring animations. with an obsession for detail we help brands reach a new generation, turning viewers into customers, seamlessly.';const wds=txt.split(' ');if(aboutP){if(window.innerWidth>=1024){let dir=1;aboutP.innerHTML=wds.map((w,i)=>{const anim=i%2===0;if(anim)dir*=-1;const ox=anim?dir*(120+Math.random()*80):0;const pad=anim?Math.abs(ox)+'px':0;const side=ox>0?'padding-right':'padding-left';return '<span class="aw-wrap" style="'+side+':'+pad+';margin:0 .3em"><span class="aw" data-ox="'+ox+'">'+w+'</span></span>'}).join(' ');const aws=aboutP.querySelectorAll('.aw');aws.forEach((s,i)=>{const ox=parseFloat(s.getAttribute('data-ox'));if(ox!==0){gsap.set(s,{x:ox});gsap.to(s,{x:0,scrollTrigger:{trigger:'#dImg1',start:'top center',endTrigger:'#work',end:'top center',scrub:1.2},ease:'power2.out'})}})}else{aboutP.innerHTML=wds.map(w=>'<span>'+w+'</span>').join(' ')}}['#wc1','#wc2','#wc3','#wc4','#wc5','#wc6'].forEach((id,i)=>{gsap.to(id,{opacity:1,y:0,scale:1,duration:.7,scrollTrigger:{trigger:id,start:'top 88%',once:true},delay:i*.08})});gsap.to('.wm',{y:-60,scrollTrigger:{trigger:'footer',start:'top bottom',end:'bottom top',scrub:1}})
   }
 
 /* FRAMER CURVE CAROUSEL — identical replica, 6 items, no buttons */
@@ -452,7 +429,7 @@ window.addEventListener('mouseup',()=>{dragging=false;view.style.cursor='grab'})
 const tg=document.getElementById('toolsGrid'),th=document.getElementById('toolsHL');if(tg&&th){tg.querySelectorAll('.tool').forEach(t=>{t.addEventListener('mouseenter',()=>{const tr=t.getBoundingClientRect(),gr=tg.getBoundingClientRect();th.style.width=tr.width+'px';th.style.height=tr.height+'px';th.style.left=(tr.left-gr.left)+'px';th.style.top=(tr.top-gr.top)+'px'})});tg.addEventListener('mouseleave',()=>{th.style.width='0px'})}
 // FRIEREN letters — per-band blurred slice; hover/tap fades that band's blur to 0
 (function(){const wrap=document.getElementById('frierenLetters');const bands=wrap?wrap.querySelectorAll('.f-letter'):[];if(!wrap||!bands.length)return;const blurEls=[];bands.forEach(b=>{const d=b.querySelector('.f-band-blur');if(d)blurEls.push(d)});function layout(){const H=wrap.clientHeight;if(H<=0)return;const n=bands.length,bh=H/n;blurEls.forEach((d,i)=>{d.style.height=(H+56)+'px';d.style.top=(-(i*bh)-28)+'px'})}layout();window.addEventListener('resize',layout);window.addEventListener('load',layout);if(typeof ResizeObserver!='undefined'){new ResizeObserver(layout).observe(wrap)}let activeBand=-1;bands.forEach((l,i)=>{l.addEventListener('click',()=>{if(activeBand===i){activeBand=-1;l.classList.remove('active')}else{if(activeBand>=0)bands[activeBand].classList.remove('active');activeBand=i;l.classList.add('active')}})})})();
-document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t&&typeof lenis2!='undefined')lenis2.scrollTo(t,{duration:1.5})})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(typeof ScrollTrigger!="undefined")ScrollTrigger.refresh()},200)});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t&&typeof lenis2!='undefined'){e.preventDefault();lenis2.scrollTo(t,{duration:1.5})}})});let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(typeof ScrollTrigger!="undefined")ScrollTrigger.refresh()},200)});
 </script>
 
 </body>

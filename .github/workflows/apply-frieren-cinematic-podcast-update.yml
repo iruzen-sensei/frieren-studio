@@ -52,8 +52,7 @@ jobs:
           end_marker = '      <div class="work-card" id="wc6"'
           start = html.index(start_marker)
           end = html.index(end_marker, start)
-          new_card = '''      <div class="work-card" id="wc5"><a href="#"><div class="thumb" style="background:#000"><video src="cinematic-podcast-editing-style.mp4" muted loop playsinline preload="none" poster="cinematic-podcast-poster.jpg" data-lazy-video style="width:100%;height:100%;object-fit:cover;display:block"></video><div class="style-label"><p class="style-name">Cinematic Podcast Editing Style</p><p class="style-desc">High-retention podcast cuts with cinematic pacing</p></div></div><div class="meta"><div class="row1"><div class="left"><p class="name">Cinematic Podcast Editing Style</p></div></div></div></a></div>
-'''
+          new_card = '      <div class="work-card" id="wc5"><a href="#"><div class="thumb" style="background:#000"><video src="cinematic-podcast-editing-style.mp4" muted loop playsinline preload="none" poster="cinematic-podcast-poster.jpg" data-lazy-video style="width:100%;height:100%;object-fit:cover;display:block"></video><div class="style-label"><p class="style-name">Cinematic Podcast Editing Style</p><p class="style-desc">High-retention podcast cuts with cinematic pacing</p></div></div><div class="meta"><div class="row1"><div class="left"><p class="name">Cinematic Podcast Editing Style</p></div></div></div></a></div>\n'
           path.write_text(html[:start] + new_card + html[end:])
           PY
 

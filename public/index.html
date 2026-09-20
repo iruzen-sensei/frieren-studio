@@ -186,10 +186,17 @@ main{background:#f5f5f5}
 @media(min-width:768px){.listen-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:stretch}}
 .listen-left{display:flex;flex-direction:column;gap:1.5rem;justify-content:center}
 .listen-title{font-family:'Thunder',sans-serif;font-weight:900;font-size:clamp(4rem,9vw,9rem);color:#171717;letter-spacing:-.01em;word-spacing:.18em;line-height:.85;text-transform:uppercase}
-.listen-note{font-family:'Helvetica Now Display','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:clamp(15px,1.4vw,22px);line-height:1.6;color:#000;font-weight:500;max-width:46ch;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+.listen-note{font-family:'Helvetica Now Display','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:clamp(15px,1.4vw,22px);line-height:1.6;color:#000;font-weight:500;max-width:46ch;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;transition:opacity .28s ease,transform .28s cubic-bezier(.16,1,.3,1)}
+.listen-note.switching{opacity:0;transform:translateY(10px)}
 .listen-right{width:100%}
 .listen-vid{position:relative;width:100%;aspect-ratio:16/9;border-radius:.75rem;overflow:hidden;background:#000}
+.listen-vid video{transition:opacity .28s ease,transform .5s cubic-bezier(.16,1,.3,1)}
+.listen-vid.switching video{opacity:0;transform:scale(.985)}
 @media(min-width:1024px){.listen-vid{border-radius:1rem}}
+.listen-arrow{position:absolute;top:50%;z-index:12;width:44px;height:44px;border-radius:999px;background:rgba(23,23,23,.52);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#f5f5f5;transform:translateY(-50%);cursor:pointer;transition:background .3s,transform .3s,opacity .3s}
+.listen-arrow:hover{background:rgba(23,23,23,.72);transform:translateY(-50%) scale(1.06)}
+.listen-arrow svg{width:20px;height:20px;color:#f5f5f5}
+.listen-arrow-prev{left:1rem}.listen-arrow-next{right:1rem}
 .vol-pill{position:absolute;bottom:1rem;left:1rem;width:42%;z-index:10;display:flex;align-items:center;background:rgba(23,23,23,.52);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.55rem 1rem}
 .vol-slider{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(245,245,245,.55);outline:none;cursor:pointer}
 .vol-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:#f5f5f5;box-shadow:0 1px 4px rgba(0,0,0,.45);cursor:pointer}
@@ -201,6 +208,7 @@ main{background:#f5f5f5}
 .audio-btn .ico-on{display:none}
 .audio-btn.on .ico-on{display:block}
 .audio-btn.on .ico-off{display:none}
+@media(max-width:640px){.listen-arrow{width:38px;height:38px}.listen-arrow-prev{left:.55rem}.listen-arrow-next{right:.55rem}.vol-pill{width:38%;padding:.5rem .75rem}.audio-btn{padding:.5rem .75rem}.audio-btn .click-me{display:none}}
 
 /* SERVICES */
 .services-outer{padding:.5rem}
@@ -330,11 +338,13 @@ footer{background:#f5f5f5}
     <div class="listen-grid">
       <div class="listen-left">
         <h2 class="listen-title">Listen to<br>our work</h2>
-        <p class="listen-note">This project was inspired by base44, a seriously well crafted motion design video aimed to convey the seamless workflow base44 provides for turning your wildest dreams into proper functioning deployment ready apps.</p>
+        <p class="listen-note" id="listenNote" aria-live="polite">we tried to put strong emphasis on this part of the podcast and grab the viewers attention and create a sense of awe with fast paced cuts and text animations, we would also love for you to comment your opinions</p>
       </div>
       <div class="listen-right">
-        <div class="listen-vid" style="background:#000">
-          <video id="listenVideo" src="project%20for%20base44.mp4" muted loop playsinline preload="none" poster="listen-poster.jpg" style="width:100%;height:100%;object-fit:cover;display:block"></video>
+        <div class="listen-vid" id="listenStage" style="background:#000">
+          <video id="listenVideo" src="alex-hormozi-final-clip.mp4" muted loop playsinline preload="metadata" poster="cinematic-podcast-poster.jpg" style="width:100%;height:100%;object-fit:cover;display:block"></video>
+          <button class="listen-arrow listen-arrow-prev" id="listenPrev" aria-label="Previous listen video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+          <button class="listen-arrow listen-arrow-next" id="listenNext" aria-label="Next listen video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
           <div class="vol-pill">
             <input type="range" id="volSlider" class="vol-slider" min="0" max="1" step="0.01" value="0" aria-label="Volume">
           </div>
@@ -394,8 +404,23 @@ function showPoster(v,show){if(v._poster)v._poster.style.display=show?'block':'n
 function playFromStart(v){v.currentTime=0;showPoster(v,false);v.play().catch(()=>{})}
 function u(){const vh=window.innerHeight,zT=vh*.3,zB=vh*.7;let center=null,bestD=Infinity;vs.forEach(v=>{const r=v.getBoundingClientRect(),c=r.top+r.height/2;if(c>=zT&&c<=zB){const d=Math.abs(c-vh/2);if(d<bestD){bestD=d;center=v}}});if(center&&center!==active){if(active){active.pause();showPoster(active,true)}playFromStart(center);active=center}else if(!active){const f=vs[0],r=f.getBoundingClientRect();if(r.bottom>0&&r.top<vh){playFromStart(f);active=f}}}window.addEventListener('scroll',()=>{if(!t){t=!0;requestAnimationFrame(()=>{u();t=!1})}},{passive:!0});u();})();
 
-// Listen video: play muted when in view, toggle audio on/off
-(function(){const v=document.getElementById('listenVideo');const b=document.getElementById('audioBtn');const s=document.getElementById('volSlider');if(!v)return;let visible=false,audioOn=false,sliderVal=0.3,fadeRaf=null;v.volume=0;v.muted=true;function fadeTo(target,dur,done){cancelAnimationFrame(fadeRaf);if(target>0)v.muted=false;const start=v.volume,t0=performance.now();function step(now){const p=Math.min(1,(now-t0)/dur);v.volume=start+(target-start)*p;if(p>=1){if(target===0)v.muted=true;if(done)done()}else{fadeRaf=requestAnimationFrame(step)}}fadeRaf=requestAnimationFrame(step)}function refresh(){if(visible){v.play().catch(()=>{});fadeTo(audioOn?sliderVal:0,500)}else{fadeTo(0,500,function(){v.pause()})}}if(b){b.addEventListener('click',function(){cancelAnimationFrame(fadeRaf);if(audioOn){audioOn=false;v.muted=true}else{audioOn=true;sliderVal=0.3;if(s)s.value=0.3;v.muted=false;v.volume=0.3}b.classList.toggle('on',audioOn);if(audioOn&&visible&&v.paused)v.play().catch(function(){})})}if(s){s.addEventListener('input',function(){cancelAnimationFrame(fadeRaf);sliderVal=parseFloat(s.value);v.volume=sliderVal;v.muted=(sliderVal===0);audioOn=(sliderVal>0);if(b)b.classList.toggle('on',audioOn)})}if(typeof IntersectionObserver!='undefined'){new IntersectionObserver(function(e){e.forEach(function(en){visible=en.isIntersecting;refresh()})},{rootMargin:'200px'}).observe(v)}})();
+// Listen video carousel: play muted when in view, switch videos + descriptions with arrows
+(function(){
+const v=document.getElementById('listenVideo'),b=document.getElementById('audioBtn'),s=document.getElementById('volSlider'),note=document.getElementById('listenNote'),stage=document.getElementById('listenStage'),prev=document.getElementById('listenPrev'),next=document.getElementById('listenNext');if(!v)return;
+const items=[
+{video:'alex-hormozi-final-clip.mp4',poster:'cinematic-podcast-poster.jpg',description:'we tried to put strong emphasis on this part of the podcast and grab the viewers attention and create a sense of awe with fast paced cuts and text animations, we would also love for you to comment your opinions'},
+{video:'project%20for%20base44.mp4',poster:'listen-poster.jpg',description:'This project was inspired by base44, a seriously well crafted motion design video aimed to convey the seamless workflow base44 provides for turning your wildest dreams into proper functioning deployment ready apps.'}
+];
+let current=0,visible=false,audioOn=false,sliderVal=0.3,fadeRaf=null,switchTimer=null,switching=false;v.volume=0;v.muted=true;
+function fadeTo(target,dur,done){cancelAnimationFrame(fadeRaf);if(target>0)v.muted=false;const start=v.volume,t0=performance.now();function step(now){const p=Math.min(1,(now-t0)/dur);v.volume=start+(target-start)*p;if(p>=1){if(target===0)v.muted=true;if(done)done()}else{fadeRaf=requestAnimationFrame(step)}}fadeRaf=requestAnimationFrame(step)}
+function setNote(text,instant){if(!note)return;if(instant){note.textContent=text;return}note.classList.add('switching');setTimeout(function(){note.textContent=text;note.classList.remove('switching')},180)}
+function playIfVisible(){if(visible){v.play().catch(function(){});fadeTo(audioOn?sliderVal:0,320)}else{fadeTo(0,320,function(){v.pause()})}}
+function switchTo(i){if(i===current||switching)return;switching=true;current=(i+items.length)%items.length;const item=items[current];clearTimeout(switchTimer);setNote(item.description,false);if(stage)stage.classList.add('switching');fadeTo(0,180,function(){v.pause();v.src=item.video;v.poster=item.poster;v.load();let done=false;function ready(){if(done)return;done=true;switching=false;clearTimeout(switchTimer);if(stage)stage.classList.remove('switching');playIfVisible()}v.addEventListener('canplay',ready,{once:true});switchTimer=setTimeout(ready,700)})}
+if(prev)prev.addEventListener('click',function(){switchTo(current-1)});if(next)next.addEventListener('click',function(){switchTo(current+1)});
+if(b){b.addEventListener('click',function(){cancelAnimationFrame(fadeRaf);if(audioOn){audioOn=false;v.muted=true}else{audioOn=true;sliderVal=0.3;if(s)s.value=0.3;v.muted=false;v.volume=0.3}b.classList.toggle('on',audioOn);if(audioOn&&visible&&v.paused)v.play().catch(function(){})})}
+if(s){s.addEventListener('input',function(){cancelAnimationFrame(fadeRaf);sliderVal=parseFloat(s.value);v.volume=sliderVal;v.muted=(sliderVal===0);audioOn=(sliderVal>0);if(b)b.classList.toggle('on',audioOn)})}
+if(typeof IntersectionObserver!='undefined'){new IntersectionObserver(function(e){e.forEach(function(en){visible=en.isIntersecting;playIfVisible()})},{rootMargin:'200px'}).observe(v)}else{visible=true;playIfVisible()}
+})();
 
 if(window.__frierenBoot)window.__frierenBoot();
 

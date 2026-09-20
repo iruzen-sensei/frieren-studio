@@ -1,0 +1,143 @@
+name: Fix Frieren listen carousel clipping
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-frieren-listen-carousel-fix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Apply clipping and seamless transition fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! grep -q "listenVideoIncoming" public/index.html; then
+            cat > /tmp/frieren-listen-carousel-fix.patch <<'PATCH'
+          diff --git a/public/index.html b/public/index.html
+          index ceec473..c63f862 100644
+          --- a/public/index.html
+          +++ b/public/index.html
+          @@ -188,24 +188,33 @@ main{background:#f5f5f5}
+           .listen-title{font-family:'Thunder',sans-serif;font-weight:900;font-size:clamp(4rem,9vw,9rem);color:#171717;letter-spacing:-.01em;word-spacing:.18em;line-height:.85;text-transform:uppercase}
+           .listen-note{font-family:'Helvetica Now Display','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:clamp(15px,1.4vw,22px);line-height:1.6;color:#000;font-weight:500;max-width:46ch;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;transition:opacity .28s ease,transform .28s cubic-bezier(.16,1,.3,1)}
+           .listen-note.switching{opacity:0;transform:translateY(10px)}
+          -.listen-right{width:100%;overflow:hidden;padding:0 .25rem}
+          -.listen-carousel{position:relative;width:100%;padding:0 clamp(20px,4vw,56px);isolation:isolate}
+          -.listen-vid{position:relative;width:100%;aspect-ratio:16/9;border-radius:.75rem;overflow:hidden;background:#000;z-index:3;box-shadow:0 24px 70px rgba(0,0,0,.18);transition:transform .55s cubic-bezier(.16,1,.3,1)}
+          -.listen-carousel.sliding-next .listen-vid{transform:translateX(-2%) scale(.985)}
+          -.listen-carousel.sliding-prev .listen-vid{transform:translateX(2%) scale(.985)}
+          -.listen-vid video{transition:opacity .28s ease,transform .5s cubic-bezier(.16,1,.3,1)}
+          -.listen-vid.switching video{opacity:0;transform:scale(.985)}
+          +.listen-outer,.listen-section,.listen-grid,.listen-right{overflow:visible}
+          +.listen-right{width:100%;padding:0 .25rem}
+          +.listen-carousel{position:relative;width:100%;overflow:visible;padding:0 clamp(28px,5vw,76px);isolation:isolate}
+          +.listen-vid{position:relative;width:84%;margin:0 auto;aspect-ratio:16/9;border-radius:.75rem;overflow:hidden;background:#000;z-index:3;box-shadow:0 24px 70px rgba(0,0,0,.18);transition:transform .65s cubic-bezier(.22,1,.36,1)}
+          +.listen-carousel.sliding-next .listen-vid{transform:translateX(-1.8%) scale(.988)}
+          +.listen-carousel.sliding-prev .listen-vid{transform:translateX(1.8%) scale(.988)}
+          +.listen-video-main,.listen-video-incoming{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .68s cubic-bezier(.22,1,.36,1),opacity .46s ease;will-change:transform,opacity}
+          +.listen-video-main{z-index:1;opacity:1;transform:translateX(0) scale(1)}
+          +.listen-video-incoming{z-index:2;opacity:0;pointer-events:none;transform:translateX(0) scale(1)}
+          +.listen-video-incoming.from-next{opacity:1;transform:translateX(105%) scale(.98)}
+          +.listen-video-incoming.from-prev{opacity:1;transform:translateX(-105%) scale(.98)}
+          +.listen-vid.animating-next .listen-video-main{opacity:.25;transform:translateX(-28%) scale(.94)}
+          +.listen-vid.animating-prev .listen-video-main{opacity:.25;transform:translateX(28%) scale(.94)}
+          +.listen-vid.animating-next .listen-video-incoming,.listen-vid.animating-prev .listen-video-incoming{opacity:1;transform:translateX(0) scale(1)}
+          +.listen-vid.settling .listen-video-main{opacity:1;transform:translateX(0) scale(1)}
+          +.listen-vid.settling .listen-video-incoming{opacity:0;transform:translateX(0) scale(1)}
+           @media(min-width:1024px){.listen-vid{border-radius:1rem}}
+          -.listen-peek{position:absolute;top:50%;width:28%;aspect-ratio:16/9;border-radius:.75rem;overflow:hidden;background:#000;z-index:1;opacity:.55;filter:brightness(.58) saturate(.85);box-shadow:0 18px 50px rgba(0,0,0,.22);transition:transform .55s cubic-bezier(.16,1,.3,1),opacity .35s ease,filter .35s ease}
+          +.listen-peek{position:absolute;top:50%;width:44%;aspect-ratio:16/9;border-radius:.75rem;overflow:hidden;background:#000;z-index:1;opacity:.68;filter:brightness(.62) saturate(.9);box-shadow:0 18px 50px rgba(0,0,0,.22);transition:transform .65s cubic-bezier(.22,1,.36,1),opacity .35s ease,filter .35s ease}
+           .listen-peek img{width:100%;height:100%;object-fit:cover;display:block}
+          -.listen-peek::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.22);pointer-events:none}
+          -.listen-peek-prev{left:0;transform:translate(-18%,-50%) scale(.86)}
+          -.listen-peek-next{right:0;transform:translate(18%,-50%) scale(.86)}
+          -.listen-carousel.sliding-prev .listen-peek-prev,.listen-carousel.sliding-next .listen-peek-next{opacity:.85;filter:brightness(.8) saturate(1);transform:translate(0,-50%) scale(.94)}
+          +.listen-peek::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.18);pointer-events:none}
+          +.listen-peek-prev{left:clamp(8px,2vw,28px);transform:translate(-28%,-50%) scale(.82)}
+          +.listen-peek-next{right:clamp(8px,2vw,28px);transform:translate(28%,-50%) scale(.82)}
+          +.listen-carousel.sliding-prev .listen-peek-prev,.listen-carousel.sliding-next .listen-peek-next{opacity:.9;filter:brightness(.84) saturate(1);transform:translate(0,-50%) scale(.92)}
+           .listen-arrow{position:absolute;top:50%;z-index:15;width:44px;height:44px;border-radius:999px;background:rgba(23,23,23,.52);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#f5f5f5;transform:translateY(-50%);cursor:pointer;transition:background .3s,transform .3s,opacity .3s}
+           .listen-arrow:hover{background:rgba(23,23,23,.72);transform:translateY(-50%) scale(1.06)}
+           .listen-arrow svg{width:20px;height:20px;color:#f5f5f5}
+          -.listen-arrow-prev{left:1rem}.listen-arrow-next{right:1rem}
+          +.listen-arrow-prev{left:.85rem}.listen-arrow-next{right:.85rem}
+           .vol-pill{position:absolute;bottom:1rem;left:1rem;width:42%;z-index:10;display:flex;align-items:center;background:rgba(23,23,23,.52);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.55rem 1rem}
+           .vol-slider{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(245,245,245,.55);outline:none;cursor:pointer}
+           .vol-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:#f5f5f5;box-shadow:0 1px 4px rgba(0,0,0,.45);cursor:pointer}
+          @@ -217,7 +226,7 @@ main{background:#f5f5f5}
+           .audio-btn .ico-on{display:none}
+           .audio-btn.on .ico-on{display:block}
+           .audio-btn.on .ico-off{display:none}
+          -@media(max-width:640px){.listen-right{padding:0}.listen-carousel{padding:0 26px}.listen-peek{width:38%;opacity:.42}.listen-peek-prev{left:-4px;transform:translate(-28%,-50%) scale(.82)}.listen-peek-next{right:-4px;transform:translate(28%,-50%) scale(.82)}.listen-arrow{width:38px;height:38px}.listen-arrow-prev{left:.55rem}.listen-arrow-next{right:.55rem}.vol-pill{width:38%;padding:.5rem .75rem}.audio-btn{padding:.5rem .75rem}.audio-btn .click-me{display:none}}
+          +@media(max-width:640px){.listen-right{padding:0}.listen-carousel{padding:0 28px}.listen-vid{width:86%}.listen-peek{width:48%;opacity:.5}.listen-peek-prev{left:0;transform:translate(-34%,-50%) scale(.8)}.listen-peek-next{right:0;transform:translate(34%,-50%) scale(.8)}.listen-arrow{width:38px;height:38px}.listen-arrow-prev{left:.55rem}.listen-arrow-next{right:.55rem}.vol-pill{width:38%;padding:.5rem .75rem}.audio-btn{padding:.5rem .75rem}.audio-btn .click-me{display:none}}
+           
+           /* SERVICES */
+           .services-outer{padding:.5rem}
+          @@ -353,7 +362,8 @@ footer{background:#f5f5f5}
+                   <div class="listen-carousel" id="listenCarousel">
+                     <div class="listen-peek listen-peek-prev" id="listenPeekPrev" aria-hidden="true"><img src="listen-poster.jpg" alt="" loading="lazy" decoding="async"></div>
+                     <div class="listen-vid" id="listenStage" style="background:#000">
+          -            <video id="listenVideo" src="alex-hormozi-final-clip.mp4" muted loop playsinline preload="metadata" poster="cinematic-podcast-poster.jpg" style="width:100%;height:100%;object-fit:cover;display:block"></video>
+          +            <video id="listenVideo" class="listen-video-main" src="alex-hormozi-final-clip.mp4" muted loop playsinline preload="metadata" poster="cinematic-podcast-poster.jpg"></video>
+          +            <video id="listenVideoIncoming" class="listen-video-incoming" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+                       <button class="listen-arrow listen-arrow-prev" id="listenPrev" aria-label="Previous listen video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+                       <button class="listen-arrow listen-arrow-next" id="listenNext" aria-label="Next listen video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+                       <div class="vol-pill">
+          @@ -417,19 +427,20 @@ function showPoster(v,show){if(v._poster)v._poster.style.display=show?'block':'n
+           function playFromStart(v){v.currentTime=0;showPoster(v,false);v.play().catch(()=>{})}
+           function u(){const vh=window.innerHeight,zT=vh*.3,zB=vh*.7;let center=null,bestD=Infinity;vs.forEach(v=>{const r=v.getBoundingClientRect(),c=r.top+r.height/2;if(c>=zT&&c<=zB){const d=Math.abs(c-vh/2);if(d<bestD){bestD=d;center=v}}});if(center&&center!==active){if(active){active.pause();showPoster(active,true)}playFromStart(center);active=center}else if(!active){const f=vs[0],r=f.getBoundingClientRect();if(r.bottom>0&&r.top<vh){playFromStart(f);active=f}}}window.addEventListener('scroll',()=>{if(!t){t=!0;requestAnimationFrame(()=>{u();t=!1})}},{passive:!0});u();})();
+           
+          -// Listen video carousel: peeking side previews, smooth switching, synced descriptions
+          +// Listen video carousel: visible peeks + seamless incoming-video transition
+           (function(){
+          -const v=document.getElementById('listenVideo'),b=document.getElementById('audioBtn'),s=document.getElementById('volSlider'),note=document.getElementById('listenNote'),stage=document.getElementById('listenStage'),carousel=document.getElementById('listenCarousel'),prev=document.getElementById('listenPrev'),next=document.getElementById('listenNext'),peekPrev=document.querySelector('#listenPeekPrev img'),peekNext=document.querySelector('#listenPeekNext img');if(!v)return;
+          +const v=document.getElementById('listenVideo'),incoming=document.getElementById('listenVideoIncoming'),b=document.getElementById('audioBtn'),s=document.getElementById('volSlider'),note=document.getElementById('listenNote'),stage=document.getElementById('listenStage'),carousel=document.getElementById('listenCarousel'),prev=document.getElementById('listenPrev'),next=document.getElementById('listenNext'),peekPrev=document.querySelector('#listenPeekPrev img'),peekNext=document.querySelector('#listenPeekNext img');if(!v)return;
+           const items=[
+           {video:'alex-hormozi-final-clip.mp4',poster:'cinematic-podcast-poster.jpg',description:'we tried to put strong emphasis on this part of the podcast and grab the viewers attention and create a sense of awe with fast paced cuts and text animations, we would also love for you to comment your opinions'},
+           {video:'project%20for%20base44.mp4',poster:'listen-poster.jpg',description:'This project was inspired by base44, a seriously well crafted motion design video aimed to convey the seamless workflow base44 provides for turning your wildest dreams into proper functioning deployment ready apps.'}
+           ];
+          -let current=0,visible=false,audioOn=false,sliderVal=0.3,fadeRaf=null,switchTimer=null,switching=false;v.volume=0;v.muted=true;
+          +let current=0,visible=false,audioOn=false,sliderVal=0.3,fadeRaf=null,switchTimer=null,switching=false;v.volume=0;v.muted=true;if(incoming){incoming.volume=0;incoming.muted=true}
+           function updatePeeks(){if(items.length<2)return;const pi=(current-1+items.length)%items.length,ni=(current+1)%items.length;if(peekPrev)peekPrev.src=items[pi].poster;if(peekNext)peekNext.src=items[ni].poster}
+           function fadeTo(target,dur,done){cancelAnimationFrame(fadeRaf);if(target>0)v.muted=false;const start=v.volume,t0=performance.now();function step(now){const p=Math.min(1,(now-t0)/dur);v.volume=start+(target-start)*p;if(p>=1){if(target===0)v.muted=true;if(done)done()}else{fadeRaf=requestAnimationFrame(step)}}fadeRaf=requestAnimationFrame(step)}
+           function setNote(text,instant){if(!note)return;if(instant){note.textContent=text;return}note.classList.add('switching');setTimeout(function(){note.textContent=text;note.classList.remove('switching')},180)}
+           function playIfVisible(){if(visible){v.play().catch(function(){});fadeTo(audioOn?sliderVal:0,320)}else{fadeTo(0,320,function(){v.pause()})}}
+          -function switchTo(i,dir){if(switching||items.length<2)return;const target=(i+items.length)%items.length;if(target===current)return;switching=true;const item=items[target],direction=dir||'next';clearTimeout(switchTimer);setNote(item.description,false);if(stage)stage.classList.add('switching');if(carousel)carousel.classList.add('sliding-'+direction);fadeTo(0,180,function(){v.pause();v.src=item.video;v.poster=item.poster;v.load();let done=false;function ready(){if(done)return;done=true;current=target;switching=false;clearTimeout(switchTimer);updatePeeks();if(stage)stage.classList.remove('switching');if(carousel)carousel.classList.remove('sliding-next','sliding-prev');playIfVisible()}v.addEventListener('canplay',ready,{once:true});switchTimer=setTimeout(ready,700)})}
+          +function resetTransition(){if(stage)stage.classList.remove('animating-next','animating-prev','settling');if(incoming)incoming.className='listen-video-incoming';if(carousel)carousel.classList.remove('sliding-next','sliding-prev')}
+          +function switchTo(i,dir){if(switching||items.length<2||!incoming)return;const target=(i+items.length)%items.length;if(target===current)return;switching=true;const item=items[target],direction=dir||'next';clearTimeout(switchTimer);setNote(item.description,false);if(carousel)carousel.classList.add('sliding-'+direction);incoming.src=item.video;incoming.poster=item.poster;incoming.className='listen-video-incoming from-'+direction;incoming.load();incoming.play().catch(function(){});stage.offsetWidth;fadeTo(0,180);if(stage)stage.classList.add('animating-'+direction);switchTimer=setTimeout(function(){v.pause();v.src=item.video;v.poster=item.poster;v.load();function finish(){current=target;updatePeeks();if(stage){stage.classList.remove('animating-next','animating-prev');stage.classList.add('settling')}playIfVisible();setTimeout(function(){if(incoming){incoming.pause();incoming.removeAttribute('src');incoming.load()}resetTransition();switching=false},220)}if(v.readyState>=2)finish();else v.addEventListener('canplay',finish,{once:true})},520)}
+           if(prev)prev.addEventListener('click',function(){switchTo(current-1,'prev')});if(next)next.addEventListener('click',function(){switchTo(current+1,'next')});
+           if(b){b.addEventListener('click',function(){cancelAnimationFrame(fadeRaf);if(audioOn){audioOn=false;v.muted=true}else{audioOn=true;sliderVal=0.3;if(s)s.value=0.3;v.muted=false;v.volume=0.3}b.classList.toggle('on',audioOn);if(audioOn&&visible&&v.paused)v.play().catch(function(){})})}
+           if(s){s.addEventListener('input',function(){cancelAnimationFrame(fadeRaf);sliderVal=parseFloat(s.value);v.volume=sliderVal;v.muted=(sliderVal===0);audioOn=(sliderVal>0);if(b)b.classList.toggle('on',audioOn)})}
+          PATCH
+            git apply --whitespace=nowarn /tmp/frieren-listen-carousel-fix.patch
+          else
+            echo "Listen carousel fix already present."
+          fi
+          rm -f .github/workflows/apply-frieren-listen-carousel-fix.yml
+
+      - name: Commit and push update
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/index.html .github/workflows/apply-frieren-listen-carousel-fix.yml
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Fix listen carousel clipping and transitions"
+          git pull --rebase origin main
+          git push origin HEAD:main

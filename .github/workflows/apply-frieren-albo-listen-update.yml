@@ -1,0 +1,92 @@
+name: Add Albo video to Frieren listen carousel
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-frieren-albo-listen-update.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Add Albo as third Listen video
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p public
+          cp "albo promotional reel.mp4" "public/albo-promotional-reel.mp4"
+
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+
+          ffmpeg -hide_banner -y \
+            -ss 0.5 \
+            -i "public/albo-promotional-reel.mp4" \
+            -frames:v 1 -q:v 3 -update 1 \
+            "public/albo-poster.jpg"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('public/index.html')
+          html = path.read_text()
+
+          items_start = html.index('const items=[')
+          items_end = html.index('];', items_start) + 2
+          new_items = """const items=[
+          {video:'alex-hormozi-final-clip.mp4',poster:'cinematic-podcast-poster.jpg',fit:'cover',description:'we tried to put strong emphasis on this part of the podcast and grab the viewers attention and create a sense of awe with fast paced cuts and text animations, we would also love for you to comment your opinions'},
+          {video:'project%20for%20base44.mp4',poster:'listen-poster.jpg',fit:'cover',description:'This project was inspired by base44, a seriously well crafted motion design video aimed to convey the seamless workflow base44 provides for turning your wildest dreams into proper functioning deployment ready apps.'},
+          {video:'albo-promotional-reel.mp4',poster:'albo-poster.jpg',fit:'contain',description:'The animation for albo was structured with a clear intro, product feature showcase, and engaging outro/CTA, while maintaining consistent pacing and visual hierarchy throughout the 19-second runtime. The focus was on making the product easy to understand while giving the video a clean, modern, and polished motion-design feel'}
+          ];"""
+          html = html[:items_start] + new_items + html[items_end:]
+
+          html = html.replace(
+              '<div class="listen-peek listen-peek-prev" id="listenPeekPrev" aria-hidden="true"><img src="listen-poster.jpg" alt="" loading="lazy" decoding="async"></div>',
+              '<div class="listen-peek listen-peek-prev" id="listenPeekPrev" aria-hidden="true"><img src="albo-poster.jpg" alt="" loading="lazy" decoding="async"></div>'
+          )
+
+          if 'function applyFit(el,item)' not in html:
+              html = html.replace(
+                  "function playIfVisible(){if(visible){v.play().catch(function(){});fadeTo(audioOn?sliderVal:0,320)}else{fadeTo(0,320,function(){v.pause()})}}\nfunction resetTransition",
+                  "function playIfVisible(){if(visible){v.play().catch(function(){});fadeTo(audioOn?sliderVal:0,320)}else{fadeTo(0,320,function(){v.pause()})}}\nfunction applyFit(el,item){if(el&&item)el.style.objectFit=item.fit||'cover'}\nfunction resetTransition"
+              )
+
+          html = html.replace(
+              "incoming.src=item.video;incoming.poster=item.poster;incoming.className='listen-video-incoming from-'+direction;",
+              "incoming.src=item.video;incoming.poster=item.poster;applyFit(incoming,item);incoming.className='listen-video-incoming from-'+direction;"
+          )
+          html = html.replace(
+              "v.src=item.video;v.poster=item.poster;v.load();",
+              "v.src=item.video;v.poster=item.poster;applyFit(v,item);v.load();"
+          )
+
+          path.write_text(html)
+          PY
+
+          rm -f .github/workflows/apply-frieren-albo-listen-update.yml
+
+      - name: Commit and push update
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/index.html public/albo-promotional-reel.mp4 public/albo-poster.jpg .github/workflows/apply-frieren-albo-listen-update.yml
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Add albo video to listen carousel"
+          git pull --rebase origin main
+          git push origin HEAD:main

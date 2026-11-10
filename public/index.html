@@ -7,7 +7,7 @@
 <script>
 window.FRIEREN_CONFIG = {
   showreelVideo: 'show%20reeeel%20final.mp4',
-  studio: { name: 'Frieren.studio', email: 'frierenstudio@gmail.com', instagram: 'https://instagram.com/frieren.aep', vimeo: '', linkedin: '' }
+  studio: { name: 'Frieren.studio', email: 'abrarbiz91@gmail.com' }
 };
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -282,9 +282,7 @@ footer{background:#f5f5f5}
 @media(min-width:1024px){.footer-grid .fw{grid-column:span 8;height:350px}}
 .footer-grid .fl{grid-column:span 12;height:200px}
 @media(min-width:1024px){.footer-grid .fl{grid-column:span 4;height:350px}}
-.footer-grid .fc,.footer-grid .fgh{grid-column:span 6;height:120px}
-.footer-grid .fig,.footer-grid .fli{grid-column:span 6;height:120px}
-@media(min-width:1024px){.footer-grid .fc,.footer-grid .fgh{grid-column:span 6;height:120px}.footer-grid .fig,.footer-grid .fli{grid-column:span 4;height:350px}}
+.footer-grid .fc{grid-column:span 6;height:120px}
 </style>
 </head>
 <body>
@@ -297,7 +295,7 @@ footer{background:#f5f5f5}
     <div class="header-col" style="grid-column:span 3"><span style="display:block;overflow:hidden"><div class="hl" id="hl2a">Motion Studio</div></span><span style="display:block;overflow:hidden"><div class="hl muted" id="hl2b">Est. 2024</div></span></div>
     <div class="header-col desktop-only" style="grid-column:span 3"><span style="display:block;overflow:hidden"><div class="hl" id="hl3a">Available for</div></span><span style="display:block;overflow:hidden"><div class="hl muted" id="hl3b">New Projects</div></span></div>
   </div>
-  <a href="mailto:frierenstudio@gmail.com" class="get-in-touch" id="getInTouch"><div class="rel"><div class="bubble"><span>🎬</span></div><div class="pill"><div class="oh"><div class="stack"><span>Get in touch</span><span>Get in touch</span></div></div></div></div></a>
+  <a href="mailto:abrarbiz91@gmail.com" class="get-in-touch" id="getInTouch"><div class="rel"><div class="bubble"><span>🎬</span></div><div class="pill"><div class="oh"><div class="stack"><span>Get in touch</span><span>Get in touch</span></div></div></div></div></a>
 </header>
 
 <div class="bottom-nav" id="bottomNav">
@@ -405,13 +403,13 @@ footer{background:#f5f5f5}
   <div class="tools-section"><h4>Professional at</h4><div class="tools-grid" id="toolsGrid"><div class="row row-top"><div class="tool"><span>After Effects</span></div><div class="tool"><span>Premiere Pro</span></div></div><div class="row"><div class="tool"><span>Figma</span></div><div class="tool"><span>Framer</span></div><div class="tool"><span>Spline</span></div><div class="tool"><span>Lovable</span></div><div class="tool"><span>Blender</span></div></div><div class="hl-box" id="toolsHL"></div></div></div>
 </main>
 
-<footer><div class="footer-grid"><h2 class="wm">frieren.studio</h2><a href="#work" class="fw">Work</a><a href="#" class="fl">Lab</a><a href="mailto:frierenstudio@gmail.com" class="fc">Contact</a><a href="#" class="fgh" target="_blank" rel="noopener">Vimeo</a><a href="https://instagram.com/frieren.aep" class="fig" target="_blank" rel="noopener">Instagram</a><a href="#" class="fli" target="_blank" rel="noopener">LinkedIn</a></div></footer>
+<footer><div class="footer-grid"><h2 class="wm">frieren.studio</h2><a href="#work" class="fw">Work</a><a href="#" class="fl">Lab</a><a href="mailto:abrarbiz91@gmail.com" class="fc">Contact</a></div></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script>
-(function(){const C=window.FRIEREN_CONFIG||{};if(C.showreelVideo){const v=document.getElementById('showreelVideo');const mv=document.querySelector('#mVid video');const w=window.innerWidth;if(w>=768&&v){v.src=C.showreelVideo;setTimeout(()=>{v.play().catch(()=>{})},2000)}if(w<1024&&mv){setTimeout(()=>{mv.src=C.showreelVideo;mv.muted=true;mv.setAttribute('playsinline','');mv.setAttribute('loop','');mv.setAttribute('autoplay','');mv.load();mv.play().catch(()=>{})},2000)}}if(C.studio){if(C.studio.name)document.querySelector('.name').textContent=C.studio.name;if(C.studio.email)document.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.href='mailto:'+C.studio.email);const map={vimeo:C.studio.vimeo,instagram:C.studio.instagram,linkedin:C.studio.linkedin};document.querySelectorAll('.footer-grid a').forEach(a=>{const t=(a.textContent||'').toLowerCase();if(map[t])a.href=map[t]})}})();
+(function(){const C=window.FRIEREN_CONFIG||{};if(C.showreelVideo){const v=document.getElementById('showreelVideo');const mv=document.querySelector('#mVid video');const w=window.innerWidth;if(w>=768&&v){v.src=C.showreelVideo;setTimeout(()=>{v.play().catch(()=>{})},2000)}if(w<1024&&mv){setTimeout(()=>{mv.src=C.showreelVideo;mv.muted=true;mv.setAttribute('playsinline','');mv.setAttribute('loop','');mv.setAttribute('autoplay','');mv.load();mv.play().catch(()=>{})},2000)}}if(C.studio){if(C.studio.name)document.querySelector('.name').textContent=C.studio.name;if(C.studio.email)document.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.href='mailto:'+C.studio.email);}})();
 
 if(typeof gsap!="undefined"&&typeof ScrollTrigger!="undefined"){gsap.registerPlugin(ScrollTrigger);}
 // Desktop work card videos: wait for frame buffer then play (avoids blank gap on large files)
